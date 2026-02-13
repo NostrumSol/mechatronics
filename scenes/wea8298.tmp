@@ -1,0 +1,46 @@
+[gd_scene load_steps=10 format=3 uid="uid://co3shgafa1453"]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_mx7cu"]
+[ext_resource type="AudioStream" uid="uid://dk7aeofbd3soa" path="res://assets/sounds/shoot.mp3" id="2_ir0jn"]
+[ext_resource type="AudioStream" uid="uid://c3geqbbe15skg" path="res://assets/sounds/reload.mp3" id="3_42yon"]
+[ext_resource type="Script" path="res://scripts/stats_component.gd" id="4_3y7x1"]
+[ext_resource type="Script" path="res://scripts/ammo_component.gd" id="5_o3ib6"]
+[ext_resource type="Script" path="res://scripts/reload_component.gd" id="6_sfxxl"]
+[ext_resource type="Script" path="res://scripts/shoot_component.gd" id="7_lnr0o"]
+[ext_resource type="PackedScene" uid="uid://bugn8bht2bobb" path="res://scenes/projectile.tscn" id="8_2di1b"]
+[ext_resource type="Script" path="res://scripts/input_handler.gd" id="8_svrs0"]
+
+[node name="Weapon" type="Node2D"]
+script = ExtResource("1_mx7cu")
+
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_ir0jn")
+volume_db = -13.866
+bus = &"SFX"
+
+[node name="ReloadSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_42yon")
+volume_db = -13.866
+bus = &"SFX"
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("4_3y7x1")
+
+[node name="AmmoComponent" type="Node" parent="."]
+script = ExtResource("5_o3ib6")
+
+[node name="ReloadComponent" type="Node" parent="."]
+script = ExtResource("6_sfxxl")
+
+[node name="ShootComponent" type="Node2D" parent="."]
+script = ExtResource("7_lnr0o")
+projectile_scene = ExtResource("8_2di1b")
+
+[node name="Muzzle" type="Marker2D" parent="ShootComponent"]
+
+[node name="WeaponInputHandler" type="Node" parent="." node_paths=PackedStringArray("stats", "ammo", "reload", "shoot")]
+script = ExtResource("8_svrs0")
+stats = NodePath("../StatsComponent")
+ammo = NodePath("../AmmoComponent")
+reload = NodePath("../ReloadComponent")
+shoot = NodePath("../ShootComponent")

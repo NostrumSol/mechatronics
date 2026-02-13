@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://be30fwksbxxvn"]
+
+[ext_resource type="PackedScene" uid="uid://bbm4ndoo46aj4" path="res://scenes/door.tscn" id="1_hxpu1"]
+
+[node name="Doors" type="Node2D"]
+
+[node name="Up" parent="." instance=ExtResource("1_hxpu1")]
+position = Vector2(962, 13)
+collision_mask = 2
+direction = Vector2i(0, -1)
+
+[node name="Down" parent="." instance=ExtResource("1_hxpu1")]
+position = Vector2(962, 1065)
+collision_mask = 2
+direction = Vector2i(0, 1)
+
+[node name="Left" parent="." instance=ExtResource("1_hxpu1")]
+position = Vector2(15, 537)
+rotation = 1.57079
+collision_mask = 2
+direction = Vector2i(-1, 0)
+
+[node name="Right" parent="." instance=ExtResource("1_hxpu1")]
+position = Vector2(1904, 540)
+rotation = 1.5708
+collision_mask = 2
+direction = Vector2i(1, 0)

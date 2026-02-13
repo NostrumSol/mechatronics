@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmbfkdbm87sel"]
+
+[ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_t8qka"]
+[ext_resource type="PackedScene" uid="uid://be30fwksbxxvn" path="res://scenes/doors.tscn" id="2_1n78e"]
+[ext_resource type="PackedScene" uid="uid://ce4umvvsqqqe2" path="res://scenes/borders.tscn" id="3_20s5a"]
+
+[sub_resource type="Gradient" id="Gradient_42ilg"]
+offsets = PackedFloat32Array(0.902597)
+colors = PackedColorArray(0.803683, 0.399629, 0.407484, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_punbv"]
+gradient = SubResource("Gradient_42ilg")
+
+[node name="BasicRoomScene" type="Node2D"]
+position = Vector2(0, -1)
+script = ExtResource("1_t8qka")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(956, 531)
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(960.43, 538.759)
+scale = Vector2(7.52789, 1078.48)
+texture = SubResource("GradientTexture1D_punbv")
+
+[node name="Doors" parent="." instance=ExtResource("2_1n78e")]
+position = Vector2(11, -2)
+
+[node name="Borders" parent="." instance=ExtResource("3_20s5a")]
+position = Vector2(-1, 3)

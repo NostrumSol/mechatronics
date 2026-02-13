@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bn551l1l0cyuu"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_kjgnp"]
+[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="2_qiney"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5pekp"]
+radius = 66.0076
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5golr"]
+radius = 73.1642
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_kjgnp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_qiney")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5pekp")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_5golr")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

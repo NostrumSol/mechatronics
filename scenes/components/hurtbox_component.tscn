@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dphgipyden67a"]
+
+[ext_resource type="Script" path="res://scripts/hurtbox_component.gd" id="1_wfswc"]
+
+[node name="HurtboxComponent" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_wfswc")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://d33ht6gqe3sev"]
+
+[ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_7estd"]
+[ext_resource type="PackedScene" uid="uid://be30fwksbxxvn" path="res://scenes/doors.tscn" id="2_o0472"]
+[ext_resource type="PackedScene" uid="uid://ce4umvvsqqqe2" path="res://scenes/borders.tscn" id="3_y3sn0"]
+[ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemy.tscn" id="4_mc5o0"]
+
+[sub_resource type="Gradient" id="Gradient_n0be1"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0, 0.32549, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f0qih"]
+gradient = SubResource("Gradient_n0be1")
+
+[node name="StartingRoomScene" type="Node2D"]
+position = Vector2(0, -1)
+script = ExtResource("1_7estd")
+
+[node name="Doors" parent="." instance=ExtResource("2_o0472")]
+
+[node name="Borders" parent="." instance=ExtResource("3_y3sn0")]
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(956, 531)
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(960.43, 538.759)
+scale = Vector2(7.52789, 1078.48)
+texture = SubResource("GradientTexture1D_f0qih")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 447.0
+offset_top = 326.0
+offset_right = 1499.0
+offset_bottom = 743.0
+theme_override_font_sizes/font_size = 100
+text = "WASD TO MOVE
+R TO RELOAD
+LEFT CLICK TO SHOOT"
+
+[node name="Enemy" parent="." instance=ExtResource("4_mc5o0")]
+position = Vector2(730, 179)

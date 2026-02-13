@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bugn8bht2bobb"]
+
+[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/icon.svg" id="1_2yblr"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_pq2eh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dtnd3"]
+radius = 5.0
+
+[node name="Projectile" type="CharacterBody2D"]
+rotation = 1.5708
+collision_layer = 4
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("1_pq2eh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.055, 0.095)
+texture = ExtResource("1_2yblr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dtnd3")

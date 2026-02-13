@@ -1,0 +1,29 @@
+{
+  "1": {
+	"Name": "tungsten_rounds",
+	"Value": 10,
+	"Grid": "0,0/0,1",
+	"Modifiers": {
+		"GUN_DAMAGE": { "type": "multiply", "value": 2 },
+		"FIRE_RATE": { "type": "multiply", "value": 0.50 }
+		}
+	},
+	"2": {
+	"Name": "extended_magazine",
+	"Value": 20,
+	"Grid": "0,0/0,1/-1,0",
+	"Modifiers": {
+		"MAX_LOADED": { "type": "multiply", "value": 1.25 }
+		}
+  },
+  "3": {
+	"Name": "Item3",
+	"Value": 30,
+	"Grid": "0,0/1,0"
+  },
+  "4": {
+	"Name": "Item4",
+	"Value": 40,
+	"Grid": "0,0"
+  }
+}
