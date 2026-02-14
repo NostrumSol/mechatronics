@@ -26,6 +26,7 @@ class RoomType:
 
 @onready var room_types := [
 	RoomType.new(preload("res://scenes/rooms/basic_room_scene.tscn"), 0, 0.6),
+	RoomType.new(preload("res://scenes/rooms/evil_room_scene.tscn"), 0, 1.0)
 ]
 
 const STARTING_ROOM_SCENE := preload("res://scenes/rooms/starting_room_scene.tscn")

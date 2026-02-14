@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ccyo0eh2a62pe"]
+
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene.tscn" id="1_glumr"]
+[ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemy.tscn" id="2_b1urj"]
+
+[node name="BasicRoomScene" unique_id=1917625330 instance=ExtResource("1_glumr")]
+
+[node name="Enemy" parent="." index="8" unique_id=489612833 instance=ExtResource("2_b1urj")]
+position = Vector2(124, 69)
