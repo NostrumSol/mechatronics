@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dfv34gt8d2ypd"]
+
+[ext_resource type="Script" uid="uid://dhn8uyky8rsxe" path="res://scripts/pause_menu.gd" id="1_8huf0"]
+
+[node name="PauseMenu" type="Control" unique_id=904092675 node_paths=PackedStringArray("vbox", "continue_button", "main_menu_button", "quit_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8huf0")
+vbox = NodePath("MainButtons")
+continue_button = NodePath("MainButtons/Continue")
+main_menu_button = NodePath("MainButtons/Main Menu")
+quit_button = NodePath("MainButtons/Quit")
+
+[node name="MainButtons" type="VBoxContainer" parent="." unique_id=473646243]
+z_index = 20
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -50.5
+offset_right = 48.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Continue" type="Button" parent="MainButtons" unique_id=1864861021]
+layout_mode = 2
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 0
+text = "Continue"
+
+[node name="Main Menu" type="Button" parent="MainButtons" unique_id=388020645]
+layout_mode = 2
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 0
+text = "Main Menu
+"
+
+[node name="Quit" type="Button" parent="MainButtons" unique_id=1503684440]
+layout_mode = 2
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 0
+text = "Quit"

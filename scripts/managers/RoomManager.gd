@@ -8,10 +8,8 @@ var grid := []
 var start_pos := Vector2i(4, 4)
 var room_count := 12
 
-const ROOM_WIDTH := 184
-const ROOM_HEIGHT := 184
-const GAP_X := 30
-const GAP_Y := 30
+const GAP_X := 300 # How big of a gap is between rooms?
+const GAP_Y := 300
 
 class RoomType:
 	var scene: PackedScene
@@ -30,6 +28,7 @@ class RoomType:
 ]
 
 const STARTING_ROOM_SCENE := preload("res://scenes/rooms/starting_room_scene.tscn")
+const GAME_WORLD_SCENE := preload("res://scenes/game_world.tscn")
 
 var current_position := Vector2i.ZERO
 
@@ -39,10 +38,23 @@ var current_room_instance: Node2D = null
 var player: Player
 var tween: Tween
 
+var game_world: Node2D
+
+func start_game(overwrite: bool = false):
+	if overwrite:
+		end_game()
+	
+	if game_world == null:
+		game_world = GAME_WORLD_SCENE.instantiate()
+		get_tree().root.add_child(game_world)
+
+func end_game():
+	if game_world:
+		game_world.queue_free()
+		game_world = null
+
 func generate_floor() -> void:
-	print("=== _ready() ===")
-	print("Start position: ", start_pos)
-	print("Room count target: ", room_count)
+	start_game(true)
 	
 	generate_layout()
 	instantiate_rooms()
@@ -50,7 +62,7 @@ func generate_floor() -> void:
 	current_position = start_pos
 	
 	player = preload("res://scenes/player.tscn").instantiate()
-	add_child(player)
+	game_world.add_child(player)
 	
 	load_room(current_position)
 
@@ -150,10 +162,10 @@ func instantiate_rooms() -> void:
 					room = room_assignment[pos].scene.instantiate()
 				
 				room.process_mode = Node.PROCESS_MODE_DISABLED
-				add_child(room)
+				game_world.add_child(room)
 				room.position = Vector2(
-					(x - start_pos.x) * (ROOM_WIDTH + GAP_X),
-					(y - start_pos.y) * (ROOM_HEIGHT + GAP_Y))
+					(x - start_pos.x) * (GAP_X),
+					(y - start_pos.y) * (GAP_Y))
 					
 				room_instances[y][x] = room 
 				
@@ -171,11 +183,11 @@ func load_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) -> v
 		current_room_instance.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	current_room_instance = room
-	room.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	if entrance_direction == Vector2i.ZERO:
 		var spawn = room.get_node("SpawnPoint")
 		player.global_position = spawn.global_position
+		room.process_mode = Node.PROCESS_MODE_INHERIT
 	else:
 		started_traversing.emit()
 		var opposite = -entrance_direction
@@ -203,12 +215,13 @@ func load_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) -> v
 
 func _on_traversal_tween_finished() -> void:
 	finished_traversing.emit()
+	current_room_instance.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _deferred_load_room(pos: Vector2i, direction: Vector2i):
 	current_position = pos
 	load_room(pos, direction)
 
-func get_room_doors(pos: Vector2i):
+func get_room_doors(pos: Vector2i) -> Array:
 	var doors = []
 	
 	for dir in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:

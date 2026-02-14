@@ -3,6 +3,7 @@ class_name PlayerInputHandler
 
 @export var player : Player
 @export var dash : DashComponent
+@export var pause : PauseMenu
 
 var direction : Vector2
 
@@ -23,6 +24,11 @@ func _input(event: InputEvent) -> void:
 		dash.start_dash(direction)
 	if event.is_action_pressed("flashlight"):
 		player.flashlight.enabled = !player.flashlight.enabled
+	if event.is_action_pressed("pause"):
+		if pause.isPaused:
+			pause.unpause()
+		else:
+			pause.pause()
 	
 func _process(_delta: float) -> void:
 	if current_state == PlayerState.DASHING:

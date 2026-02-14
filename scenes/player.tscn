@@ -9,13 +9,14 @@
 [ext_resource type="Script" uid="uid://cvixeexj1amht" path="res://scripts/camera_2d.gd" id="4_mi7qe"]
 [ext_resource type="Script" uid="uid://catuxcld06d70" path="res://scripts/ui_layer.gd" id="4_wehkq"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="4_y4r1p"]
-[ext_resource type="Script" uid="uid://dmma847cwgo8v" path="res://scripts/dash_component.gd" id="5_jej6c"]
-[ext_resource type="Script" uid="uid://bhu1pqgqp8872" path="res://scripts/animation_handler.gd" id="6_a8ls1"]
 [ext_resource type="PackedScene" uid="uid://s2rrmd725qoe" path="res://scenes/ui/inventory.tscn" id="6_gvm34"]
+[ext_resource type="PackedScene" uid="uid://bsdg404s4ldgo" path="res://scenes/components/animation_handler.tscn" id="7_a8ls1"]
+[ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="8_a8ls1"]
 [ext_resource type="Script" uid="uid://bcldnc807xxu4" path="res://scripts/health_bar.gd" id="9_d2wvv"]
-[ext_resource type="Texture2D" uid="uid://1sldxgcsvggu" path="res://assets/textures/character_atlas.png" id="9_oprun"]
+[ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="9_oprun"]
 [ext_resource type="Script" uid="uid://buma0di4p3pil" path="res://scripts/weapon_stats_panel.gd" id="13_f1ej7"]
 [ext_resource type="Script" uid="uid://djbqqsmq34hys" path="res://scripts/player_stats_panel.gd" id="14_oprun"]
+[ext_resource type="PackedScene" uid="uid://dfv34gt8d2ypd" path="res://scenes/ui/pause_menu.tscn" id="17_qfm1y"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
 atlas = ExtResource("9_oprun")
@@ -93,31 +94,19 @@ offset = Vector2(95, 1)
 [node name="PlayerStatsComponent" type="Node" parent="." unique_id=1723054834]
 script = ExtResource("2_smehm")
 
-[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash")]
+[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash", "pause")]
 script = ExtResource("4_3v2ag")
 player = NodePath("..")
 dash = NodePath("../DashComponent")
+pause = NodePath("../UILayer/PauseMenu")
 
-[node name="AnimationHandler" type="Node" parent="." unique_id=160768332 node_paths=PackedStringArray("player_input", "player", "sprite")]
-script = ExtResource("6_a8ls1")
-player_input = NodePath("../PlayerInputHandler")
-player = NodePath("..")
+[node name="AnimationHandler" parent="." unique_id=1843938922 node_paths=PackedStringArray("body", "sprite") instance=ExtResource("7_a8ls1")]
+body = NodePath("..")
 sprite = NodePath("../Sprite")
 
-[node name="DashComponent" type="Node" parent="." unique_id=93121976 node_paths=PackedStringArray("player", "player_input", "dash_cooldown_timer", "dash_duration_timer")]
-script = ExtResource("5_jej6c")
-player = NodePath("..")
+[node name="DashComponent" parent="." unique_id=1237026739 node_paths=PackedStringArray("body", "player_input") instance=ExtResource("8_a8ls1")]
+body = NodePath("..")
 player_input = NodePath("../PlayerInputHandler")
-dash_cooldown_timer = NodePath("DashCooldownTimer")
-dash_duration_timer = NodePath("DashDurationTimer")
-
-[node name="DashCooldownTimer" type="Timer" parent="DashComponent" unique_id=2076490488]
-wait_time = 0.5
-one_shot = true
-
-[node name="DashDurationTimer" type="Timer" parent="DashComponent" unique_id=1475870378]
-wait_time = 0.5
-one_shot = true
 
 [node name="Weapon" parent="." unique_id=639436030 instance=ExtResource("3_qt48h")]
 scale = Vector2(0.99999994, 0.99999994)
@@ -241,3 +230,10 @@ offset_right = 135.0
 offset_bottom = 476.0
 bbcode_enabled = true
 text = "TEST"
+
+[node name="PauseMenu" parent="UILayer" unique_id=1438876665 instance=ExtResource("17_qfm1y")]
+process_mode = 3
+offset_left = 436.66666
+offset_top = 210.0
+offset_right = 436.66663
+offset_bottom = 210.0

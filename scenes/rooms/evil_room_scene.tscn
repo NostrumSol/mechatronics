@@ -7,3 +7,6 @@
 
 [node name="Enemy" parent="." index="8" unique_id=489612833 instance=ExtResource("2_b1urj")]
 position = Vector2(124, 69)
+
+[node name="Enemy2" parent="." index="9" unique_id=859007042 instance=ExtResource("2_b1urj")]
+position = Vector2(99, 76)

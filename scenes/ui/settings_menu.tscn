@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://cmgvstky35two"]
+
+[ext_resource type="Script" uid="uid://c6asjyunqu0b2" path="res://scripts/settings_menu.gd" id="1_spnqi"]
+
+[node name="SettingsMenu" type="Control" unique_id=292195542 node_paths=PackedStringArray("vbox", "fullscreen", "master", "music", "sfx")]
+custom_minimum_size = Vector2(216, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -384.0
+offset_bottom = -216.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_spnqi")
+vbox = NodePath("SettingsButtons")
+fullscreen = NodePath("SettingsButtons/fullScreen")
+master = NodePath("SettingsButtons/masterVolume")
+music = NodePath("SettingsButtons/musicVolume")
+sfx = NodePath("SettingsButtons/SFXVolume")
+
+[node name="SettingsButtons" type="VBoxContainer" parent="." unique_id=1835699021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 89.0
+offset_top = -1.0
+offset_right = 289.0
+offset_bottom = 215.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Back" type="Button" parent="SettingsButtons" unique_id=667217946]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Back"
+
+[node name="fullScreen" type="CheckButton" parent="SettingsButtons" unique_id=1957591970]
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Fullscreen
+"
+
+[node name="masterVolume" type="HSlider" parent="SettingsButtons" unique_id=1651402938]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="Label" type="Label" parent="SettingsButtons/masterVolume" unique_id=1864482812]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 0
+offset_left = -35.0
+offset_top = -3.0
+offset_right = 215.0
+offset_bottom = 17.0
+theme_override_font_sizes/font_size = 8
+text = "Master Volume"
+horizontal_alignment = 1
+
+[node name="musicVolume" type="HSlider" parent="SettingsButtons" unique_id=272153738]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="Label" type="Label" parent="SettingsButtons/musicVolume" unique_id=1638774879]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 0
+offset_left = -35.0
+offset_top = -3.0
+offset_right = 215.0
+offset_bottom = 17.0
+theme_override_font_sizes/font_size = 8
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="SFXVolume" type="HSlider" parent="SettingsButtons" unique_id=1526346282]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="Label" type="Label" parent="SettingsButtons/SFXVolume" unique_id=1708615113]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 0
+offset_left = -35.0
+offset_top = -3.0
+offset_right = 215.0
+offset_bottom = 17.0
+theme_override_font_sizes/font_size = 8
+text = "SFX Volume"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="SettingsButtons/Back" to="." method="_on_back_pressed"]
+[connection signal="toggled" from="SettingsButtons/fullScreen" to="." method="_on_full_screen_toggled"]
+[connection signal="value_changed" from="SettingsButtons/masterVolume" to="." method="_on_master_volume_value_changed"]
+[connection signal="value_changed" from="SettingsButtons/musicVolume" to="." method="_on_music_volume_value_changed"]
+[connection signal="value_changed" from="SettingsButtons/SFXVolume" to="." method="_on_sfx_volume_value_changed"]

@@ -1,25 +1,88 @@
 [gd_scene format=3 uid="uid://bn551l1l0cyuu"]
 
+[ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="1_5uy6h"]
+[ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="1_nenq2"]
+[ext_resource type="Texture2D" uid="uid://bxorbk6sd0idm" path="res://assets/textures/light_beam.png" id="1_xwavj"]
 [ext_resource type="PackedScene" uid="uid://b6vpe4plhp6sk" path="res://scenes/components/move_towards_target_component.tscn" id="2_5uy6h"]
-[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="2_qiney"]
+[ext_resource type="PackedScene" uid="uid://bsdg404s4ldgo" path="res://scenes/components/animation_handler.tscn" id="2_c4w8v"]
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_xgoky"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
+[ext_resource type="Script" uid="uid://drkjxsxlhvvsc" path="res://scripts/components/dash_at_target_component.gd" id="7_md484"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uy6h"]
+atlas = ExtResource("1_5uy6h")
+region = Rect2(296, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c4w8v"]
+atlas = ExtResource("1_5uy6h")
+region = Rect2(304, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwavj"]
+atlas = ExtResource("1_5uy6h")
+region = Rect2(312, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nenq2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uy6h")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c4w8v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwavj")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 3.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_actic"]
-radius = 72.0
+radius = 4.472136
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5pekp"]
-radius = 60.0
+radius = 4.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=489612833]
-scale = Vector2(0.2, 0.2)
 collision_layer = 4
 collision_mask = 5
 
+[node name="DashComponent" parent="." unique_id=1237026739 node_paths=PackedStringArray("body") instance=ExtResource("1_nenq2")]
+body = NodePath("..")
+dash_cooldown = 6.0
+
+[node name="Flashlight" type="PointLight2D" parent="." unique_id=1416864385]
+color = Color(1, 0, 0, 1)
+shadow_enabled = true
+texture = ExtResource("1_xwavj")
+offset = Vector2(39, 1)
+texture_scale = 0.39
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1141061257]
+rotation = 1.5707964
+sprite_frames = SubResource("SpriteFrames_nenq2")
+animation = &"moving"
+
+[node name="AnimationHandler" parent="." unique_id=1843938922 node_paths=PackedStringArray("body", "sprite") instance=ExtResource("2_c4w8v")]
+body = NodePath("..")
+sprite = NodePath("../Sprite")
+
 [node name="HealthComponent" parent="." unique_id=1898653669 instance=ExtResource("2_xgoky")]
 
-[node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body") instance=ExtResource("2_5uy6h")]
+[node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body", "dash") instance=ExtResource("2_5uy6h")]
 body = NodePath("..")
+dash = NodePath("../DashComponent")
+
+[node name="DashAtTargetComponent" type="Node2D" parent="." unique_id=569415027 node_paths=PackedStringArray("mover", "dash")]
+script = ExtResource("7_md484")
+mover = NodePath("../MoveTowardsTargetComponent")
+dash = NodePath("../DashComponent")
 
 [node name="HurtboxComponent" parent="." unique_id=2006115171 node_paths=PackedStringArray("healthComponent") instance=ExtResource("3_h0dn5")]
 process_mode = 3
@@ -32,12 +95,8 @@ collision_mask = 32
 healthComponent = NodePath("../HealthComponent")
 
 [node name="HurtboxCollider" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1413871431]
-position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_actic")
 debug_color = Color(1, 0, 0, 0.41960785)
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1917374765]
-texture = ExtResource("2_qiney")
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=1428532152]
 shape = SubResource("CircleShape2D_5pekp")

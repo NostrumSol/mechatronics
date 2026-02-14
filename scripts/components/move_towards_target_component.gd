@@ -1,9 +1,10 @@
 extends Node2D
+class_name MoveTowardsTargetComponent
 
 @export var movement_speed := 50.0
 @export var body : CharacterBody2D
-
-@onready var nav: NavigationAgent2D = $NavigationAgent2D
+@export var nav : NavigationAgent2D
+@export var dash : DashComponent
 
 func _ready() -> void:
 	nav.velocity_computed.connect(_on_velocity_computed)
@@ -15,6 +16,8 @@ func _physics_process(delta: float) -> void:
 	nav.target_position = target_position
 	if nav.is_navigation_finished():
 		return
+		
+	body.look_at(target_position)
 	
 	var current_position = global_position
 	var next_path_position = nav.get_next_path_position()
@@ -25,5 +28,8 @@ func _physics_process(delta: float) -> void:
 	body.move_and_slide()
 
 func _on_velocity_computed(safe_velocity) -> void:
+	if dash != null and dash.is_dashing:
+		return
+	
 	body.velocity = safe_velocity
 	

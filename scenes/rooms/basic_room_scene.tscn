@@ -3,15 +3,22 @@
 [ext_resource type="Script" uid="uid://biiia1p2rsxxy" path="res://scripts/basic_room.gd" id="1_ax6gf"]
 [ext_resource type="PackedScene" uid="uid://bbm4ndoo46aj4" path="res://scenes/door.tscn" id="3_y5uxw"]
 [ext_resource type="TileSet" uid="uid://diggcexa3u7t0" path="res://data/tile_set.tres" id="4_xxtbc"]
+[ext_resource type="Texture2D" uid="uid://hchuiuep7anv" path="res://assets/textures/pointlight.webp" id="4_yh23c"]
 
-[node name="BasicRoomScene" type="Node2D" unique_id=1917625330]
+[node name="BasicRoomScene" type="Node2D" unique_id=1917625330 node_paths=PackedStringArray("spawn_point")]
 script = ExtResource("1_ax6gf")
+spawn_point = NodePath("SpawnPoint")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1802097535]
+position = Vector2(125, 124)
+energy = 0.71
+texture = ExtResource("4_yh23c")
+texture_scale = 1.31
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=481616159]
 position = Vector2(124, 125)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1230304508]
-visible = false
 color = Color(0.02745098, 0.07450981, 0.09019608, 1)
 
 [node name="Wall" type="TileMapLayer" parent="." unique_id=517110431]

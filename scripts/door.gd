@@ -1,14 +1,15 @@
 extends Area2D
-
-signal door_entered(direction)
+class_name Door
 
 @export var direction: Vector2i
 @export var enabled := true
 
-func _ready() -> void:
-	if not body_entered.is_connected(_on_body_entered):
-		body_entered.connect(_on_body_entered)
+signal door_entered(direction: Vector2i) 
 
-func _on_body_entered(_body) -> void:
-	if enabled:
+func _ready() -> void:
+	body_entered.connect(_on_body_entered)
+	add_to_group("doors")
+
+func _on_body_entered(body) -> void:
+	if enabled and body is Player:
 		door_entered.emit(direction)
