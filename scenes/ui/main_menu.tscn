@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtnqdiyxa6mp7"]
+[gd_scene format=3 uid="uid://dtnqdiyxa6mp7"]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_t4swf"]
+[ext_resource type="Script" uid="uid://cacuartfclmpp" path="res://scripts/main_menu.gd" id="1_t4swf"]
 
-[node name="StartMenu" type="Control"]
+[node name="StartMenu" type="Control" unique_id=1640743575 node_paths=PackedStringArray("start")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -13,49 +13,53 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_t4swf")
+start = NodePath("CenterContainer/MainButtons/Start")
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=2017868701]
 layout_mode = 0
-offset_left = -958.0
-offset_top = -535.0
-offset_right = 962.0
-offset_bottom = -35.0
+offset_left = -80.0
+offset_top = -113.0
+offset_right = 86.0
+offset_bottom = -69.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 80
-text = "COWBOY GAME"
+text = "MECHATRONICS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
-offset_left = -959.0
-offset_top = -52.0
-offset_right = 961.0
-offset_bottom = 528.0
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1636585391]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -62.5
+offset_right = 42.0
+offset_bottom = 62.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="MainButtons" type="VBoxContainer" parent="CenterContainer"]
+[node name="MainButtons" type="VBoxContainer" parent="CenterContainer" unique_id=1555534659]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Start" type="Button" parent="CenterContainer/MainButtons"]
+[node name="Start" type="Button" parent="CenterContainer/MainButtons" unique_id=1249811471]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 75
 text = "Start"
 
-[node name="Options" type="Button" parent="CenterContainer/MainButtons"]
+[node name="Options" type="Button" parent="CenterContainer/MainButtons" unique_id=1586974164]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 75
 text = "Options"
 
-[node name="Quit" type="Button" parent="CenterContainer/MainButtons"]
+[node name="Quit" type="Button" parent="CenterContainer/MainButtons" unique_id=1880917979]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Start")
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 75
 text = "Quit"
 
 [connection signal="pressed" from="CenterContainer/MainButtons/Start" to="." method="_on_start_pressed"]

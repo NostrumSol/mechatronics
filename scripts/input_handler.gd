@@ -1,7 +1,7 @@
 extends Node
 class_name WeaponInputHandler
 
-var _stats: StatsComponent
+var _gun_stats: GunStatsComponent
 var _ammo: AmmoComponent
 var _reload: ReloadComponent
 var _shoot: ShootComponent
@@ -11,8 +11,8 @@ var inventory_open := false
 var selected_mode := firing_mode.Semi 
 enum firing_mode {Semi, Auto}
 
-func initialize(stats: StatsComponent, ammo: AmmoComponent, reload: ReloadComponent, shoot: ShootComponent) -> void:
-	_stats = stats
+func initialize(gun_stats: GunStatsComponent, ammo: AmmoComponent, reload: ReloadComponent, shoot: ShootComponent) -> void:
+	_gun_stats = gun_stats
 	_ammo = ammo
 	_reload = reload
 	_shoot = shoot

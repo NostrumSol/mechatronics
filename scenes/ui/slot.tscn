@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c1880xavty42h"]
+[gd_scene format=3 uid="uid://c1880xavty42h"]
 
-[ext_resource type="Texture2D" uid="uid://d3pbi7jxr80mt" path="res://assets/textures/items/inventory_texture.png" id="1_6c0qb"]
-[ext_resource type="Script" path="res://scripts/slot.gd" id="2_nyk3f"]
+[ext_resource type="Texture2D" uid="uid://cpv64xg2fxm3k" path="res://assets/textures/inventory_texture.png" id="1_sad2q"]
+[ext_resource type="Script" uid="uid://b0k8aphx6dvgi" path="res://scripts/slot.gd" id="2_nyk3f"]
 
-[node name="Slot" type="TextureRect"]
+[node name="Slot" type="TextureRect" unique_id=678639316]
 custom_minimum_size = Vector2(50, 50)
-texture = ExtResource("1_6c0qb")
+texture = ExtResource("1_sad2q")
 expand_mode = 1
 script = ExtResource("2_nyk3f")
 
-[node name="StatusFilter" type="ColorRect" parent="."]
+[node name="StatusFilter" type="ColorRect" parent="." unique_id=1881557598]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

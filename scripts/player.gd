@@ -1,44 +1,57 @@
 extends CharacterBody2D
+class_name Player
 
-@export var max_health = 100
-@export var health = 100
-@export var movement_speed = 600.0
+@export var inventory: Control
+@export var weapon: Node2D
+@export var player_stats: PlayerStatsComponent
+@export var health_component: HealthComponent
+@export var camera: Camera2D
+@export var player_input: PlayerInputHandler
+@export var flashlight: PointLight2D
+var flashlight_was_on : bool
 
-@onready var inventory: Control = $UILayer/Inventory
-
-signal door_entered(direction)
+var movement_speed = 600.0
 
 func _ready() -> void:
-	for weapon in $WeaponHolder.get_children():
-		weapon.set_inventory_reference(inventory)
-
-func add_weapon(weapon_scene: PackedScene) -> Node:
-	var weapon = weapon_scene.instantiate()
 	weapon.set_inventory_reference(inventory)
-	$WeaponHolder.add_child(weapon)
-	return weapon
+	PlayerManager.player = self
+	
+	inventory.items_changed.connect(_on_inventory_items_changed)
+	player_stats.stats_changed.connect(_on_player_stats_changed)
+	RoomManager.started_traversing.connect(_on_start_traversing)
+	RoomManager.finished_traversing.connect(_on_finished_traversing)
+	update_stats()
+
+func _on_start_traversing() -> void:
+	visible = false
+	if flashlight.enabled:
+		flashlight.enabled = false
+		flashlight_was_on = true
+	player_input.current_state = PlayerInputHandler.PlayerState.TRAVERSING
+
+func _on_finished_traversing() -> void:
+	visible = true
+	if flashlight_was_on:
+		flashlight.enabled = true
+		flashlight_was_on = false
+	player_input.current_state = PlayerInputHandler.PlayerState.IDLE
+
+func _on_inventory_items_changed() -> void:
+	var modifiers = inventory.get_all_player_modifiers()
+	player_stats.apply_modifiers(modifiers)
+
+func _on_player_stats_changed() -> void:
+	update_stats()
+
+func update_stats() -> void:
+	var max_health = player_stats.get_current(player_stats.PlayerStat.MAX_HEALTH)
+	var speed = player_stats.get_current(player_stats.PlayerStat.SPEED)
+	
+	health_component.set_max_health(max_health)
+	movement_speed = speed
 
 func _process(_delta: float) -> void:
-	look_at(get_global_mouse_position())
+	if player_input.current_state != PlayerInputHandler.PlayerState.TRAVERSING:
+		look_at(get_global_mouse_position())
+		
 	queue_redraw()
-	
-func _physics_process(_delta: float) -> void:
-	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-
-	if direction != Vector2.ZERO:
-		velocity = direction * movement_speed
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, movement_speed)
-
-	move_and_slide()
-
-func _on_door_area_entered(area: Area2D):
-	var direction = Vector2i.ZERO
-	match area.name:
-		"Top_Border": direction = Vector2i.UP
-		"Bottom_Border": direction = Vector2i.DOWN
-		"Left_Border": direction = Vector2i.LEFT
-		"Right_Border": direction = Vector2i.RIGHT
-	
-	if direction != Vector2i.ZERO:
-		door_entered.emit(direction)

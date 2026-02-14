@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var lifetime := 5
-@export var speed := 2000
+@export var speed := 800 # make this a stat later
 var damage := 25.0
 
 var direction := Vector2.ZERO

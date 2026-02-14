@@ -1,24 +1,22 @@
 extends CanvasLayer
 
-@onready var ammo_label: Label = $AmmoLabel
-@onready var reload_progress: ProgressBar = $ReloadProgress
-@onready var weapons: Node2D = $"../WeaponHolder"
+@export var ammo_label: Label
+@export var reload_progress: ProgressBar
+@export var weapon: Node2D
 
 func _ready() -> void:
-	load_weapon_properties()
+	if weapon != null:
+		load_weapon_stats()
 
 func _process(_delta: float) -> void:
 	if reload_progress.visible:
-		var mouse_pos = get_viewport().get_mouse_position()
-		reload_progress.global_position = mouse_pos + Vector2(-40, 30)
+		reload_progress.global_position = reload_progress.get_global_mouse_position() + Vector2(-40, 25)
 	
-func load_weapon_properties() -> void:
-	var _weapons = weapons.get_children()
-	for weapon in _weapons:
-		weapon.ammo.ammo_changed.connect(_on_revolver_ammo_changed)
-		weapon.reload.reload_started.connect(_on_reload_started)
-		weapon.reload.reload_progress.connect(_on_reload_progress)
-		weapon.reload.reload_finished.connect(_on_reload_finished)
+func load_weapon_stats() -> void:
+	weapon.ammo.ammo_changed.connect(_on_revolver_ammo_changed)
+	weapon.reload.reload_started.connect(_on_reload_started)
+	weapon.reload.reload_progress.connect(_on_reload_progress)
+	weapon.reload.reload_finished.connect(_on_reload_finished)
 	
 	reload_progress.visible = false
 

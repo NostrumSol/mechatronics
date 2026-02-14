@@ -1,21 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbm4ndoo46aj4"]
+[gd_scene format=3 uid="uid://bbm4ndoo46aj4"]
 
-[ext_resource type="Script" path="res://scripts/door.gd" id="1_hh1oy"]
-[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="2_iijka"]
+[ext_resource type="Script" uid="uid://o72jw2boxslg" path="res://scripts/door.gd" id="1_hh1oy"]
+[ext_resource type="TileSet" uid="uid://diggcexa3u7t0" path="res://data/tile_set.tres" id="2_uvdjg"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k2poi"]
-size = Vector2(1920, 30)
+[sub_resource type="CircleShape2D" id="CircleShape2D_uvdjg"]
+radius = 11.180342
 
-[node name="Door" type="Area2D" groups=["walls"]]
-position = Vector2(0, -17)
-scale = Vector2(0.0594393, 0.94772)
+[node name="Door" type="Area2D" unique_id=1345941613]
+scale = Vector2(0.2, 0.2)
+collision_mask = 2
 script = ExtResource("1_hh1oy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["walls"]]
-position = Vector2(0, 1.05516)
-shape = SubResource("RectangleShape2D_k2poi")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=43784032]
+position = Vector2(0, 5)
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("CircleShape2D_uvdjg")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 1.05516)
-scale = Vector2(-16.1564, 0.238582)
-texture = ExtResource("2_iijka")
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=171669063]
+tile_map_data = PackedByteArray(0, 0, 254, 255, 0, 0, 1, 0, 19, 0, 0, 0, 0, 0, 255, 255, 0, 0, 1, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 20, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21, 0, 0, 0, 0, 0)
+tile_set = ExtResource("2_uvdjg")

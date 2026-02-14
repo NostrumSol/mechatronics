@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy48wb6yma67c"]
+[gd_scene format=3 uid="uid://cy48wb6yma67c"]
 
-[ext_resource type="Script" path="res://scripts/managers/RoomManager.gd" id="1_6upm4"]
+[ext_resource type="Script" uid="uid://dj62yklcve1cd" path="res://scripts/managers/RoomManager.gd" id="1_6upm4"]
 
-[node name="room_manager" type="Node"]
+[node name="room_manager" type="Node" unique_id=724571030]
 script = ExtResource("1_6upm4")

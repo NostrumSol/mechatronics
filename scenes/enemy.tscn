@@ -1,27 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://bn551l1l0cyuu"]
+[gd_scene format=3 uid="uid://bn551l1l0cyuu"]
 
+[ext_resource type="PackedScene" uid="uid://b6vpe4plhp6sk" path="res://scenes/components/move_towards_target_component.tscn" id="2_5uy6h"]
 [ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="2_qiney"]
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_xgoky"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5pekp"]
-radius = 60.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_actic"]
 radius = 72.0
 
-[node name="Enemy" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_5pekp"]
+radius = 60.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=489612833]
+scale = Vector2(0.2, 0.2)
 collision_layer = 4
+collision_mask = 5
 
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_5pekp")
+[node name="HealthComponent" parent="." unique_id=1898653669 instance=ExtResource("2_xgoky")]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_qiney")
+[node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body") instance=ExtResource("2_5uy6h")]
+body = NodePath("..")
 
-[node name="HealthComponent" parent="." instance=ExtResource("2_xgoky")]
-
-[node name="HurtboxComponent" parent="." node_paths=PackedStringArray("healthComponent") instance=ExtResource("3_h0dn5")]
+[node name="HurtboxComponent" parent="." unique_id=2006115171 node_paths=PackedStringArray("healthComponent") instance=ExtResource("3_h0dn5")]
 process_mode = 3
 process_thread_group = 1
 process_thread_group_order = 0
@@ -31,6 +31,13 @@ collision_layer = 4
 collision_mask = 32
 healthComponent = NodePath("../HealthComponent")
 
-[node name="Collider" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="HurtboxCollider" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1413871431]
 position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_actic")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1917374765]
+texture = ExtResource("2_qiney")
+
+[node name="Collider" type="CollisionShape2D" parent="." unique_id=1428532152]
+shape = SubResource("CircleShape2D_5pekp")

@@ -1,7 +1,7 @@
 extends Camera2D
 
-@export var min_zoom := 1.2
-@export var max_zoom := 1.6
+@export var min_zoom := 1.8
+@export var max_zoom := 2.4
 @export var zoom_speed := 5.0
 
 @onready var inventory: Control = $"../UILayer/Inventory"

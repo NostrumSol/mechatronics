@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://s2rrmd725qoe"]
+[gd_scene format=3 uid="uid://s2rrmd725qoe"]
 
-[ext_resource type="Script" path="res://scripts/inventory_ui.gd" id="1_k3q8r"]
+[ext_resource type="Script" uid="uid://byhnjwnpb330g" path="res://scripts/inventory_ui.gd" id="1_k3q8r"]
 
-[node name="Inventory" type="Control"]
+[node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 602.0
@@ -11,8 +11,11 @@ offset_right = 602.0
 offset_bottom = 182.0
 size_flags_horizontal = 4
 script = ExtResource("1_k3q8r")
+grid_container = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer")
+scroll_container = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer")
+item_id_box = NodePath("ColorRect/MarginContainer/VBoxContainer/Header/Item_Id_Box")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1960270946]
 layout_mode = 0
 offset_left = 91.0
 offset_top = 43.0
@@ -20,7 +23,7 @@ offset_right = 511.0
 offset_bottom = 563.0
 color = Color(0.11, 0.10571, 0.0242, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect" unique_id=1116809388]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,32 +33,36 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer" unique_id=1636745602]
 layout_mode = 2
 
-[node name="Header" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+[node name="Header" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=1330101159]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="Button_Spawn" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/Header"]
-custom_minimum_size = Vector2(300, 50)
+[node name="Button_Spawn" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/Header" unique_id=1648365000]
+custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 20
 text = "Spawn Debug Item"
 
-[node name="Item_Id_Box" type="TextEdit" parent="ColorRect/MarginContainer/VBoxContainer/Header"]
+[node name="Item_Id_Box" type="LineEdit" parent="ColorRect/MarginContainer/VBoxContainer/Header" unique_id=1766044933]
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 10
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 15
+text = "shiny_rock"
 placeholder_text = "item_id"
+alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=1507749390]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GridContainer" type="GridContainer" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1056041832]
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0

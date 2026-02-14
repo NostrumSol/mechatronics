@@ -1,47 +1,47 @@
-[gd_scene load_steps=10 format=3 uid="uid://co3shgafa1453"]
+[gd_scene format=3 uid="uid://co3shgafa1453"]
 
-[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_mx7cu"]
+[ext_resource type="Script" uid="uid://g2bxr0gciko0" path="res://scripts/weapon.gd" id="1_mx7cu"]
 [ext_resource type="AudioStream" uid="uid://dk7aeofbd3soa" path="res://assets/sounds/shoot.mp3" id="2_ir0jn"]
 [ext_resource type="AudioStream" uid="uid://c3geqbbe15skg" path="res://assets/sounds/reload.mp3" id="3_42yon"]
-[ext_resource type="Script" path="res://scripts/stats_component.gd" id="4_3y7x1"]
-[ext_resource type="Script" path="res://scripts/ammo_component.gd" id="5_o3ib6"]
-[ext_resource type="Script" path="res://scripts/reload_component.gd" id="6_sfxxl"]
-[ext_resource type="Script" path="res://scripts/shoot_component.gd" id="7_lnr0o"]
+[ext_resource type="Script" uid="uid://d3vbxj4kewdkd" path="res://scripts/components/gun_stats_component.gd" id="4_3y7x1"]
+[ext_resource type="Script" uid="uid://b0rwerf5w5a71" path="res://scripts/components/ammo_component.gd" id="5_o3ib6"]
+[ext_resource type="Script" uid="uid://c0s61kpvjmsgb" path="res://scripts/components/reload_component.gd" id="6_sfxxl"]
+[ext_resource type="Script" uid="uid://ci3ncjedt8odw" path="res://scripts/components/shoot_component.gd" id="7_lnr0o"]
 [ext_resource type="PackedScene" uid="uid://bugn8bht2bobb" path="res://scenes/projectile.tscn" id="8_2di1b"]
-[ext_resource type="Script" path="res://scripts/input_handler.gd" id="8_svrs0"]
+[ext_resource type="Script" uid="uid://bbm8w6o02odwc" path="res://scripts/input_handler.gd" id="8_svrs0"]
 
-[node name="Weapon" type="Node2D" node_paths=PackedStringArray("stats", "ammo", "reload", "shoot", "input_handler")]
+[node name="Weapon" type="Node2D" unique_id=2141190969 node_paths=PackedStringArray("gun_stats", "ammo", "reload", "shoot", "input_handler")]
 script = ExtResource("1_mx7cu")
-stats = NodePath("StatsComponent")
+gun_stats = NodePath("GunStatsComponent")
 ammo = NodePath("AmmoComponent")
 reload = NodePath("ReloadComponent")
 shoot = NodePath("ShootComponent")
 input_handler = NodePath("WeaponInputHandler")
 
-[node name="ShootSound" type="AudioStreamPlayer2D" parent="."]
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=1673753918]
 stream = ExtResource("2_ir0jn")
 volume_db = -13.866
 bus = &"SFX"
 
-[node name="ReloadSound" type="AudioStreamPlayer2D" parent="."]
+[node name="ReloadSound" type="AudioStreamPlayer2D" parent="." unique_id=960365986]
 stream = ExtResource("3_42yon")
 volume_db = -13.866
 bus = &"SFX"
 
-[node name="StatsComponent" type="Node" parent="."]
+[node name="GunStatsComponent" type="Node" parent="." unique_id=911641253]
 script = ExtResource("4_3y7x1")
 
-[node name="AmmoComponent" type="Node" parent="."]
+[node name="AmmoComponent" type="Node" parent="." unique_id=946289553]
 script = ExtResource("5_o3ib6")
 
-[node name="ReloadComponent" type="Node" parent="."]
+[node name="ReloadComponent" type="Node" parent="." unique_id=1885717004]
 script = ExtResource("6_sfxxl")
 
-[node name="ShootComponent" type="Node2D" parent="."]
+[node name="ShootComponent" type="Node2D" parent="." unique_id=437036892]
 script = ExtResource("7_lnr0o")
 projectile_scene = ExtResource("8_2di1b")
 
-[node name="Muzzle" type="Marker2D" parent="ShootComponent"]
+[node name="Muzzle" type="Marker2D" parent="ShootComponent" unique_id=288568102]
 
-[node name="WeaponInputHandler" type="Node" parent="."]
+[node name="WeaponInputHandler" type="Node" parent="." unique_id=482280083]
 script = ExtResource("8_svrs0")

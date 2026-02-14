@@ -3,9 +3,10 @@ extends Control
 const ITEM = preload("res://scenes/item.tscn")
 const SLOT = preload("res://scenes/ui/slot.tscn")
 
-@onready var grid_container: GridContainer = $ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer
-@onready var scroll_container: ScrollContainer = $ColorRect/MarginContainer/VBoxContainer/ScrollContainer
-@onready var item_id_box: TextEdit = $ColorRect/MarginContainer/VBoxContainer/Header/Item_Id_Box
+@export var grid_container: GridContainer
+@export var scroll_container: ScrollContainer
+@export var item_id_box: LineEdit
+
 @onready var column_count = grid_container.columns
 
 var grid_array := []
@@ -176,11 +177,31 @@ func pick_item() -> void:
 	
 	items_changed.emit()
 
-func get_all_modifiers() -> Array:
-	var all_modifiers := []
+func get_all_weapon_modifiers() -> Array:
+	var all_weapon_modifiers := []
 	
 	for item in inventory_items:
-		if item.item_data and item.item_data.modifiers:
-			all_modifiers.append(item.item_data.modifiers)
+		var item_data = item.item_data as ItemData
+		if not item_data:
+			continue
 		
-	return all_modifiers
+		if item_data.weapon_stat_modifiers:
+			all_weapon_modifiers.append(item.item_data.weapon_stat_modifiers)
+			
+	return all_weapon_modifiers
+
+func get_all_player_modifiers() -> Array:
+	var all_player_modifiers := []
+	
+	for item in inventory_items:
+		var item_data = item.item_data as ItemData
+		if not item_data:
+			continue
+		
+		if item_data.player_stat_modifiers:
+			all_player_modifiers.append(item.item_data.player_stat_modifiers)
+			
+	return all_player_modifiers
+
+func process_item_components() -> void:
+	pass

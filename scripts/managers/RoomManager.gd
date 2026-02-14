@@ -1,14 +1,17 @@
 extends Node
 
+signal started_traversing
+signal finished_traversing
+
 var grid_size := 9
 var grid := []
 var start_pos := Vector2i(4, 4)
 var room_count := 12
 
-const ROOM_WIDTH := 1920
-const ROOM_HEIGHT := 1080
-const GAP_X := 100
-const GAP_Y := 100
+const ROOM_WIDTH := 184
+const ROOM_HEIGHT := 184
+const GAP_X := 30
+const GAP_Y := 30
 
 class RoomType:
 	var scene: PackedScene
@@ -23,7 +26,6 @@ class RoomType:
 
 @onready var room_types := [
 	RoomType.new(preload("res://scenes/rooms/basic_room_scene.tscn"), 0, 0.6),
-	RoomType.new(preload("res://scenes/rooms/red_room_scene.tscn"), 1, 1.0)
 ]
 
 const STARTING_ROOM_SCENE := preload("res://scenes/rooms/starting_room_scene.tscn")
@@ -33,7 +35,8 @@ var current_position := Vector2i.ZERO
 var room_instances: Array = []
 var current_room_instance: Node2D = null
 
-var player: Node2D
+var player: Player
+var tween: Tween
 
 func generate_floor() -> void:
 	print("=== _ready() ===")
@@ -47,16 +50,10 @@ func generate_floor() -> void:
 	
 	player = preload("res://scenes/player.tscn").instantiate()
 	add_child(player)
-	player.add_to_group("player")
-	player.door_entered.connect(_on_player_door_entered)
 	
 	load_room(current_position)
 
-func _on_player_door_entered(direction: Vector2i) -> void:
-	change_room(direction)
-
 func generate_layout() -> void:
-	print("--- generate_layout() ---")
 	grid.clear()
 	
 	for y in range(grid_size):
@@ -66,8 +63,6 @@ func generate_layout() -> void:
 	
 	grid[start_pos.y][start_pos.x] = true
 	
-	print("Initial grid[", start_pos.y, "][", start_pos.x, "] set to true")
-	
 	var rooms_to_expand = [start_pos]
 	var attempts := 0
 	while count_rooms() < room_count and attempts < 500:
@@ -76,22 +71,9 @@ func generate_layout() -> void:
 		var dir = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN].pick_random()
 		var new_pos = base + dir
 		
-		print("Attempt ", attempts, ": base=", base, " dir=", dir, " new_pos=", new_pos)
-		
 		if is_in_bounds(new_pos) and not grid[new_pos.y][new_pos.x]:
 			grid[new_pos.y][new_pos.x] = true
 			rooms_to_expand.append(new_pos)
-			print("  -> Room placed at ", new_pos, ". Total rooms: ", count_rooms())
-		else:
-			print("  -> Invalid or already occupied: ", new_pos)
-	
-	print("\nFinal grid layout:")
-	var grid_str = ""
-	for y in range(grid_size):
-		for x in range(grid_size):
-			grid_str += "X " if grid[y][x] else ". "
-		grid_str += "\n"
-	print(grid_str)
 
 func assign_room_types() -> Dictionary:
 	var assignment = {}
@@ -179,13 +161,9 @@ func instantiate_rooms() -> void:
 	
 
 func load_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) -> void:
-	print("\n>>> load_room()")
-	print("   pos: ", pos)
-	print("   entrance_direction: ", entrance_direction)
 	
 	var room = room_instances[pos.y][pos.x]
 	if not room:
-		print("   ERROR: No room at ", pos)
 		return
 	
 	if current_room_instance:
@@ -197,51 +175,59 @@ func load_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) -> v
 	if entrance_direction == Vector2i.ZERO:
 		var spawn = room.get_node("SpawnPoint")
 		player.global_position = spawn.global_position
-		print("   Player placed at SpawnPoint: ", spawn.global_position)
 	else:
+		started_traversing.emit()
 		var opposite = -entrance_direction
 		var spawn_pos = current_room_instance.get_door_spawn_position(opposite)
-		player.global_position = spawn_pos
-		print("   Player placed at door spawn ", spawn_pos)
+		player.look_at(spawn_pos)
+		
+		if tween:
+			tween.kill()
+			
+		var original_zoom = player.camera.zoom
+		var zoom_in_value = original_zoom * Vector2(1.5, 1.5)
+		
+		tween = create_tween().set_parallel(true)
+		tween.tween_property(player, "global_position", spawn_pos, 1.0)
+		tween.tween_property(player.camera, "zoom", zoom_in_value, 0.5)
+
+		tween.set_parallel(false)
+		
+		tween.tween_property(player.camera, "zoom", original_zoom, 0.5)
+		
+		if tween.finished.is_connected(_on_traversal_tween_finished):
+			tween.finished.disconnect(_on_traversal_tween_finished)
+		tween.finished.connect(_on_traversal_tween_finished)
+		
+
+func _on_traversal_tween_finished() -> void:
+	finished_traversing.emit()
 
 func _deferred_load_room(pos: Vector2i, direction: Vector2i):
-	print("--- _deferred_load_room() ---")
-	print("   pos: ", pos)
-	print("   direction: ", direction)
 	current_position = pos
 	load_room(pos, direction)
 
 func get_room_doors(pos: Vector2i):
 	var doors = []
-	print("   get_room_doors() for pos=", pos)
 	
 	for dir in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 		var check_pos = pos + dir
 		var exists = is_in_bounds(check_pos) and grid[check_pos.y][check_pos.x]
-		print("      dir: ", dir, " check_pos: ", check_pos, " exists? ", exists)
 		if exists:
 			doors.append(dir)
 	
-	print("      -> doors: ", doors)
 	return doors
 
 
 func change_room(direction: Vector2i):
-	print("\n>>> change_room()")
-	print("   direction: ", direction)
-	
 	var new_pos = current_position + direction
-	print("   new_pos: ", new_pos)
 	
 	if not is_in_bounds(new_pos):
-		print("   -> out of bounds, abort")
 		return
 	
 	if not grid[new_pos.y][new_pos.x]:
-		print("   -> no room at that position, abort")
 		return
 	
-	print("   -> valid, calling _deferred_load_room with pos=", new_pos, " dir=", direction)
 	_deferred_load_room.call_deferred(new_pos, direction)
 
 func is_in_bounds(pos) -> bool:

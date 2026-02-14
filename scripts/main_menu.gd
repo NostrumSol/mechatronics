@@ -1,7 +1,9 @@
 extends Control
 
+@export var start : Button
+
 func _ready() -> void:
-	$CenterContainer/MainButtons/Start.grab_focus()
+	start.grab_focus()
 
 func _on_start_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/blank_scene.tscn")

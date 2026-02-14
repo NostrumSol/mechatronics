@@ -1,24 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://bugn8bht2bobb"]
+[gd_scene format=3 uid="uid://bugn8bht2bobb"]
 
 [ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="1_2yblr"]
-[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_pq2eh"]
+[ext_resource type="Script" uid="uid://mxw0nexchdgc" path="res://scripts/projectile.gd" id="1_pq2eh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dtnd3"]
 radius = 11.0
 
-[node name="Projectile" type="Area2D"]
+[node name="Projectile" type="Area2D" unique_id=790875886]
 rotation = 1.5708
+scale = Vector2(0.2, 0.2)
 collision_layer = 32
 collision_mask = 5
 priority = 1
 script = ExtResource("1_pq2eh")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1918851740]
 rotation = 1.5708
 scale = Vector2(0.13, 0.235)
 texture = ExtResource("1_2yblr")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1983757071]
 shape = SubResource("CircleShape2D_dtnd3")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

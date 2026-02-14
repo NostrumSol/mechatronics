@@ -1,27 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://be30fwksbxxvn"]
+[gd_scene format=3 uid="uid://be30fwksbxxvn"]
 
 [ext_resource type="PackedScene" uid="uid://bbm4ndoo46aj4" path="res://scenes/door.tscn" id="1_hxpu1"]
 
-[node name="Doors" type="Node2D"]
+[node name="Doors" type="Node2D" unique_id=462170281]
 
-[node name="Up" parent="." instance=ExtResource("1_hxpu1")]
-position = Vector2(962, 13)
+[node name="Up" parent="." unique_id=1625348318 instance=ExtResource("1_hxpu1")]
+position = Vector2(123, 0)
 collision_mask = 2
 direction = Vector2i(0, -1)
 
-[node name="Down" parent="." instance=ExtResource("1_hxpu1")]
-position = Vector2(962, 1065)
+[node name="Down" parent="." unique_id=781376230 instance=ExtResource("1_hxpu1")]
+position = Vector2(123, 214)
 collision_mask = 2
 direction = Vector2i(0, 1)
 
-[node name="Left" parent="." instance=ExtResource("1_hxpu1")]
-position = Vector2(15, 537)
+[node name="Left" parent="." unique_id=887211490 instance=ExtResource("1_hxpu1")]
+position = Vector2(1.1368684e-13, 125.00001)
 rotation = 1.57079
 collision_mask = 2
 direction = Vector2i(-1, 0)
 
-[node name="Right" parent="." instance=ExtResource("1_hxpu1")]
-position = Vector2(1904, 540)
+[node name="Right" parent="." unique_id=417644368 instance=ExtResource("1_hxpu1")]
+position = Vector2(256, 124.00001)
 rotation = 1.5708
 collision_mask = 2
 direction = Vector2i(1, 0)
