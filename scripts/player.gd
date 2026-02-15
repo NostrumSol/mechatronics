@@ -8,7 +8,6 @@ class_name Player
 @export var camera: Camera2D
 @export var player_input: PlayerInputHandler
 @export var flashlight: PointLight2D
-var flashlight_was_on : bool
 
 var movement_speed = 600.0
 
@@ -24,16 +23,10 @@ func _ready() -> void:
 
 func _on_start_traversing() -> void:
 	visible = false
-	if flashlight.enabled:
-		flashlight.enabled = false
-		flashlight_was_on = true
 	player_input.current_state = PlayerInputHandler.PlayerState.TRAVERSING
 
 func _on_finished_traversing() -> void:
 	visible = true
-	if flashlight_was_on:
-		flashlight.enabled = true
-		flashlight_was_on = false
 	player_input.current_state = PlayerInputHandler.PlayerState.IDLE
 
 func _on_inventory_items_changed() -> void:

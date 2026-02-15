@@ -3,7 +3,7 @@ extends Node
 @export var body : CharacterBody2D
 @export var sprite : AnimatedSprite2D
 
-func _process(delta: float) -> void:
+func _update(delta: float) -> void:
 	if body.velocity == Vector2.ZERO:
 		sprite.play("idle") # we can nuke other sprites later
 	else:

@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bu4s22scrx2p0"]
+
+[ext_resource type="Texture2D" uid="uid://bxorbk6sd0idm" path="res://assets/textures/light_beam.png" id="1_lkaa1"]
+[ext_resource type="Script" uid="uid://b3pbv80ubvg3j" path="res://scripts/flashlight.gd" id="2_0ywi5"]
+
+[node name="Flashlight" type="PointLight2D" unique_id=920851621]
+shadow_enabled = true
+texture = ExtResource("1_lkaa1")
+offset = Vector2(95, 1)
+script = ExtResource("2_0ywi5")
+
+[node name="One" type="RayCast2D" parent="." unique_id=559893321]
+target_position = Vector2(102, -36)
+collision_mask = 4
+hit_from_inside = true
+
+[node name="Two" type="RayCast2D" parent="." unique_id=1585834510]
+target_position = Vector2(102, -19)
+collision_mask = 4
+hit_from_inside = true
+
+[node name="Three" type="RayCast2D" parent="." unique_id=1094018901]
+target_position = Vector2(102, 0)
+collision_mask = 4
+hit_from_inside = true
+
+[node name="Four" type="RayCast2D" parent="." unique_id=852856347]
+target_position = Vector2(101, 20)
+collision_mask = 4
+hit_from_inside = true
+
+[node name="Five" type="RayCast2D" parent="." unique_id=1362217645]
+target_position = Vector2(98, 35)
+collision_mask = 4
+hit_from_inside = true

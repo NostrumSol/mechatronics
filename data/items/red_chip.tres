@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dwntavvwwlee1"]
+
+[ext_resource type="Script" uid="uid://dvoqb7chlb2m8" path="res://scripts/classes/item_component.gd" id="1_b67yr"]
+[ext_resource type="Script" uid="uid://d3dtiku7uq6l5" path="res://scripts/classes/item_data.gd" id="2_cn4l6"]
+[ext_resource type="Texture2D" uid="uid://bhxma2urek7xh" path="res://assets/textures/items/red_chip.png" id="3_1335v"]
+
+[resource]
+script = ExtResource("2_cn4l6")
+item_name = "Red Chip"
+texture = ExtResource("3_1335v")
+grid_cells = Array[Vector2i]([Vector2i(0, 0)])
+weapon_stat_modifiers = {
+"GUN_DAMAGE": {
+"type": "multiply",
+"value": 0.25
+}
+}

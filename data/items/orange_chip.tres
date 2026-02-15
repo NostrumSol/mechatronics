@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cqhu0gslaryb3"]
+
+[ext_resource type="Script" uid="uid://dvoqb7chlb2m8" path="res://scripts/classes/item_component.gd" id="1_qkwsv"]
+[ext_resource type="Script" uid="uid://d3dtiku7uq6l5" path="res://scripts/classes/item_data.gd" id="2_ox3li"]
+[ext_resource type="Texture2D" uid="uid://b5mmoyixetg4j" path="res://assets/textures/items/orange_chip.png" id="3_mo2if"]
+
+[resource]
+script = ExtResource("2_ox3li")
+item_name = "Orange Chip"
+texture = ExtResource("3_mo2if")
+grid_cells = Array[Vector2i]([Vector2i(0, 0)])
+player_stat_modifiers = {
+"SPEED": {
+"type": "add",
+"value": 100.0
+}
+}

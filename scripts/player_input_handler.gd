@@ -22,13 +22,17 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("dash") and dash.can_dash():
 		dash.start_dash(direction)
-	if event.is_action_pressed("flashlight"):
-		player.flashlight.enabled = !player.flashlight.enabled
+	
 	if event.is_action_pressed("pause"):
 		if pause.isPaused:
 			pause.unpause()
 		else:
 			pause.pause()
+	
+	if event.is_action_pressed("flashlight"):
+		player.flashlight.enabled = true
+	if event.is_action_released("flashlight"):
+		player.flashlight.enabled = false
 	
 func _process(_delta: float) -> void:
 	if current_state == PlayerState.DASHING:
@@ -51,3 +55,5 @@ func _process(_delta: float) -> void:
 		player.velocity = player.velocity.move_toward(Vector2.ZERO, player.movement_speed)
 		
 	player.move_and_slide()
+	
+	

@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://b6vpe4plhp6sk" path="res://scenes/components/move_towards_target_component.tscn" id="2_5uy6h"]
 [ext_resource type="PackedScene" uid="uid://bsdg404s4ldgo" path="res://scenes/components/animation_handler.tscn" id="2_c4w8v"]
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_xgoky"]
+[ext_resource type="Script" uid="uid://cbavpv5bremg3" path="res://scripts/stats_effect_component.gd" id="2_yo4tp"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
-[ext_resource type="Script" uid="uid://drkjxsxlhvvsc" path="res://scripts/components/dash_at_target_component.gd" id="7_md484"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5uy6h"]
 atlas = ExtResource("1_5uy6h")
@@ -57,8 +57,11 @@ collision_mask = 5
 body = NodePath("..")
 dash_cooldown = 6.0
 
+[node name="StatusEffectsComponent" type="Node" parent="." unique_id=835874695]
+script = ExtResource("2_yo4tp")
+
 [node name="Flashlight" type="PointLight2D" parent="." unique_id=1416864385]
-color = Color(1, 0, 0, 1)
+color = Color(0.98039216, 0, 0, 1)
 shadow_enabled = true
 texture = ExtResource("1_xwavj")
 offset = Vector2(39, 1)
@@ -77,11 +80,6 @@ sprite = NodePath("../Sprite")
 
 [node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body", "dash") instance=ExtResource("2_5uy6h")]
 body = NodePath("..")
-dash = NodePath("../DashComponent")
-
-[node name="DashAtTargetComponent" type="Node2D" parent="." unique_id=569415027 node_paths=PackedStringArray("mover", "dash")]
-script = ExtResource("7_md484")
-mover = NodePath("../MoveTowardsTargetComponent")
 dash = NodePath("../DashComponent")
 
 [node name="HurtboxComponent" parent="." unique_id=2006115171 node_paths=PackedStringArray("healthComponent") instance=ExtResource("3_h0dn5")]

@@ -3,10 +3,10 @@ extends Node
 signal started_traversing
 signal finished_traversing
 
-var grid_size := 9
+var grid_size := 100
 var grid := []
 var start_pos := Vector2i(4, 4)
-var room_count := 12
+var room_count := 300
 
 const GAP_X := 300 # How big of a gap is between rooms?
 const GAP_Y := 300
@@ -24,7 +24,8 @@ class RoomType:
 
 @onready var room_types := [
 	RoomType.new(preload("res://scenes/rooms/basic_room_scene.tscn"), 0, 0.6),
-	RoomType.new(preload("res://scenes/rooms/evil_room_scene.tscn"), 0, 1.0)
+	RoomType.new(preload("res://scenes/rooms/wall_room_scene.tscn"), 0, 1.0),
+	RoomType.new(preload("res://scenes/rooms/evil_room_scene.tscn"), 0, 0.4),
 ]
 
 const STARTING_ROOM_SCENE := preload("res://scenes/rooms/starting_room_scene.tscn")

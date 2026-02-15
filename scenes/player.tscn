@@ -1,16 +1,17 @@
 [gd_scene format=3 uid="uid://nsu8l3fsook0"]
 
 [ext_resource type="Script" uid="uid://bk051wo6g6bm" path="res://scripts/player.gd" id="1_75rev"]
-[ext_resource type="Texture2D" uid="uid://bxorbk6sd0idm" path="res://assets/textures/light_beam.png" id="2_oprun"]
 [ext_resource type="Script" uid="uid://cboua28qu0opw" path="res://scripts/components/player_stats_component.gd" id="2_smehm"]
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_ur7pv"]
+[ext_resource type="PackedScene" uid="uid://bu4s22scrx2p0" path="res://scenes/flashlight.tscn" id="3_qfm1y"]
 [ext_resource type="PackedScene" uid="uid://co3shgafa1453" path="res://scenes/weapon.tscn" id="3_qt48h"]
 [ext_resource type="Script" uid="uid://d17gowcjdsrx3" path="res://scripts/player_input_handler.gd" id="4_3v2ag"]
+[ext_resource type="Script" uid="uid://cielkil0te2bi" path="res://scripts/flashlight_handler.gd" id="4_fulsm"]
 [ext_resource type="Script" uid="uid://cvixeexj1amht" path="res://scripts/camera_2d.gd" id="4_mi7qe"]
 [ext_resource type="Script" uid="uid://catuxcld06d70" path="res://scripts/ui_layer.gd" id="4_wehkq"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="4_y4r1p"]
 [ext_resource type="PackedScene" uid="uid://s2rrmd725qoe" path="res://scenes/ui/inventory.tscn" id="6_gvm34"]
-[ext_resource type="PackedScene" uid="uid://bsdg404s4ldgo" path="res://scenes/components/animation_handler.tscn" id="7_a8ls1"]
+[ext_resource type="Script" uid="uid://d1c4nnbftdjoi" path="res://scripts/player_animation_handler.gd" id="7_qfm1y"]
 [ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="8_a8ls1"]
 [ext_resource type="Script" uid="uid://bcldnc807xxu4" path="res://scripts/health_bar.gd" id="9_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="9_oprun"]
@@ -18,15 +19,27 @@
 [ext_resource type="Script" uid="uid://djbqqsmq34hys" path="res://scripts/player_stats_panel.gd" id="14_oprun"]
 [ext_resource type="PackedScene" uid="uid://dfv34gt8d2ypd" path="res://scenes/ui/pause_menu.tscn" id="17_qfm1y"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
+atlas = ExtResource("9_oprun")
+region = Rect2(0, 8, 8, 8)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
 atlas = ExtResource("9_oprun")
 region = Rect2(0, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fulsm"]
+atlas = ExtResource("9_oprun")
+region = Rect2(8, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
+atlas = ExtResource("9_oprun")
+region = Rect2(16, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60mlk"]
 atlas = ExtResource("9_oprun")
 region = Rect2(8, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fulsm"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4ail"]
 atlas = ExtResource("9_oprun")
 region = Rect2(16, 0, 8, 8)
 
@@ -34,29 +47,48 @@ region = Rect2(16, 0, 8, 8)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a8ls1")
+"texture": SubResource("AtlasTexture_qfm1y")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_off",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qfm1y")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fulsm")
+"texture": SubResource("AtlasTexture_a8ls1")
 }],
 "loop": true,
-"name": &"moving",
+"name": &"idle_on",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fulsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4r5pv")
+}],
+"loop": true,
+"name": &"moving_off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60mlk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4ail")
+}],
+"loop": true,
+"name": &"moving_on",
 "speed": 3.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d2wvv"]
-radius = 6.0
+radius = 3.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a8ls1"]
-radius = 6.0827627
+radius = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4d2f"]
 
@@ -81,13 +113,16 @@ flashlight = NodePath("Flashlight")
 position = Vector2(0, -1)
 rotation = 1.5707964
 sprite_frames = SubResource("SpriteFrames_iooij")
-animation = &"moving"
-frame_progress = 0.6145568
+animation = &"idle_off"
+autoplay = "idle_off"
+frame_progress = 0.9273619
 
-[node name="Flashlight" type="PointLight2D" parent="." unique_id=1435188914]
-shadow_enabled = true
-texture = ExtResource("2_oprun")
-offset = Vector2(95, 1)
+[node name="Flashlight" parent="." unique_id=920851621 instance=ExtResource("3_qfm1y")]
+enabled = false
+
+[node name="FlashlightHandler" type="Node" parent="." unique_id=412470167 node_paths=PackedStringArray("flashlight")]
+script = ExtResource("4_fulsm")
+flashlight = NodePath("../Flashlight")
 
 [node name="HealthComponent" parent="." unique_id=705976797 instance=ExtResource("2_ur7pv")]
 
@@ -100,7 +135,8 @@ player = NodePath("..")
 dash = NodePath("../DashComponent")
 pause = NodePath("../UILayer/PauseMenu")
 
-[node name="AnimationHandler" parent="." unique_id=1843938922 node_paths=PackedStringArray("body", "sprite") instance=ExtResource("7_a8ls1")]
+[node name="PlayerAnimationHandler" type="Node" parent="." unique_id=1157159402 node_paths=PackedStringArray("body", "sprite")]
+script = ExtResource("7_qfm1y")
 body = NodePath("..")
 sprite = NodePath("../Sprite")
 
