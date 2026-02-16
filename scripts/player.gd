@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var inventory: Control
+@export var inventory: InventoryComponent
 @export var weapon: Node2D
 @export var player_stats: PlayerStatsComponent
 @export var health_component: HealthComponent
@@ -12,9 +12,7 @@ class_name Player
 var movement_speed = 600.0
 
 func _ready() -> void:
-	weapon.set_inventory_reference(inventory)
-	
-	#inventory.items_changed.connect(_on_inventory_items_changed)
+	inventory.inventory_changed.connect(_on_inventory_items_changed)
 	player_stats.stats_changed.connect(_on_player_stats_changed)
 	RoomManager.started_traversing.connect(_on_start_traversing)
 	RoomManager.finished_traversing.connect(_on_finished_traversing)

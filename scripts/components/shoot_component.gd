@@ -31,6 +31,9 @@ func can_shoot() -> bool:
 	if not _ammo.can_shoot() or _reload.is_reloading:
 		return false
 	
+	if PlayerManager.get_player_state() == PlayerInputHandler.PlayerState.MENU:
+		return false
+	
 	var now = Time.get_ticks_msec() / 1000.0
 	return now - last_shot_time >= cooldown_time
 

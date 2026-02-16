@@ -8,7 +8,7 @@
 script = ExtResource("2_04ynq")
 item_name = "Assault Chip"
 item_id = "assault_chip"
-item_description = "A small, red microchip containing an advanced target lock system. Will increase your damage probably."
+item_description = "A small, red microchip containing blueprints."
 texture = ExtResource("3_8xtvs")
 grid_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)])
 weapon_stat_modifiers = {

@@ -99,12 +99,6 @@ body = NodePath("..")
 dash = NodePath("../DashComponent")
 
 [node name="HurtboxComponent" parent="." unique_id=2006115171 node_paths=PackedStringArray("healthComponent") instance=ExtResource("3_h0dn5")]
-process_mode = 3
-process_thread_group = 1
-process_thread_group_order = 0
-process_thread_messages = 0
-physics_interpolation_mode = 1
-collision_layer = 4
 collision_mask = 32
 healthComponent = NodePath("../HealthComponent")
 

@@ -121,7 +121,7 @@ collision_layer = 2
 collision_mask = 9
 motion_mode = 1
 script = ExtResource("1_75rev")
-inventory = NodePath("UILayer/Inventory")
+inventory = NodePath("InventoryComponent")
 weapon = NodePath("Weapon")
 player_stats = NodePath("PlayerStatsComponent")
 health_component = NodePath("HealthComponent")
@@ -163,12 +163,14 @@ script = ExtResource("6_4r5pv")
 [node name="PlayerStatsComponent" type="Node" parent="." unique_id=1723054834]
 script = ExtResource("2_smehm")
 
-[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash", "pause", "flashlight_handler")]
+[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash", "pause", "flashlight_handler", "inventory", "inventory_ui")]
 script = ExtResource("4_3v2ag")
 player = NodePath("..")
 dash = NodePath("../DashComponent")
 pause = NodePath("../UILayer/PauseMenu")
 flashlight_handler = NodePath("../FlashlightHandler")
+inventory = NodePath("../InventoryComponent")
+inventory_ui = NodePath("../UILayer/Inventory")
 
 [node name="PlayerAnimationHandler" type="Node" parent="." unique_id=1157159402 node_paths=PackedStringArray("body", "sprite")]
 script = ExtResource("7_qfm1y")
@@ -179,10 +181,12 @@ sprite = NodePath("../Sprite")
 body = NodePath("..")
 player_input = NodePath("../PlayerInputHandler")
 
-[node name="Weapon" parent="." unique_id=639436030 instance=ExtResource("3_qt48h")]
+[node name="Weapon" parent="." unique_id=639436030 node_paths=PackedStringArray("inventory") instance=ExtResource("3_qt48h")]
 scale = Vector2(0.99999994, 0.99999994)
+inventory = NodePath("../InventoryComponent")
 
 [node name="HurtboxComponent" parent="." unique_id=374102175 node_paths=PackedStringArray("healthComponent") instance=ExtResource("4_y4r1p")]
+collision_layer = 2
 collision_mask = 264
 healthComponent = NodePath("../HealthComponent")
 

@@ -1,4 +1,5 @@
 extends Control
+class_name InventoryUI
 
 const ITEM = preload("res://scenes/item.tscn")
 const SLOT = preload("res://scenes/ui/slot.tscn")
@@ -8,6 +9,9 @@ const SLOT = preload("res://scenes/ui/slot.tscn")
 @export var scroll_container: ScrollContainer
 @export var item_id_box: LineEdit
 @export var visual_items: Node2D
+
+@export var description_box : ColorRect
+@export var description_text : RichTextLabel
 
 @onready var column_count = grid_container.columns
 
@@ -21,8 +25,11 @@ signal inventory_state_changed(new_state: bool)
 var _visual_items: Array[Node] = []
 var _cell_size: int
 
+# someone shoot me and remind me to comment the rest of my code like i did here
+# ughhhh i don't wanna
 func _ready() -> void:
-	for i in range(64):
+	var total_grid_size = inventory_data.grid_size.x * inventory_data.grid_size.y
+	for i in range(total_grid_size):
 		create_slot()
 	
 	_cell_size = slot_nodes[0].size.x
@@ -39,6 +46,48 @@ func _on_item_updated(data: ItemData, anchor: Vector2i, rotation: int):
 
 func _on_inventory_updated():
 	refresh_all_slots()
+	
+# -----------------------------------------------------------------------------
+# Slot creation and helpers
+# -----------------------------------------------------------------------------
+func create_slot() -> void:
+	var new_slot = SLOT.instantiate()
+	new_slot.cell_index = slot_nodes.size()
+	slot_nodes.append(new_slot)
+	grid_container.add_child(new_slot)
+	
+	new_slot.slot_entered.connect(_on_slot_mouse_entered)
+	new_slot.slot_exited.connect(_on_slot_mouse_exited)
+
+func _on_slot_mouse_entered(slot) -> void:
+	current_slot = slot
+	if item_held:
+		update_preview()
+
+func _on_slot_mouse_exited(_slot) -> void:
+	if current_slot == _slot:
+		current_slot = null
+	clear_preview()
+
+func _get_cell_from_index(index: int) -> Vector2i:
+	return Vector2i(index % column_count, index / column_count)
+
+func _get_cell_from_slot(slot) -> Vector2i:
+	return _get_cell_from_index(slot.cell_index)
+
+func _get_item_info_at_slot(slot) -> Dictionary:
+	if not slot:
+		return {}
+	var cell = _get_cell_from_slot(slot)
+	return inventory_data.get_item_at(cell)
+
+func _create_temp_item(item_data: ItemData, rotation: int, global_pos: Vector2, selected: bool = true) -> Node:
+	var temp_item = ITEM.instantiate()
+	add_child(temp_item)
+	temp_item.set_from_data(item_data, rotation)
+	temp_item.selected = selected
+	temp_item.global_position = global_pos
+	return temp_item
 
 func refresh_all_slots():
 	for visual_item in _visual_items:
@@ -68,13 +117,13 @@ func refresh_all_slots():
 		
 		if occupied:
 			slot.update_appearance(occupied, _rarity_to_color(item.item_data.rarity))
-		else:
+		else:	
 			slot.update_appearance(occupied)
 
 func _rarity_to_color(rarity: ItemData.Rarity) -> Color:
 	match rarity:
 		ItemData.Rarity.SUB_OPTIMAL:
-			return Color.SADDLE_BROWN
+			return Color.CORAL
 		ItemData.Rarity.WILL_DO:
 			return Color.ANTIQUE_WHITE
 		ItemData.Rarity.SATISFACTORY:
@@ -83,25 +132,6 @@ func _rarity_to_color(rarity: ItemData.Rarity) -> Color:
 			return Color.PALE_TURQUOISE
 		_:
 			return Color.YELLOW
-	
-
-func _input(event: InputEvent) -> void:
-	if not inventory_open:
-		if event.is_action_pressed("open_inventory"):
-			set_inventory_state(true)
-		return
-	
-	if item_held:
-		if event.is_action_pressed("rotate_item"):
-			rotate_held_item()
-		if event.is_action_pressed("pickup_item") and mouse_in_inventory():
-			attempt_place_item()
-	else:
-		if event.is_action_pressed("pickup_item") and mouse_in_inventory():
-			attempt_pick_item()
-		if event.is_action_pressed("open_inventory"):
-			set_inventory_state(false)
-
 
 func mouse_in_inventory() -> bool:
 	return scroll_container.get_global_rect().has_point(get_global_mouse_position())
@@ -111,25 +141,6 @@ func set_inventory_state(state: bool) -> void:
 	inventory_state_changed.emit(state)
 	visible = state
 
-func create_slot() -> void:
-	var new_slot = SLOT.instantiate()
-	new_slot.cell_index = slot_nodes.size()
-	slot_nodes.append(new_slot)
-	grid_container.add_child(new_slot)
-	
-	new_slot.slot_entered.connect(_on_slot_mouse_entered)
-	new_slot.slot_exited.connect(_on_slot_mouse_exited)
-
-func _on_slot_mouse_entered(slot) -> void:
-	current_slot = slot
-	if item_held:
-		update_preview()
-
-func _on_slot_mouse_exited(_slot) -> void:
-	if current_slot == _slot:
-		current_slot = null
-	clear_preview()
-
 # -----------------------------------------------------------------------------
 # Preview highlighting
 # -----------------------------------------------------------------------------
@@ -138,10 +149,7 @@ func update_preview():
 	if not current_slot or not item_held:
 		return
 	
-	var anchor = Vector2i(
-		current_slot.cell_index % column_count,
-		current_slot.cell_index / column_count
-	)
+	var anchor = _get_cell_from_slot(current_slot)
 	var cells = item_held.item_data.get_occupied_cells(anchor, item_held.current_rotation)
 	var can_place = inventory_data.can_place_item(item_held.item_data, anchor, item_held.current_rotation)
 	
@@ -150,48 +158,32 @@ func update_preview():
 		if idx >= 0 and idx < slot_nodes.size():
 			slot_nodes[idx].set_preview_color(can_place)
 
-
 func clear_preview():
 	for slot in slot_nodes:
 		slot.clear_preview()
 
 # -----------------------------------------------------------------------------
-# Drag & drop actions
+# Actions
 # -----------------------------------------------------------------------------
 func attempt_pick_item():
 	if not current_slot:
 		return
 	
-	var cell = Vector2i(
-		current_slot.cell_index % column_count,
-		current_slot.cell_index / column_count
-	)
-	var item_info = inventory_data.get_item_at(cell)
+	var item_info = _get_item_info_at_slot(current_slot)
 	if item_info.is_empty():
 		return
 	
-	# Remove from data model
-	var removed = inventory_data.remove_item_at(cell)
+	var removed = inventory_data.remove_item_at(_get_cell_from_slot(current_slot))
 	if removed.is_empty():
 		return
 	
-	# Create temporary visual item
-	var temp_item = ITEM.instantiate()
-	add_child(temp_item)
-	temp_item.set_from_data(removed.item_data, removed.rotation)
-	temp_item.selected = true
-	temp_item.global_position = get_global_mouse_position()
-	item_held = temp_item
-
+	item_held = _create_temp_item(removed.item_data, removed.rotation, get_global_mouse_position())
 
 func attempt_place_item():
 	if not current_slot or not item_held:
 		return
 	
-	var anchor = Vector2i(
-		current_slot.cell_index % column_count,
-		current_slot.cell_index / column_count
-	)
+	var anchor = _get_cell_from_slot(current_slot)
 	var success = inventory_data.place_item(
 		item_held.item_data,
 		anchor,
@@ -213,6 +205,18 @@ func rotate_held_item():
 	if current_slot:
 		update_preview()
 
+func attempt_show_description():
+	if not current_slot:
+		return
+	
+	var item_info = _get_item_info_at_slot(current_slot)
+	if item_info.is_empty():
+		description_box.hide()
+		return
+	
+	description_text.text = item_info.item_data.item_description
+	description_box.global_position = get_global_mouse_position()
+	description_box.show()
 # -----------------------------------------------------------------------------
 # Spawn item (for testing)
 # -----------------------------------------------------------------------------
@@ -222,38 +226,9 @@ func _on_button_spawn_pressed():
 	if not FileAccess.file_exists(item_path):
 		item_id_box.text = "No such item!"
 		return
-	
+		
 	var item_data = load(item_path) as ItemData
-	var temp_item = ITEM.instantiate()
+	if item_held:
+		item_held.queue_free()
 	
-	add_child(temp_item)
-	temp_item.set_from_data(item_data, 0)
-	temp_item.selected = true
-	temp_item.global_position = get_global_mouse_position()
-	item_held = temp_item
-
-
-# -----------------------------------------------------------------------------
-# Modifier getters (now query inventory_data)
-# -----------------------------------------------------------------------------
-func get_all_weapon_modifiers() -> Array:
-	var modifiers = []
-	for item_info in inventory_data.get_all_items():
-		var data = item_info.item_data
-		if data and not data.weapon_stat_modifiers.is_empty():
-			modifiers.append(data.weapon_stat_modifiers)
-	return modifiers
-
-
-func get_all_player_modifiers() -> Array:
-	var modifiers = []
-	for item_info in inventory_data.get_all_items():
-		var data = item_info.item_data
-		if data and not data.player_stat_modifiers.is_empty():
-			modifiers.append(data.player_stat_modifiers)
-	return modifiers
-
-
-func process_item_components() -> void:
-	# You can implement this later if needed
-	pass
+	item_held = _create_temp_item(item_data, 0, get_global_mouse_position())

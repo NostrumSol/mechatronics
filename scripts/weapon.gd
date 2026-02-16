@@ -7,7 +7,7 @@ class_name BaseWeapon
 @export var shoot: ShootComponent
 @export var input_handler: WeaponInputHandler
 
-@onready var inventory: Control
+@export var inventory: InventoryComponent
 
 func _ready():
 	reload.initialize(gun_stats, ammo)
@@ -15,10 +15,7 @@ func _ready():
 	input_handler.initialize(gun_stats, ammo, reload, shoot)
 	
 	gun_stats.stats_changed.connect(_on_gun_stats_changed)
-
-func set_inventory_reference(inv: Control):
-	inventory = inv
-	input_handler.set_inventory(inv)
+	inventory.inventory_changed.connect(_on_inventory_items_changed)
 
 func _on_gun_stats_changed():
 	ammo.set_max_values(gun_stats.get_current(GunStatsComponent.GunStat.MAX_LOADED), ammo.max_reserve)
