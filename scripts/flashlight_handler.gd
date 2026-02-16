@@ -28,11 +28,12 @@ func _process(_delta: float) -> void:
 	
 	var collisions = flashlight.get_all_collisions() as Array[CharacterBody2D]
 	for enemy in collisions:
-		var status_effect = enemy.get_node_or_null("StatusEffectsComponent")
+		var status_effect = enemy.get_node_or_null("StatusEffectsComponent") as StatusEffectsComponent
 		if status_effect:
 			var speed_modifier = SpeedModifierEffect.new()
 			speed_modifier.status_name = "Flashlight Slow"
-			status_effect.add_status_effect(speed_modifier)
+			status_effect.add_status_effect_duration(speed_modifier, 0.10, 10)
+			# limit this to activating every few seconds
 
 func spend_power() -> void:
 	if energy_cost_timer.time_left <= 0:

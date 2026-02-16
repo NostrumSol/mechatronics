@@ -1,24 +1,22 @@
-extends Area2D
-
-# genericize this to just move, and add hitbox comp
+extends Node2D
 
 @export var lifetime := 5
 @export var speed := 200.0 # make this a stat later
-var damage := 25.0
+@export var hitbox : HitboxComponent
 
 var direction := Vector2.ZERO
 
-func initialize(dir: Vector2, _damage: float) -> void:
+func initialize(dir: Vector2, damage: float, damage_type: DamageInstance.DamageType) -> void:
 	direction = dir.normalized()
 	rotation = direction.angle()
 	
-	damage = _damage
+	var projectile_damage = DamageInstance.new()
+	projectile_damage.damage_value = damage
+	projectile_damage.damage_type = damage_type
+	hitbox.damage = projectile_damage
 	
 	await get_tree().create_timer(lifetime).timeout
 	queue_free()
 
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
-
-func _on_body_entered(_body: Node2D) -> void:
-	queue_free()

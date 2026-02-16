@@ -59,6 +59,9 @@ func shoot():
 		
 		var offset = randf_range(-angle/2.0, angle/2.0)
 		var dir = base_dir.rotated(offset)
-		proj.initialize(dir, _gun_stats.get_current(GunStatsComponent.GunStat.GUN_DAMAGE))
+		
+		var damage = _gun_stats.get_current(GunStatsComponent.GunStat.DAMAGE)
+		var damage_type = _gun_stats.get_current(GunStatsComponent.GunStat.DAMAGE_TYPE)
+		proj.initialize(dir, damage, damage_type)
 	
 	shot_fired.emit(muzzle.global_position, base_dir)

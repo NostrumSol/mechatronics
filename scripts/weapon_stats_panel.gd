@@ -3,7 +3,8 @@ extends StatsPanel
 @export var weapon: Node2D
 
 const STAT_ORDER := [
-	GunStatsComponent.GunStat.GUN_DAMAGE,
+	GunStatsComponent.GunStat.DAMAGE,
+	GunStatsComponent.GunStat.DAMAGE_TYPE,
 	GunStatsComponent.GunStat.FIRE_RATE,
 	GunStatsComponent.GunStat.RELOAD_TIME,
 	GunStatsComponent.GunStat.MAX_LOADED,
@@ -12,7 +13,8 @@ const STAT_ORDER := [
 ]
 
 const STAT_NAMES := {
-	GunStatsComponent.GunStat.GUN_DAMAGE: "Damage",
+	GunStatsComponent.GunStat.DAMAGE: "Damage",
+	GunStatsComponent.GunStat.DAMAGE_TYPE: "Damage Type",
 	GunStatsComponent.GunStat.FIRE_RATE: "Fire Rate",
 	GunStatsComponent.GunStat.RELOAD_TIME: "Reload",
 	GunStatsComponent.GunStat.MAX_LOADED: "Magazine",

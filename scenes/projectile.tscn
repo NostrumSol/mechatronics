@@ -2,17 +2,17 @@
 
 [ext_resource type="Script" uid="uid://mxw0nexchdgc" path="res://scripts/projectile.gd" id="1_pq2eh"]
 [ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="2_q3m7n"]
+[ext_resource type="PackedScene" uid="uid://cytdcde2jyumq" path="res://scenes/components/hitbox_component.tscn" id="3_softn"]
+[ext_resource type="PackedScene" uid="uid://cw5aic1v6olvc" path="res://scenes/components/gib_on_body_entered_component.tscn" id="4_6q2a6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dtnd3"]
 radius = 4.9999995
 
-[node name="Projectile" type="Area2D" unique_id=790875886]
+[node name="Projectile" type="Node2D" unique_id=69153328 node_paths=PackedStringArray("hitbox")]
 rotation = 1.5708
 scale = Vector2(0.2, 0.2)
-collision_layer = 32
-collision_mask = 5
-priority = 1
 script = ExtResource("1_pq2eh")
+hitbox = NodePath("HitboxComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1918851740]
 scale = Vector2(3, 2)
@@ -20,7 +20,18 @@ texture = ExtResource("2_q3m7n")
 region_enabled = true
 region_rect = Rect2(0, 49, 8, 6)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1983757071]
+[node name="HitboxComponent" parent="." unique_id=1277262125 instance=ExtResource("3_softn")]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1983757071]
+scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("CircleShape2D_dtnd3")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="GibOnBodyEnteredComponent" parent="." unique_id=1024739303 instance=ExtResource("4_6q2a6")]
+collision_layer = 32
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GibOnBodyEnteredComponent" unique_id=1155206876]
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("CircleShape2D_dtnd3")

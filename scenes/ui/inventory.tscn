@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://byhnjwnpb330g" path="res://scripts/inventory_ui.gd" id="1_k3q8r"]
 
-[node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box", "visual_items", "description_box", "description_text")]
+[node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box", "visual_items", "description_box", "description_text", "description_title")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 602.0
@@ -15,8 +15,9 @@ grid_container = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContain
 scroll_container = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer")
 item_id_box = NodePath("ColorRect/MarginContainer/VBoxContainer/Header/Item_Id_Box")
 visual_items = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer/VisualItemStorage")
-description_box = NodePath("DescriptionBox")
-description_text = NodePath("DescriptionBox/DescriptionText")
+description_box = NodePath("DescriptionBoxTitle")
+description_text = NodePath("DescriptionBoxTitle/DescriptionBox/DescriptionText")
+description_title = NodePath("DescriptionBoxTitle/DescriptionTitle")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1960270946]
 layout_mode = 0
@@ -73,21 +74,43 @@ columns = 8
 
 [node name="VisualItemStorage" type="Node2D" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=635233647]
 
-[node name="DescriptionBox" type="ColorRect" parent="." unique_id=432855899]
+[node name="DescriptionBoxTitle" type="ColorRect" parent="." unique_id=432855899]
 visible = false
 layout_mode = 0
 offset_left = 237.0
 offset_top = 250.0
-offset_right = 493.0
-offset_bottom = 335.0
+offset_right = 491.0
+offset_bottom = 274.0
 color = Color(0, 0, 0, 1)
 
-[node name="DescriptionText" type="RichTextLabel" parent="DescriptionBox" unique_id=1308323788]
+[node name="DescriptionTitle" type="RichTextLabel" parent="DescriptionBoxTitle" unique_id=1842144286]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.24700001
+offset_right = -3.0
+offset_bottom = 16.071999
+theme_override_colors/default_color = Color(0, 0.7412896, 0.43337378, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Title Placeholder"
+
+[node name="DescriptionBox" type="ColorRect" parent="DescriptionBoxTitle" unique_id=937116305]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 23.0
+offset_right = 255.0
+offset_bottom = 108.0
+color = Color(0, 0, 0, 1)
+
+[node name="DescriptionText" type="RichTextLabel" parent="DescriptionBoxTitle/DescriptionBox" unique_id=1308323788]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.99300003
 anchor_bottom = 1.0
 offset_right = -0.033996582
 theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Description Placeholder"
 
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/Header/Button_Spawn" to="." method="_on_button_spawn_pressed"]

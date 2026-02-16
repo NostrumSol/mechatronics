@@ -12,6 +12,7 @@ const SLOT = preload("res://scenes/ui/slot.tscn")
 
 @export var description_box : ColorRect
 @export var description_text : RichTextLabel
+@export var description_title : RichTextLabel
 
 @onready var column_count = grid_container.columns
 
@@ -214,7 +215,16 @@ func attempt_show_description():
 		description_box.hide()
 		return
 	
-	description_text.text = item_info.item_data.item_description
+	var item_data = item_info.item_data as ItemData
+	description_title.text = item_data.item_name
+	
+	var text = ""
+	text += item_data.item_description + "\n"
+	
+	
+	#text += str(item_data.weapon_stat_modifiers) # Format this properly later
+	
+	description_text.text = text
 	description_box.global_position = get_global_mouse_position()
 	description_box.show()
 # -----------------------------------------------------------------------------

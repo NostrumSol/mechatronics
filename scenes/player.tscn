@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://buma0di4p3pil" path="res://scripts/weapon_stats_panel.gd" id="13_f1ej7"]
 [ext_resource type="Script" uid="uid://cncemh2mgt3et" path="res://scripts/inventory_component.gd" id="14_i4ail"]
 [ext_resource type="Script" uid="uid://djbqqsmq34hys" path="res://scripts/player_stats_panel.gd" id="14_oprun"]
+[ext_resource type="Shader" uid="uid://dg23651abilh3" path="res://data/styles/vignette.gdshader" id="16_4ni07"]
 [ext_resource type="Script" uid="uid://dgr8vccjbgg0s" path="res://scripts/energy_bar.gd" id="16_60mlk"]
 [ext_resource type="PackedScene" uid="uid://dfv34gt8d2ypd" path="res://scenes/ui/pause_menu.tscn" id="17_qfm1y"]
 [ext_resource type="Script" uid="uid://b5rrlidyngw07" path="res://scripts/debug_label.gd" id="22_a38lo"]
@@ -96,6 +97,12 @@ radius = 3.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a8ls1"]
 radius = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l71n6"]
+shader = ExtResource("16_4ni07")
+shader_parameter/vignette_intensity = 1.5
+shader_parameter/vignette_opacity = 0.850000040375
+shader_parameter/vignette_rgb = Color(0, 0, 0, 0.9529412)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fulsm"]
 bg_color = Color(0, 0, 0, 1)
@@ -214,6 +221,16 @@ ammo_label = NodePath("AmmoLabel")
 reload_progress = NodePath("ReloadProgress")
 weapon = NodePath("../Weapon")
 
+[node name="Vignette" type="ColorRect" parent="UILayer" unique_id=1572187890]
+material = SubResource("ShaderMaterial_l71n6")
+anchors_preset = -1
+anchor_right = 3.325
+anchor_bottom = 3.318
+offset_right = -0.13342285
+offset_bottom = -0.021362305
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="HealthBar" type="ProgressBar" parent="UILayer" unique_id=342205844 node_paths=PackedStringArray("health_component")]
 offset_left = 16.666666
 offset_top = 20.0
@@ -273,7 +290,6 @@ theme_override_styles/background = SubResource("StyleBoxFlat_t4d2f")
 theme_override_styles/fill = SubResource("StyleBoxFlat_81udy")
 max_value = 1.0
 value = 0.5
-show_percentage = false
 
 [node name="Inventory" parent="UILayer" unique_id=147464575 node_paths=PackedStringArray("inventory_data") instance=ExtResource("6_gvm34")]
 offset_left = 323.3333

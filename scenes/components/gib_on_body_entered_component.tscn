@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cw5aic1v6olvc"]
+
+[ext_resource type="Script" uid="uid://b01lnnuovg83x" path="res://scripts/components/gib_on_body_entered_component.gd" id="1_be28m"]
+
+[node name="GibOnBodyEnteredComponent" type="Area2D" unique_id=1024739303]
+script = ExtResource("1_be28m")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

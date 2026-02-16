@@ -1,4 +1,4 @@
 extends Area2D
 class_name HitboxComponent
 
-@export var damage := 25.0
+@export var damage : DamageInstance
