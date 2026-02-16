@@ -10,6 +10,7 @@ item_name = "Assault Chip"
 item_id = "assault_chip"
 item_description = "A small, red microchip containing blueprints."
 texture = ExtResource("3_8xtvs")
+rarity = 1
 grid_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)])
 weapon_stat_modifiers = {
 "GUN_DAMAGE": {
