@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://b52hux3t0h24n"]
+
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_2cne3"]
+
+[node name="BasicRoomScene" unique_id=1917625330 instance=ExtResource("1_2cne3")]
+
+[node name="BottomDoor" parent="." index="5" unique_id=1345941613]
+visible = false
+enabled = false
+
+[node name="RightDoor" parent="." index="6" unique_id=1036421235]
+visible = false
+enabled = false
+
+[node name="TopDoor" parent="." index="8" unique_id=188844151]
+visible = false
+enabled = false

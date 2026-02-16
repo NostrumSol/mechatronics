@@ -2,9 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bfuoi2jujnef4" path="res://scripts/components/hurtbox_component.gd" id="1_wfswc"]
 
-[node name="HurtboxComponent" type="Area2D" unique_id=374102175]
+[node name="HurtboxComponent" type="Area2D" unique_id=374102175 node_paths=PackedStringArray("invincibility_timer")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_wfswc")
+invincibility_timer = NodePath("InvincibilityTimer")
+
+[node name="InvincibilityTimer" type="Timer" parent="." unique_id=1098479795]
+one_shot = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ccyo0eh2a62pe"]
 
-[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene.tscn" id="1_glumr"]
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_glumr"]
 [ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemies/basic_enemy.tscn" id="2_b1urj"]
 [ext_resource type="PackedScene" uid="uid://lvvgxmm2b0xt" path="res://scenes/rooms/room_resources/base_enemy_spawner.tscn" id="3_b1urj"]
 [ext_resource type="Script" uid="uid://chvmu7me7erc6" path="res://scripts/classes/enemy_spawn_data.gd" id="3_pc6ft"]

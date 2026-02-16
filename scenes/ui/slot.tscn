@@ -3,11 +3,24 @@
 [ext_resource type="Texture2D" uid="uid://cpv64xg2fxm3k" path="res://assets/textures/inventory_texture.png" id="1_sad2q"]
 [ext_resource type="Script" uid="uid://b0k8aphx6dvgi" path="res://scripts/slot.gd" id="2_nyk3f"]
 
-[node name="Slot" type="TextureRect" unique_id=678639316]
+[node name="Slot" type="TextureRect" unique_id=678639316 node_paths=PackedStringArray("filled_icon", "filter")]
 custom_minimum_size = Vector2(50, 50)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -108.0
+offset_right = -142.0
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_sad2q")
 expand_mode = 1
 script = ExtResource("2_nyk3f")
+filled_icon = NodePath("FilledIcon")
+filter = NodePath("StatusFilter")
 
 [node name="StatusFilter" type="ColorRect" parent="." unique_id=1881557598]
 layout_mode = 1
@@ -17,3 +30,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
+
+[node name="FilledIcon" type="ColorRect" parent="." unique_id=272231278]
+visible = false
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 45.0
+offset_bottom = 45.0
+color = Color(0.44672376, 0.5793735, 0.61138725, 1)

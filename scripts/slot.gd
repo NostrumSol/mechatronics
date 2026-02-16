@@ -3,27 +3,15 @@ extends TextureRect
 signal slot_entered(slot)
 signal slot_exited(slot)
 
-@onready var filter: ColorRect = $StatusFilter
+@export var filled_icon : ColorRect # can be texture later
+@export var filter : ColorRect
 
-var slot_ID
+var cell_index: int
 var is_hovering := false
-
-enum States {DEFAULT, TAKEN, FREE}
-var state = States.DEFAULT
-
-var item_stored = null
-
-func set_color(new_state = States.DEFAULT) -> void:
-	match new_state:
-		States.DEFAULT:
-			filter.color = Color(Color.WHITE, 0.0)
-		States.TAKEN:
-			filter.color = Color(Color.RED, 0.2)
-		States.FREE:
-			filter.color = Color(Color.GREEN, 0.2)
-
+	
 func _process(_delta: float) -> void:
-	if get_global_rect().has_point(get_global_mouse_position()):
+	var mouse_pos = get_global_mouse_position()
+	if get_global_rect().has_point(mouse_pos):
 		if not is_hovering:
 			is_hovering = true
 			slot_entered.emit(self)
@@ -31,3 +19,17 @@ func _process(_delta: float) -> void:
 		if is_hovering:
 			is_hovering = false
 			slot_exited.emit(self)
+
+func update_appearance(occupied: bool, color: Color = Color(1.0, 1.0, 0.0, 1)) -> void:
+	filled_icon.visible = occupied
+	filled_icon.color = color
+
+func set_preview_color(is_valid: bool) -> void:
+	if is_valid:
+		filter.color = Color(0.0, 1.0, 0.0, 0.3)   # green tint
+	else:
+		filter.color = Color(1.0, 0.0, 0.0, 0.3)   # red tint
+	filter.show()
+
+func clear_preview() -> void:
+	filter.hide()

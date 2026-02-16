@@ -49,5 +49,5 @@ func get_stat_name(stat) -> String:
 	return str(stat)
 
 # Format the current value (including any visual indicators like [+]/[-])
-func format_stat(value, base_value, stat) -> String:
+func format_stat(value, _base_value, _stat) -> String:
 	return str(value)

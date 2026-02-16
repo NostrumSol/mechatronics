@@ -9,6 +9,6 @@ func on_apply(target: Node) -> void:
 	if movement:
 		movement.movement_speed *= speed_modifier
 
-func on_remove(target: Node) -> void:
+func on_remove(_target: Node) -> void:
 	if movement:
 		movement.movement_speed /= speed_modifier

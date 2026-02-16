@@ -1,5 +1,7 @@
 extends Area2D
 
+# genericize this to just move, and add hitbox comp
+
 @export var lifetime := 5
 @export var speed := 200.0 # make this a stat later
 var damage := 25.0

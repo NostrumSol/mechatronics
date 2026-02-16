@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://bqi7v0ldmfgnm"]
 
-[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene.tscn" id="1_uodan"]
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_uodan"]
 
 [node name="StartingRoomScene" unique_id=1917625330 instance=ExtResource("1_uodan")]

@@ -13,9 +13,8 @@ var movement_speed = 600.0
 
 func _ready() -> void:
 	weapon.set_inventory_reference(inventory)
-	PlayerManager.player = self
 	
-	inventory.items_changed.connect(_on_inventory_items_changed)
+	#inventory.items_changed.connect(_on_inventory_items_changed)
 	player_stats.stats_changed.connect(_on_player_stats_changed)
 	RoomManager.started_traversing.connect(_on_start_traversing)
 	RoomManager.finished_traversing.connect(_on_finished_traversing)
@@ -40,7 +39,7 @@ func update_stats() -> void:
 	var max_health = player_stats.get_current(player_stats.PlayerStat.MAX_HEALTH)
 	var speed = player_stats.get_current(player_stats.PlayerStat.SPEED)
 	
-	health_component.set_max_health(max_health)
+	health_component.set_max_resource(max_health)
 	movement_speed = speed
 
 func _process(_delta: float) -> void:

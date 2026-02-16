@@ -8,6 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_xgoky"]
 [ext_resource type="Script" uid="uid://cbavpv5bremg3" path="res://scripts/stats_effect_component.gd" id="2_yo4tp"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
+[ext_resource type="Script" uid="uid://cqlwxgtb5bvo7" path="res://scripts/components/gib_component.gd" id="7_mgm4g"]
+[ext_resource type="PackedScene" uid="uid://cytdcde2jyumq" path="res://scenes/components/hitbox_component.tscn" id="9_pksqs"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yo4tp"]
+polygon = PackedVector2Array(-3, -2, -3, 2, 1, 3, 1, -3)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5uy6h"]
 atlas = ExtResource("1_5uy6h")
@@ -46,12 +51,18 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_actic"]
 radius = 4.472136
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_mgm4g"]
+radius = 4.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_5pekp"]
 radius = 4.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=489612833]
 collision_layer = 4
 collision_mask = 5
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=692698973]
+occluder = SubResource("OccluderPolygon2D_yo4tp")
 
 [node name="DashComponent" parent="." unique_id=1237026739 node_paths=PackedStringArray("body") instance=ExtResource("1_nenq2")]
 body = NodePath("..")
@@ -63,6 +74,7 @@ script = ExtResource("2_yo4tp")
 [node name="Flashlight" type="PointLight2D" parent="." unique_id=1416864385]
 color = Color(0.98039216, 0, 0, 1)
 shadow_enabled = true
+shadow_item_cull_mask = 2
 texture = ExtResource("1_xwavj")
 offset = Vector2(39, 1)
 texture_scale = 0.39
@@ -77,6 +89,10 @@ body = NodePath("..")
 sprite = NodePath("../Sprite")
 
 [node name="HealthComponent" parent="." unique_id=1898653669 instance=ExtResource("2_xgoky")]
+
+[node name="GibComponent" type="Node" parent="." unique_id=458663426 node_paths=PackedStringArray("health_component")]
+script = ExtResource("7_mgm4g")
+health_component = NodePath("../HealthComponent")
 
 [node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body", "dash") instance=ExtResource("2_5uy6h")]
 body = NodePath("..")
@@ -95,6 +111,13 @@ healthComponent = NodePath("../HealthComponent")
 [node name="HurtboxCollider" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1413871431]
 shape = SubResource("CircleShape2D_actic")
 debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="HitboxComponent" parent="." unique_id=1277262125 instance=ExtResource("9_pksqs")]
+collision_layer = 256
+collision_mask = 2
+
+[node name="Collider" type="CollisionShape2D" parent="HitboxComponent" unique_id=1999162437]
+shape = SubResource("CircleShape2D_mgm4g")
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=1428532152]
 shape = SubResource("CircleShape2D_5pekp")

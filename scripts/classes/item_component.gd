@@ -2,5 +2,5 @@ extends Resource
 class_name ItemComponent
 
 # Override this
-func apply(context: Dictionary) -> void:
+func apply(_context: Dictionary) -> void:
 	pass

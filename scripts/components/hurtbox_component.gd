@@ -1,15 +1,27 @@
 extends Area2D
+class_name HurtboxComponent
 
 @export var healthComponent : HealthComponent
+@export var invincibility_timer : Timer
+@export var invincibility_period := 1.00
 
-signal hit_by_projectile(projectile : Area2D)
+var colliding_hitboxes : Array = []
 
-func _ready() -> void:
-	healthComponent.died.connect(_on_died)
+signal hurtbox_hit(hit_by : Area2D)
 
 func _on_area_entered(area: Area2D) -> void:
-	healthComponent.damage(area.damage)
-	hit_by_projectile.emit(area)
+	colliding_hitboxes.append(area)
+	_damage(area)
 
-func _on_died() -> void:
-	get_parent().queue_free()
+func _on_area_exited(area: Area2D) -> void:
+	colliding_hitboxes.erase(area)
+	
+func _process(delta: float) -> void:
+	for hitbox in colliding_hitboxes:
+		_damage(hitbox)
+
+func _damage(hitbox: Area2D) -> void:
+	if invincibility_timer.time_left <= 0:
+			healthComponent.damage(hitbox.damage)
+			hurtbox_hit.emit(hitbox)
+			invincibility_timer.start(invincibility_period)

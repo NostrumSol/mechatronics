@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://03wbpyxo7ml"]
+
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_0r8da"]
+
+[node name="BasicRoomScene" unique_id=1917625330 instance=ExtResource("1_0r8da")]
+
+[node name="LeftDoor" parent="." index="7" unique_id=845509414]
+visible = false
+enabled = false

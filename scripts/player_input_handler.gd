@@ -4,6 +4,7 @@ class_name PlayerInputHandler
 @export var player : Player
 @export var dash : DashComponent
 @export var pause : PauseMenu
+@export var flashlight_handler : FlashlightHandler
 
 var direction : Vector2
 
@@ -15,6 +16,8 @@ enum PlayerState
 }
 
 var current_state := PlayerState.IDLE
+
+signal flashlight_state_changed(new_state: bool)
 
 func _ready() -> void:
 	set_process_input(true)
@@ -29,10 +32,13 @@ func _input(event: InputEvent) -> void:
 		else:
 			pause.pause()
 	
-	if event.is_action_pressed("flashlight"):
+	if event.is_action_pressed("flashlight") and flashlight_handler.can_use_flashlight():
 		player.flashlight.enabled = true
+		flashlight_state_changed.emit(true)
 	if event.is_action_released("flashlight"):
 		player.flashlight.enabled = false
+		flashlight_state_changed.emit(false)
+	
 	
 func _process(_delta: float) -> void:
 	if current_state == PlayerState.DASHING:

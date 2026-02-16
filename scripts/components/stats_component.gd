@@ -66,12 +66,12 @@ func apply_modifiers(modifiers_list: Array) -> void:
 	stats_changed.emit()
 
 # Override in subclass to convert a string (from modifier dictionary) to the correct enum value.
-func _get_stat_enum_from_string(stat_name: String) -> Variant:
+func _get_stat_enum_from_string(_stat_name: String) -> Variant:
 	push_error("StatsComponent: _get_stat_enum_from_string() not implemented")
 	return null
 
 # Override in subclass to apply special handling to a stat
-func _process_stat_value(stat_enum: int, raw_value: float):
+func _process_stat_value(_stat_enum: int, raw_value: float):
 	return raw_value
 
 func get_current(stat_enum: int):

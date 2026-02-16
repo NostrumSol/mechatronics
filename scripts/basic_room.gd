@@ -1,8 +1,11 @@
 extends Node2D
+class_name Room
 
 const DOOR_OFFSET := 10
 
 @export var spawn_point : Marker2D
+
+var room_position : Vector2i
 
 var player: Player
 var player_input: PlayerInputHandler
@@ -41,3 +44,18 @@ func get_door(direction: Vector2i) -> Door:
 		if child is Door and child.direction == direction:
 			return child
 	return null
+
+func get_doors() -> Array[Door]:
+	var doors: Array[Door] = []
+	for child in get_children():
+		if child is Door:
+			doors.append(child)
+	return doors
+
+func get_door_directions() -> Array[Vector2i]:
+	var directions: Array[Vector2i] = []
+	var doors = get_doors()
+	for door in doors:
+		directions.append(door.direction)
+	
+	return directions

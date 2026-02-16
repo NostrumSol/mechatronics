@@ -19,7 +19,6 @@ func _ready():
 func set_inventory_reference(inv: Control):
 	inventory = inv
 	input_handler.set_inventory(inv)
-	inv.items_changed.connect(_on_inventory_items_changed)
 
 func _on_gun_stats_changed():
 	ammo.set_max_values(gun_stats.get_current(GunStatsComponent.GunStat.MAX_LOADED), ammo.max_reserve)

@@ -10,14 +10,20 @@
 [ext_resource type="Script" uid="uid://cvixeexj1amht" path="res://scripts/camera_2d.gd" id="4_mi7qe"]
 [ext_resource type="Script" uid="uid://catuxcld06d70" path="res://scripts/ui_layer.gd" id="4_wehkq"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="4_y4r1p"]
+[ext_resource type="Script" uid="uid://bgjkagd2pof28" path="res://scripts/components/energy_component.gd" id="6_4r5pv"]
 [ext_resource type="PackedScene" uid="uid://s2rrmd725qoe" path="res://scenes/ui/inventory.tscn" id="6_gvm34"]
 [ext_resource type="Script" uid="uid://d1c4nnbftdjoi" path="res://scripts/player_animation_handler.gd" id="7_qfm1y"]
 [ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="8_a8ls1"]
 [ext_resource type="Script" uid="uid://bcldnc807xxu4" path="res://scripts/health_bar.gd" id="9_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="9_oprun"]
 [ext_resource type="Script" uid="uid://buma0di4p3pil" path="res://scripts/weapon_stats_panel.gd" id="13_f1ej7"]
+[ext_resource type="Script" uid="uid://cncemh2mgt3et" path="res://scripts/inventory_component.gd" id="14_i4ail"]
 [ext_resource type="Script" uid="uid://djbqqsmq34hys" path="res://scripts/player_stats_panel.gd" id="14_oprun"]
+[ext_resource type="Script" uid="uid://dgr8vccjbgg0s" path="res://scripts/energy_bar.gd" id="16_60mlk"]
 [ext_resource type="PackedScene" uid="uid://dfv34gt8d2ypd" path="res://scenes/ui/pause_menu.tscn" id="17_qfm1y"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fulsm"]
+polygon = PackedVector2Array(-1, -3, -1, 1, 2, 1, 2, -3)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
 atlas = ExtResource("9_oprun")
@@ -90,6 +96,20 @@ radius = 3.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_a8ls1"]
 radius = 3.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fulsm"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r5pv"]
+bg_color = Color(0.94052577, 0.42867705, 5.7756904e-07, 1)
+corner_detail = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60mlk"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4ail"]
+bg_color = Color(0.7698625, 0.706985, 0.24526232, 1)
+corner_detail = 7
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4d2f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81udy"]
@@ -109,6 +129,10 @@ camera = NodePath("PlayerCamera")
 player_input = NodePath("PlayerInputHandler")
 flashlight = NodePath("Flashlight")
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1901426963]
+occluder = SubResource("OccluderPolygon2D_fulsm")
+occluder_light_mask = 2
+
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=2035869917]
 position = Vector2(0, -1)
 rotation = 1.5707964
@@ -119,21 +143,32 @@ frame_progress = 0.9273619
 
 [node name="Flashlight" parent="." unique_id=920851621 instance=ExtResource("3_qfm1y")]
 enabled = false
+energy = 0.0
 
-[node name="FlashlightHandler" type="Node" parent="." unique_id=412470167 node_paths=PackedStringArray("flashlight")]
+[node name="FlashlightHandler" type="Node" parent="." unique_id=412470167 node_paths=PackedStringArray("flashlight", "input", "energy", "energy_cost_timer")]
 script = ExtResource("4_fulsm")
 flashlight = NodePath("../Flashlight")
+input = NodePath("../PlayerInputHandler")
+energy = NodePath("../EnergyComponent")
+energy_cost_timer = NodePath("EnergyCostTimer")
+
+[node name="EnergyCostTimer" type="Timer" parent="FlashlightHandler" unique_id=497059734]
+one_shot = true
 
 [node name="HealthComponent" parent="." unique_id=705976797 instance=ExtResource("2_ur7pv")]
+
+[node name="EnergyComponent" type="Node" parent="." unique_id=1169287968]
+script = ExtResource("6_4r5pv")
 
 [node name="PlayerStatsComponent" type="Node" parent="." unique_id=1723054834]
 script = ExtResource("2_smehm")
 
-[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash", "pause")]
+[node name="PlayerInputHandler" type="Node2D" parent="." unique_id=30279575 node_paths=PackedStringArray("player", "dash", "pause", "flashlight_handler")]
 script = ExtResource("4_3v2ag")
 player = NodePath("..")
 dash = NodePath("../DashComponent")
 pause = NodePath("../UILayer/PauseMenu")
+flashlight_handler = NodePath("../FlashlightHandler")
 
 [node name="PlayerAnimationHandler" type="Node" parent="." unique_id=1157159402 node_paths=PackedStringArray("body", "sprite")]
 script = ExtResource("7_qfm1y")
@@ -148,7 +183,7 @@ player_input = NodePath("../PlayerInputHandler")
 scale = Vector2(0.99999994, 0.99999994)
 
 [node name="HurtboxComponent" parent="." unique_id=374102175 node_paths=PackedStringArray("healthComponent") instance=ExtResource("4_y4r1p")]
-collision_mask = 8
+collision_mask = 264
 healthComponent = NodePath("../HealthComponent")
 
 [node name="Hurtbox" type="CollisionShape2D" parent="HurtboxComponent" unique_id=137968021]
@@ -163,6 +198,9 @@ script = ExtResource("4_mi7qe")
 min_zoom = 1.5
 max_zoom = 2.0
 
+[node name="InventoryComponent" type="Node" parent="." unique_id=1321353173]
+script = ExtResource("14_i4ail")
+
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=1671821895 node_paths=PackedStringArray("ammo_label", "reload_progress", "weapon")]
 scale = Vector2(0.3, 0.3)
 transform = Transform2D(0.3, 0, 0, 0.3, 0, 0)
@@ -176,9 +214,24 @@ offset_left = 16.666666
 offset_top = 20.0
 offset_right = 218.66673
 offset_bottom = 47.0
+theme_override_styles/background = SubResource("StyleBoxFlat_fulsm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4r5pv")
 value = 100.0
+rounded = true
 script = ExtResource("9_d2wvv")
 health_component = NodePath("../../HealthComponent")
+
+[node name="EnergyBar" type="ProgressBar" parent="UILayer" unique_id=2134165379 node_paths=PackedStringArray("energy_component")]
+offset_left = 16.666666
+offset_top = 53.333332
+offset_right = 218.66673
+offset_bottom = 80.33333
+theme_override_styles/background = SubResource("StyleBoxFlat_60mlk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_i4ail")
+value = 100.0
+rounded = true
+script = ExtResource("16_60mlk")
+energy_component = NodePath("../../EnergyComponent")
 
 [node name="AmmoLabel" type="Label" parent="UILayer" unique_id=1363222714]
 editor_description = "replace with sick ass revolver cylinder later"
@@ -217,11 +270,12 @@ max_value = 1.0
 value = 0.5
 show_percentage = false
 
-[node name="Inventory" parent="UILayer" unique_id=147464575 instance=ExtResource("6_gvm34")]
+[node name="Inventory" parent="UILayer" unique_id=147464575 node_paths=PackedStringArray("inventory_data") instance=ExtResource("6_gvm34")]
 offset_left = 323.3333
 offset_top = 3.333332
 offset_right = 323.3333
 offset_bottom = 3.333332
+inventory_data = NodePath("../../InventoryComponent")
 
 [node name="WeaponStatsPanel" type="Panel" parent="UILayer/Inventory" unique_id=1994406909 node_paths=PackedStringArray("weapon", "stats_label")]
 custom_minimum_size = Vector2(150, 0)

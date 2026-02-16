@@ -2,12 +2,18 @@
 
 [ext_resource type="Script" uid="uid://brhr54l5gt5l6" path="res://scripts/components/move_towards_target_component.gd" id="1_kx0og"]
 
-[node name="MoveTowardsTargetComponent" type="Node2D" unique_id=496255558 node_paths=PackedStringArray("nav")]
+[node name="MoveTowardsTargetComponent" type="Node2D" unique_id=496255558 node_paths=PackedStringArray("nav", "timer")]
 script = ExtResource("1_kx0og")
 movement_speed = 25.0
 nav = NodePath("NavigationAgent2D")
+timer = NodePath("PathUpdateTimer")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=196663673]
+target_desired_distance = 2.0
 avoidance_enabled = true
-radius = 4.0
+radius = 2.0
+time_horizon_agents = 0.33
 max_speed = 300.0
+
+[node name="PathUpdateTimer" type="Timer" parent="." unique_id=699176904]
+autostart = true

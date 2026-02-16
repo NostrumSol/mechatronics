@@ -39,4 +39,3 @@ func _on_dash_end() -> void:
 	
 func _on_dash_cooldown_end() -> void:
 	pass # do vfx or something idk
-	

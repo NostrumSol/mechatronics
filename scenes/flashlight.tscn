@@ -3,33 +3,23 @@
 [ext_resource type="Texture2D" uid="uid://bxorbk6sd0idm" path="res://assets/textures/light_beam.png" id="1_lkaa1"]
 [ext_resource type="Script" uid="uid://b3pbv80ubvg3j" path="res://scripts/flashlight.gd" id="2_0ywi5"]
 
-[node name="Flashlight" type="PointLight2D" unique_id=920851621]
+[node name="Flashlight" type="PointLight2D" unique_id=920851621 node_paths=PackedStringArray("collider")]
 shadow_enabled = true
 texture = ExtResource("1_lkaa1")
 offset = Vector2(95, 1)
 script = ExtResource("2_0ywi5")
+collider = NodePath("Area2D")
 
-[node name="One" type="RayCast2D" parent="." unique_id=559893321]
-target_position = Vector2(102, -36)
-collision_mask = 4
-hit_from_inside = true
+[node name="ColorRect" type="ColorRect" parent="." unique_id=347260061]
+visible = false
+offset_left = -31.0
+offset_top = -62.0
+offset_right = 171.0
+offset_bottom = 58.0
+color = Color(0, 0.22658296, 0.25766784, 1)
 
-[node name="Two" type="RayCast2D" parent="." unique_id=1585834510]
-target_position = Vector2(102, -19)
+[node name="Area2D" type="Area2D" parent="." unique_id=1232138902]
 collision_mask = 4
-hit_from_inside = true
 
-[node name="Three" type="RayCast2D" parent="." unique_id=1094018901]
-target_position = Vector2(102, 0)
-collision_mask = 4
-hit_from_inside = true
-
-[node name="Four" type="RayCast2D" parent="." unique_id=852856347]
-target_position = Vector2(101, 20)
-collision_mask = 4
-hit_from_inside = true
-
-[node name="Five" type="RayCast2D" parent="." unique_id=1362217645]
-target_position = Vector2(98, 35)
-collision_mask = 4
-hit_from_inside = true
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=560836559]
+polygon = PackedVector2Array(100, -41, 100, 39, 0, 0)
