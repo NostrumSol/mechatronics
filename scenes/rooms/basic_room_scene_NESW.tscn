@@ -11,7 +11,9 @@ spawn_point = NodePath("SpawnPoint")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1802097535]
 position = Vector2(125, 124)
+color = Color(1, 0.53, 0.53, 1)
 energy = 0.71
+shadow_item_cull_mask = 0
 texture = ExtResource("4_yh23c")
 texture_scale = 1.31
 
@@ -33,20 +35,20 @@ tile_set = ExtResource("4_xxtbc")
 metadata/_edit_lock_ = true
 
 [node name="BottomDoor" parent="." unique_id=1345941613 instance=ExtResource("3_y5uxw")]
-position = Vector2(124.00001, 218.00002)
+position = Vector2(124, 223)
 rotation = 3.1415927
 direction = Vector2i(0, 1)
 
 [node name="RightDoor" parent="." unique_id=1036421235 instance=ExtResource("3_y5uxw")]
-position = Vector2(218, 120.99999)
+position = Vector2(224, 125)
 rotation = 1.5707964
 direction = Vector2i(1, 0)
 
 [node name="LeftDoor" parent="." unique_id=845509414 instance=ExtResource("3_y5uxw")]
-position = Vector2(30.000008, 121)
+position = Vector2(24, 125)
 rotation = 4.712389
 direction = Vector2i(-1, 0)
 
 [node name="TopDoor" parent="." unique_id=188844151 instance=ExtResource("3_y5uxw")]
-position = Vector2(124, 31)
+position = Vector2(124, 25)
 direction = Vector2i(0, -1)

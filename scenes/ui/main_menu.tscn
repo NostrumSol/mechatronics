@@ -1,6 +1,15 @@
 [gd_scene format=3 uid="uid://dtnqdiyxa6mp7"]
 
 [ext_resource type="Script" uid="uid://cacuartfclmpp" path="res://scripts/main_menu.gd" id="1_t4swf"]
+[ext_resource type="StyleBox" uid="uid://ckn5h3ms188pw" path="res://data/styles/style_box.tres" id="2_fe2o3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1g8jr"]
+bg_color = Color(0.53322875, 0.59957993, 0.9322929, 1)
+
+[sub_resource type="Theme" id="Theme_fe2o3"]
+Button/styles/hover = null
+Button/styles/normal = ExtResource("2_fe2o3")
+Button/styles/pressed = SubResource("StyleBoxFlat_1g8jr")
 
 [node name="StartMenu" type="Control" unique_id=1640743575 node_paths=PackedStringArray("start")]
 layout_mode = 3
@@ -15,51 +24,90 @@ size_flags_horizontal = 4
 script = ExtResource("1_t4swf")
 start = NodePath("CenterContainer/MainButtons/Start")
 
-[node name="Title" type="Label" parent="." unique_id=2017868701]
+[node name="Version" type="Label" parent="." unique_id=1875510227]
 layout_mode = 0
-offset_left = -80.0
-offset_top = -113.0
-offset_right = 86.0
-offset_bottom = -69.0
+offset_left = -257.0
+offset_top = 81.0
+offset_right = -71.0
+offset_bottom = 125.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 11
+text = "ALPHA V1.0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="." unique_id=2017868701]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -24.0
+offset_right = 159.0
+offset_bottom = 11.0
+grow_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 34
 text = "MECHATRONICS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Title" unique_id=1080135498]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 15.0
+offset_right = 174.0
+offset_bottom = 59.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "by Agnès Lowing"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1636585391]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -42.0
-offset_top = -62.5
-offset_right = 42.0
-offset_bottom = 62.5
-grow_horizontal = 2
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -165.0
+offset_top = -48.0
+offset_right = -65.0
+offset_bottom = 59.0
+grow_horizontal = 0
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="MainButtons" type="VBoxContainer" parent="CenterContainer" unique_id=1555534659]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="Start" type="Button" parent="CenterContainer/MainButtons" unique_id=1249811471]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 mouse_default_cursor_shape = 2
+theme = SubResource("Theme_fe2o3")
+theme_override_constants/outline_size = 2
 text = "Start"
 
 [node name="Options" type="Button" parent="CenterContainer/MainButtons" unique_id=1586974164]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = SubResource("Theme_fe2o3")
+theme_override_constants/outline_size = 2
 text = "Options"
 
 [node name="Quit" type="Button" parent="CenterContainer/MainButtons" unique_id=1880917979]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Start")
 mouse_default_cursor_shape = 2
+theme = SubResource("Theme_fe2o3")
+theme_override_constants/outline_size = 2
 text = "Quit"
 
 [connection signal="pressed" from="CenterContainer/MainButtons/Start" to="." method="_on_start_pressed"]

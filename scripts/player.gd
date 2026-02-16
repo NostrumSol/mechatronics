@@ -21,10 +21,12 @@ func _ready() -> void:
 func _on_start_traversing() -> void:
 	visible = false
 	player_input.current_state = PlayerInputHandler.PlayerState.TRAVERSING
+	print("TRAVERSING")
 
 func _on_finished_traversing() -> void:
 	visible = true
 	player_input.current_state = PlayerInputHandler.PlayerState.IDLE
+	print("FINISHED TRAVERSING")
 
 func _on_inventory_items_changed() -> void:
 	var modifiers = inventory.get_all_player_modifiers()

@@ -14,9 +14,11 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="every indie game ever"
+config/name="Mechatronics"
+config/version="1.0.0 ALPHA"
 run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
+run/max_fps=60
 config/icon="res://assets/textures/icon.svg"
 
 [autoload]
@@ -34,12 +36,16 @@ window/size/borderless=true
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 window/vsync/vsync_mode=0
-mouse_cursor/custom_image="res://assets/textures/crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2(16, 16)
 
 [dotnet]
 
 project/assembly_name="every indie game ever"
+
+[gui]
+
+theme/default_font_generate_mipmaps=true
+theme/custom_font="uid://cd0lc3lac6u8f"
 
 [input]
 
@@ -125,3 +131,4 @@ pause={
 
 textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+2d/snap/snap_2d_transforms_to_pixel=true

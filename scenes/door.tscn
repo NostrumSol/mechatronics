@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bbm4ndoo46aj4"]
+[gd_scene format=4 uid="uid://bbm4ndoo46aj4"]
 
 [ext_resource type="Script" uid="uid://o72jw2boxslg" path="res://scripts/door.gd" id="1_hh1oy"]
 [ext_resource type="TileSet" uid="uid://diggcexa3u7t0" path="res://data/tile_set.tres" id="2_uvdjg"]
@@ -7,15 +7,13 @@
 radius = 11.180342
 
 [node name="Door" type="Area2D" unique_id=1345941613]
-scale = Vector2(0.2, 0.2)
 collision_mask = 2
 script = ExtResource("1_hh1oy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=43784032]
-position = Vector2(0, 5)
-scale = Vector2(0.99999994, 0.99999994)
-shape = SubResource("CircleShape2D_uvdjg")
-
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=171669063]
-tile_map_data = PackedByteArray(0, 0, 254, 255, 0, 0, 1, 0, 19, 0, 0, 0, 0, 0, 255, 255, 0, 0, 1, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 20, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21, 0, 0, 0, 0, 0)
+tile_map_data = PackedByteArray("AAD+/wAAAQATAAEAAAD//wAAAQAUAAEAAAAAAAAAAQAUAAEAAAABAAAAAQAVAAEAAAD+////AQATAAAAAAABAP//AQAVAAAAAAAAAP//AQAUAAAAAAD/////AQAUAAAAAAA=")
 tile_set = ExtResource("2_uvdjg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=43784032]
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("CircleShape2D_uvdjg")

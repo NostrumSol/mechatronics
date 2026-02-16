@@ -1,7 +1,7 @@
 extends Node2D
 class_name Room
 
-const DOOR_OFFSET := 10
+const DOOR_OFFSET := 15
 
 @export var spawn_point : Marker2D
 
