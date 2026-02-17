@@ -7,3 +7,4 @@
 
 [node name="Enemy" parent="." index="9" unique_id=489612833 instance=ExtResource("2_oxsh1")]
 position = Vector2(123, 60)
+motion_mode = 1

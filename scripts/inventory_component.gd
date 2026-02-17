@@ -30,7 +30,7 @@ func initialize_grid():
 	_items.clear()
 
 # -----------------------------------------------------------------------------
-# Helper methods (extracted to eliminate duplication)
+# Helper methods
 # -----------------------------------------------------------------------------
 func _cell_index(cell: Vector2i) -> int:
 	return cell.y * grid_size.x + cell.x

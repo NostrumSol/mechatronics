@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="4_y4r1p"]
 [ext_resource type="Script" uid="uid://bgjkagd2pof28" path="res://scripts/components/energy_component.gd" id="6_4r5pv"]
 [ext_resource type="PackedScene" uid="uid://s2rrmd725qoe" path="res://scenes/ui/inventory.tscn" id="6_gvm34"]
+[ext_resource type="PackedScene" uid="uid://c5jbc33nrmivi" path="res://scenes/components/damage_resistance_component.tscn" id="6_l71n6"]
 [ext_resource type="Script" uid="uid://d1c4nnbftdjoi" path="res://scripts/player_animation_handler.gd" id="7_qfm1y"]
 [ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="8_a8ls1"]
 [ext_resource type="Script" uid="uid://bcldnc807xxu4" path="res://scripts/health_bar.gd" id="9_d2wvv"]
@@ -100,7 +101,7 @@ radius = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_l71n6"]
 shader = ExtResource("16_4ni07")
-shader_parameter/vignette_intensity = 1.5
+shader_parameter/vignette_intensity = 0.5
 shader_parameter/vignette_opacity = 0.850000040375
 shader_parameter/vignette_rgb = Color(0, 0, 0, 0.9529412)
 
@@ -163,7 +164,10 @@ energy_cost_timer = NodePath("EnergyCostTimer")
 [node name="EnergyCostTimer" type="Timer" parent="FlashlightHandler" unique_id=497059734]
 one_shot = true
 
-[node name="HealthComponent" parent="." unique_id=705976797 instance=ExtResource("2_ur7pv")]
+[node name="HealthComponent" parent="." unique_id=705976797 node_paths=PackedStringArray("resist") instance=ExtResource("2_ur7pv")]
+resist = NodePath("../DamageResistanceComponent")
+
+[node name="DamageResistanceComponent" parent="." unique_id=1281566228 instance=ExtResource("6_l71n6")]
 
 [node name="EnergyComponent" type="Node" parent="." unique_id=1169287968]
 script = ExtResource("6_4r5pv")
@@ -222,6 +226,7 @@ reload_progress = NodePath("ReloadProgress")
 weapon = NodePath("../Weapon")
 
 [node name="Vignette" type="ColorRect" parent="UILayer" unique_id=1572187890]
+visible = false
 material = SubResource("ShaderMaterial_l71n6")
 anchors_preset = -1
 anchor_right = 3.325

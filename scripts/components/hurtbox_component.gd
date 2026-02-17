@@ -24,6 +24,6 @@ func _process(delta: float) -> void:
 
 func _damage(hitbox: HitboxComponent) -> void:
 	if invincibility_timer.time_left <= 0:
-			healthComponent.damage(hitbox.damage.damage_value)
+			healthComponent.damage(hitbox.damage)
 			hurtbox_hit.emit(hitbox)
 			invincibility_timer.start(invincibility_period)

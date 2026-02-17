@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cbavpv5bremg3" path="res://scripts/stats_effect_component.gd" id="2_yo4tp"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
 [ext_resource type="Script" uid="uid://cqlwxgtb5bvo7" path="res://scripts/components/gib_component.gd" id="7_mgm4g"]
+[ext_resource type="PackedScene" uid="uid://c5jbc33nrmivi" path="res://scenes/components/damage_resistance_component.tscn" id="7_ox54m"]
 [ext_resource type="PackedScene" uid="uid://cytdcde2jyumq" path="res://scenes/components/hitbox_component.tscn" id="9_pksqs"]
 [ext_resource type="Script" uid="uid://bpb8ow777yhr0" path="res://scripts/classes/damage_instance.gd" id="11_qoibk"]
 
@@ -66,6 +67,7 @@ radius = 4.0
 [node name="Enemy" type="CharacterBody2D" unique_id=489612833]
 collision_layer = 4
 collision_mask = 5
+motion_mode = 1
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=692698973]
 occluder = SubResource("OccluderPolygon2D_yo4tp")
@@ -94,7 +96,10 @@ animation = &"moving"
 body = NodePath("..")
 sprite = NodePath("../Sprite")
 
-[node name="HealthComponent" parent="." unique_id=1898653669 instance=ExtResource("2_xgoky")]
+[node name="HealthComponent" parent="." unique_id=1898653669 node_paths=PackedStringArray("resist") instance=ExtResource("2_xgoky")]
+resist = NodePath("")
+
+[node name="DamageResistanceComponent" parent="." unique_id=1281566228 instance=ExtResource("7_ox54m")]
 
 [node name="GibComponent" type="Node" parent="." unique_id=458663426 node_paths=PackedStringArray("health_component")]
 script = ExtResource("7_mgm4g")
