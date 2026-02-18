@@ -1,4 +1,5 @@
 extends TextureRect
+class_name InventorySlot
 
 signal slot_entered(slot)
 signal slot_exited(slot)

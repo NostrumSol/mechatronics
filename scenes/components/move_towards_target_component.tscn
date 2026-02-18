@@ -10,12 +10,9 @@ timer = NodePath("PathUpdateTimer")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=196663673]
 target_desired_distance = 2.0
-simplify_path = true
 avoidance_enabled = true
 radius = 2.0
-neighbor_distance = 300.0
-time_horizon_agents = 0.33
-max_speed = 300.0
+avoidance_priority = 0.5
 
 [node name="PathUpdateTimer" type="Timer" parent="." unique_id=699176904]
 autostart = true

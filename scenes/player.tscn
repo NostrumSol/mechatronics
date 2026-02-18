@@ -296,12 +296,14 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_81udy")
 max_value = 1.0
 value = 0.5
 
-[node name="Inventory" parent="UILayer" unique_id=147464575 node_paths=PackedStringArray("inventory_data") instance=ExtResource("6_gvm34")]
+[node name="Inventory" parent="UILayer" unique_id=147464575 node_paths=PackedStringArray("inventory_data", "player_stats_panel", "weapon_stats_panel") instance=ExtResource("6_gvm34")]
 offset_left = 323.3333
 offset_top = 3.333332
 offset_right = 323.3333
 offset_bottom = 3.333332
 inventory_data = NodePath("../../InventoryComponent")
+player_stats_panel = NodePath("PlayerStatsPanel")
+weapon_stats_panel = NodePath("WeaponStatsPanel")
 
 [node name="WeaponStatsPanel" type="Panel" parent="UILayer/Inventory" unique_id=1994406909 node_paths=PackedStringArray("weapon", "stats_label")]
 custom_minimum_size = Vector2(150, 0)

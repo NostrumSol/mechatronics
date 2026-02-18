@@ -2,7 +2,7 @@ extends Panel
 class_name StatsPanel
 
 @export var stats_label: RichTextLabel
-@export var stats_component: Node   # Must have base_stats, current_stats and stats_changed signal
+@export var stats_component: StatsComponent
 
 func _ready() -> void:
 	if stats_component and stats_component.has_signal("stats_changed"):
@@ -38,16 +38,11 @@ func _has_stat(collection, stat) -> bool:
 	else:
 		return false
 
-# ---------- Virtual methods (override in derived classes) ----------
-
-# Return an array of stat identifiers (keys) in the order they should appear
 func get_stat_order() -> Array:
 	return []
 
-# Return a human‑readable name for the given stat identifier
 func get_stat_name(stat) -> String:
 	return str(stat)
 
-# Format the current value (including any visual indicators like [+]/[-])
 func format_stat(value, _base_value, _stat) -> String:
 	return str(value)

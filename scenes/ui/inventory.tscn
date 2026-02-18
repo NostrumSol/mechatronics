@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://byhnjwnpb330g" path="res://scripts/inventory_ui.gd" id="1_k3q8r"]
 
-[node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box", "visual_items", "description_box", "description_text", "description_title")]
+[node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box", "visual_items", "description_box", "description_text", "description_title", "stats_text")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 602.0
@@ -18,6 +18,7 @@ visual_items = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer
 description_box = NodePath("DescriptionBoxTitle")
 description_text = NodePath("DescriptionBoxTitle/DescriptionBox/DescriptionText")
 description_title = NodePath("DescriptionBoxTitle/DescriptionTitle")
+stats_text = NodePath("DescriptionBoxTitle/StatsBox/StatsText")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1960270946]
 layout_mode = 0
@@ -75,7 +76,6 @@ columns = 8
 [node name="VisualItemStorage" type="Node2D" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=635233647]
 
 [node name="DescriptionBoxTitle" type="ColorRect" parent="." unique_id=432855899]
-visible = false
 layout_mode = 0
 offset_left = 237.0
 offset_top = 250.0
@@ -112,5 +112,23 @@ offset_right = -0.033996582
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "Description Placeholder"
+
+[node name="StatsBox" type="ColorRect" parent="DescriptionBoxTitle" unique_id=1934805090]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 107.0
+offset_right = 255.0
+offset_bottom = 150.0
+color = Color(0, 0, 0, 1)
+
+[node name="StatsText" type="RichTextLabel" parent="DescriptionBoxTitle/StatsBox" unique_id=2018253860]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.99300003
+anchor_bottom = 1.0
+offset_right = -0.033996582
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Stats Placeholder"
 
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/Header/Button_Spawn" to="." method="_on_button_spawn_pressed"]

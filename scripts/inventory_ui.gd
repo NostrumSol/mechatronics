@@ -10,14 +10,18 @@ const SLOT = preload("res://scenes/ui/slot.tscn")
 @export var item_id_box: LineEdit
 @export var visual_items: Node2D
 
+@export var player_stats_panel : StatsPanel
+@export var weapon_stats_panel : StatsPanel
+
 @export var description_box : ColorRect
 @export var description_text : RichTextLabel
 @export var description_title : RichTextLabel
+@export var stats_text : RichTextLabel
 
 @onready var column_count = grid_container.columns
 
 var item_held = null
-var current_slot = null
+var current_slot : InventorySlot = null
 var slot_nodes: Array = []
 
 var inventory_open := false
@@ -217,16 +221,52 @@ func attempt_show_description():
 	
 	var item_data = item_info.item_data as ItemData
 	description_title.text = item_data.item_name
-	
+
 	var text = ""
-	text += item_data.item_description + "\n"
+	text += player_modifiers_to_text(inventory_data.get_player_modifiers(item_data)) + "\n"
+	text += weapon_modifiers_to_text(inventory_data.get_weapon_modifiers(item_data))
+	stats_text.text = text
 	
-	
-	#text += str(item_data.weapon_stat_modifiers) # Format this properly later
-	
-	description_text.text = text
+	description_text.text = item_data.item_description
 	description_box.global_position = get_global_mouse_position()
 	description_box.show()
+
+func player_modifiers_to_text(modifiers: Array) -> String:
+	var text = ""
+	
+	for mod_set in modifiers:
+		for stat_name in mod_set.keys():
+			var stat_enum = player_stats_panel.stats_component._get_stat_enum_from_string(stat_name)
+			var mod = mod_set[stat_name]
+			var modifier = 0
+			match mod["type"]:
+				"add":
+					modifier += mod["value"]
+				"multiply":
+					modifier = modifier + "*" + mod["value"]
+				
+			text += player_stats_panel.get_stat_name(stat_enum) + ": " + str(modifier) + "\n"
+		
+	return text
+
+func weapon_modifiers_to_text(modifiers: Array) -> String:
+	var text = ""
+	
+	for mod_set in modifiers:
+		for stat_name in mod_set.keys():
+			var stat_enum = weapon_stats_panel.stats_component._get_stat_enum_from_string(stat_name)
+			var mod = mod_set[stat_name]
+			var modifier = 0
+			match mod["type"]:
+				"add":
+					modifier += mod["value"]
+				"multiply":
+					modifier += mod["value"]
+					modifier = "*" + str(modifier)
+				
+			text += weapon_stats_panel.get_stat_name(stat_enum) + ": " + str(modifier) + "\n"
+		
+	return text
 # -----------------------------------------------------------------------------
 # Spawn item (for testing)
 # -----------------------------------------------------------------------------

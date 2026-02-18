@@ -155,6 +155,13 @@ func get_all_weapon_modifiers() -> Array:
 			modifiers.append(data.weapon_stat_modifiers)
 	return modifiers
 
+func get_weapon_modifiers(item_data: ItemData) -> Array:
+	var modifiers = []
+	
+	if item_data and not item_data.weapon_stat_modifiers.is_empty():
+		modifiers.append(item_data.weapon_stat_modifiers)
+	return modifiers
+
 func get_all_player_modifiers() -> Array:
 	var modifiers = []
 	for item_info in get_all_items():
@@ -163,6 +170,18 @@ func get_all_player_modifiers() -> Array:
 			modifiers.append(data.player_stat_modifiers)
 	return modifiers
 
-# do this later
-func process_item_components() -> void:
-	pass
+func get_player_modifiers(item_data: ItemData) -> Array:
+	var modifiers = []
+	
+	if item_data and not item_data.player_stat_modifiers.is_empty():
+		modifiers.append(item_data.player_stat_modifiers)
+	return modifiers
+
+func get_all_item_components() -> Array:
+	var components = []
+	for item_info in get_all_items():
+		var data = item_info.item_data
+		if data and not data.components.is_empty():
+			components.append(data.components)
+	
+	return components
