@@ -1,5 +1,9 @@
 [gd_scene format=3 uid="uid://bqi7v0ldmfgnm"]
 
 [ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_uodan"]
+[ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemies/basic_enemy.tscn" id="2_oxsh1"]
 
 [node name="StartingRoomScene" unique_id=1917625330 instance=ExtResource("1_uodan")]
+
+[node name="Enemy" parent="." index="9" unique_id=489612833 instance=ExtResource("2_oxsh1")]
+position = Vector2(81, 172)

@@ -262,7 +262,7 @@ func instantiate_rooms() -> void:
 func cache_positions() -> void:
 	cached_positions = grid.keys()
 				
-func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) -> void:
+func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO, door: Door = null) -> void:
 	var room = room_instances.get(pos)
 	if not room:
 		return
@@ -281,6 +281,11 @@ func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) 
 		var opposite = -entrance_direction
 		var spawn_pos = current_room_instance.get_door_spawn_position(opposite)
 		player.look_at(spawn_pos)
+		
+		if door and door.state == Door.door_state.OPENING:
+			await door.sprite.animation_finished
+		
+		player.hide()
 		
 		if tween:
 			tween.kill()
@@ -304,18 +309,19 @@ func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO) 
 func _on_traversal_tween_finished() -> void:
 	finished_traversing.emit()
 	current_room_instance.process_mode = Node.PROCESS_MODE_INHERIT
+	player.show()
 
-func _deferred_traverse_room(pos: Vector2i, direction: Vector2i):
+func _deferred_traverse_room(pos: Vector2i, direction: Vector2i, door: Door):
 	current_position = pos
-	traverse_room(pos, direction)
+	traverse_room(pos, direction, door)
 
-func change_room(direction: Vector2i):
+func change_room(direction: Vector2i, door: Door):
 	var new_pos = current_position + direction
 	
 	if not is_valid(new_pos):
 		return
 	
-	_deferred_traverse_room.call_deferred(new_pos, direction)
+	_deferred_traverse_room.call_deferred(new_pos, direction, door)
 	
 func get_room_door_directions(room: Room) -> Array:
 	return room.get_door_directions()

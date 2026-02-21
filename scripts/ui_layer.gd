@@ -21,7 +21,7 @@ func load_weapon_stats() -> void:
 	reload_progress.visible = false
 
 func _on_revolver_ammo_changed(ammoUpdate: AmmoUpdate) -> void:
-	ammo_label.text = "Loaded: %d/%d\nStored: %d/%d" % [ammoUpdate.Loaded, ammoUpdate.MaxLoaded, \
+	ammo_label.text = "LOADED: %d/%d\nSTORED: %d/%d" % [ammoUpdate.Loaded, ammoUpdate.MaxLoaded, \
 	ammoUpdate.Reserve, ammoUpdate.MaxReserve]
 
 func _on_reload_started(_total_time: float) -> void:

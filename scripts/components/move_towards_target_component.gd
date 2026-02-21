@@ -7,7 +7,7 @@ class_name MoveTowardsTargetComponent
 @export var dash : DashComponent
 @export var timer : Timer
 
-@export var path_update_interval := 0.2
+@export var path_update_interval := 0.1
 
 func _ready() -> void:
 	nav.velocity_computed.connect(_on_velocity_computed)

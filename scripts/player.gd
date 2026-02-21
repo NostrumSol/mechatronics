@@ -8,6 +8,7 @@ class_name Player
 @export var camera: Camera2D
 @export var player_input: PlayerInputHandler
 @export var flashlight: PointLight2D
+@export var scrap: ScrapComponent
 
 var movement_speed = 600.0
 
@@ -19,11 +20,9 @@ func _ready() -> void:
 	update_stats()
 
 func _on_start_traversing() -> void:
-	visible = false
 	player_input.current_state = PlayerInputHandler.PlayerState.TRAVERSING
 
 func _on_finished_traversing() -> void:
-	visible = true
 	player_input.current_state = PlayerInputHandler.PlayerState.IDLE
 
 func _on_inventory_items_changed() -> void:

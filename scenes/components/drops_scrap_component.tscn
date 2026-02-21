@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cuekowwf7vgi5"]
+
+[ext_resource type="Script" uid="uid://dy8box5yb0qmi" path="res://scripts/components/drops_scrap_component.gd" id="1_dk6a2"]
+
+[node name="DropsScrapComponent" type="Node2D" unique_id=1048810362]
+script = ExtResource("1_dk6a2")

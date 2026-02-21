@@ -4,7 +4,9 @@ class_name ResourceComponent
 signal resource_changed(ResourceUpdate)
 
 @export var max_resource := 100.0
-var _resource := 100.0
+var _resource := 0.0
+
+@export var start_at_max := true
 
 var resource: float:
 	get: return _resource
@@ -14,7 +16,8 @@ func _ready() -> void:
 	initialize_resource()
 
 func initialize_resource() -> void:
-	resource = max_resource
+	if start_at_max:
+		resource = max_resource
 
 func decrease(amount: float) -> void:
 	resource -= amount

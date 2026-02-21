@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://bgjkagd2pof28" path="res://scripts/components/energy_component.gd" id="6_4r5pv"]
 [ext_resource type="PackedScene" uid="uid://s2rrmd725qoe" path="res://scenes/ui/inventory.tscn" id="6_gvm34"]
 [ext_resource type="PackedScene" uid="uid://c5jbc33nrmivi" path="res://scenes/components/damage_resistance_component.tscn" id="6_l71n6"]
+[ext_resource type="Script" uid="uid://c5w5imkdexlj1" path="res://scripts/components/scrap_component.gd" id="7_ke2ow"]
 [ext_resource type="Script" uid="uid://d1c4nnbftdjoi" path="res://scripts/player_animation_handler.gd" id="7_qfm1y"]
 [ext_resource type="PackedScene" uid="uid://b0tiljjq2tggl" path="res://scenes/components/dash_component.tscn" id="8_a8ls1"]
 [ext_resource type="Script" uid="uid://bcldnc807xxu4" path="res://scripts/health_bar.gd" id="9_d2wvv"]
@@ -24,6 +25,7 @@
 [ext_resource type="Script" uid="uid://dgr8vccjbgg0s" path="res://scripts/energy_bar.gd" id="16_60mlk"]
 [ext_resource type="PackedScene" uid="uid://dfv34gt8d2ypd" path="res://scenes/ui/pause_menu.tscn" id="17_qfm1y"]
 [ext_resource type="Script" uid="uid://b5rrlidyngw07" path="res://scripts/debug_label.gd" id="22_a38lo"]
+[ext_resource type="Script" uid="uid://b0pt2elih2nvr" path="res://scripts/resources_panel.gd" id="24_ujl30"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fulsm"]
 polygon = PackedVector2Array(-1, -3, -1, 1, 2, 1, 2, -3)
@@ -105,13 +107,6 @@ shader_parameter/vignette_intensity = 0.5
 shader_parameter/vignette_opacity = 0.850000040375
 shader_parameter/vignette_rgb = Color(0, 0, 0, 0.9529412)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fulsm"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r5pv"]
-bg_color = Color(0.94052577, 0.42867705, 5.7756904e-07, 1)
-corner_detail = 7
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60mlk"]
 bg_color = Color(0, 0, 0, 1)
 
@@ -119,15 +114,22 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0.7698625, 0.706985, 0.24526232, 1)
 corner_detail = 7
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fulsm"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r5pv"]
+bg_color = Color(0.94052577, 0.42867705, 5.7756904e-07, 1)
+corner_detail = 7
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4d2f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81udy"]
 bg_color = Color(0.404762, 0.659021, 0.591017, 1)
 
-[node name="Player" type="CharacterBody2D" unique_id=207150296 node_paths=PackedStringArray("inventory", "weapon", "player_stats", "health_component", "camera", "player_input", "flashlight")]
+[node name="Player" type="CharacterBody2D" unique_id=207150296 node_paths=PackedStringArray("inventory", "weapon", "player_stats", "health_component", "camera", "player_input", "flashlight", "scrap")]
 z_index = 3
 collision_layer = 2
-collision_mask = 9
+collision_mask = 521
 motion_mode = 1
 script = ExtResource("1_75rev")
 inventory = NodePath("InventoryComponent")
@@ -137,6 +139,7 @@ health_component = NodePath("HealthComponent")
 camera = NodePath("PlayerCamera")
 player_input = NodePath("PlayerInputHandler")
 flashlight = NodePath("Flashlight")
+scrap = NodePath("ScrapComponent")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1901426963]
 occluder = SubResource("OccluderPolygon2D_fulsm")
@@ -167,10 +170,14 @@ one_shot = true
 [node name="HealthComponent" parent="." unique_id=705976797 node_paths=PackedStringArray("resist") instance=ExtResource("2_ur7pv")]
 resist = NodePath("../DamageResistanceComponent")
 
-[node name="DamageResistanceComponent" parent="." unique_id=1281566228 instance=ExtResource("6_l71n6")]
-
 [node name="EnergyComponent" type="Node" parent="." unique_id=1169287968]
 script = ExtResource("6_4r5pv")
+
+[node name="ScrapComponent" type="Node" parent="." unique_id=1554078456]
+script = ExtResource("7_ke2ow")
+start_at_max = false
+
+[node name="DamageResistanceComponent" parent="." unique_id=1281566228 instance=ExtResource("6_l71n6")]
 
 [node name="PlayerStatsComponent" type="Node" parent="." unique_id=1723054834]
 script = ExtResource("2_smehm")
@@ -221,7 +228,7 @@ script = ExtResource("14_i4ail")
 scale = Vector2(0.3, 0.3)
 transform = Transform2D(0.3, 0, 0, 0.3, 0, 0)
 script = ExtResource("4_wehkq")
-ammo_label = NodePath("AmmoLabel")
+ammo_label = NodePath("HUD/Background/AmmoLabel")
 reload_progress = NodePath("ReloadProgress")
 weapon = NodePath("../Weapon")
 
@@ -236,47 +243,88 @@ offset_bottom = -0.021362305
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HealthBar" type="ProgressBar" parent="UILayer" unique_id=342205844 node_paths=PackedStringArray("health_component")]
-offset_left = 16.666666
-offset_top = 20.0
-offset_right = 218.66673
-offset_bottom = 47.0
-theme_override_styles/background = SubResource("StyleBoxFlat_fulsm")
-theme_override_styles/fill = SubResource("StyleBoxFlat_4r5pv")
-value = 100.0
-rounded = true
-script = ExtResource("9_d2wvv")
-health_component = NodePath("../../HealthComponent")
+[node name="HUD" type="Control" parent="UILayer" unique_id=959782899]
+layout_mode = 3
+anchor_bottom = 0.635
+offset_left = 3.3333333
+offset_top = 576.6666
+offset_right = 3.3333333
+offset_bottom = 655.5067
+grow_vertical = 2
+scale = Vector2(0.635, 0.635)
+size_flags_horizontal = 4
+metadata/_edit_use_anchors_ = true
 
-[node name="EnergyBar" type="ProgressBar" parent="UILayer" unique_id=2134165379 node_paths=PackedStringArray("energy_component")]
-offset_left = 16.666666
-offset_top = 53.333332
-offset_right = 218.66673
-offset_bottom = 80.33333
+[node name="Background" type="ColorRect" parent="UILayer/HUD" unique_id=1658422285]
+layout_mode = 0
+offset_left = -5.249344
+offset_top = -5.2493286
+offset_right = 311.4173
+offset_bottom = 224.41727
+color = Color(0.33, 0.305965, 0.2541, 1)
+
+[node name="EnergyBar" type="ProgressBar" parent="UILayer/HUD/Background" unique_id=2134165379 node_paths=PackedStringArray("energy_component")]
+layout_mode = 0
+offset_left = 6.666666
+offset_top = 83.33325
+offset_right = 306.66666
+offset_bottom = 116.666626
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 24
 theme_override_styles/background = SubResource("StyleBoxFlat_60mlk")
 theme_override_styles/fill = SubResource("StyleBoxFlat_i4ail")
 value = 100.0
 rounded = true
 script = ExtResource("16_60mlk")
-energy_component = NodePath("../../EnergyComponent")
+energy_component = NodePath("../../../../EnergyComponent")
 
-[node name="AmmoLabel" type="Label" parent="UILayer" unique_id=1363222714]
+[node name="EnergyLabel" type="Label" parent="UILayer/HUD/Background/EnergyBar" unique_id=974970690]
+layout_mode = 0
+offset_left = 106.666664
+offset_top = -16.666615
+offset_right = 196.66666
+offset_bottom = 20.333385
+text = "ENERGY RESERVE
+"
+
+[node name="HealthBar" type="ProgressBar" parent="UILayer/HUD/Background" unique_id=342205844 node_paths=PackedStringArray("health_component")]
+layout_mode = 0
+offset_left = 6.666666
+offset_top = 29.999878
+offset_right = 306.66666
+offset_bottom = 63.333252
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 24
+theme_override_styles/background = SubResource("StyleBoxFlat_fulsm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4r5pv")
+value = 100.0
+rounded = true
+script = ExtResource("9_d2wvv")
+health_component = NodePath("../../../../HealthComponent")
+
+[node name="HealthLabel" type="Label" parent="UILayer/HUD/Background/HealthBar" unique_id=1771164977]
+layout_mode = 0
+offset_left = 120.0
+offset_top = -16.666666
+offset_right = 178.0
+offset_bottom = 0.33333397
+text = "INTEGRITY"
+
+[node name="AmmoLabel" type="Label" parent="UILayer/HUD/Background" unique_id=1363222714]
 editor_description = "replace with sick ass revolver cylinder later"
-anchors_preset = -1
-anchor_top = 0.902
-anchor_right = 0.123
-anchor_bottom = 1.0
-offset_left = 19.999998
-offset_top = 401.83463
-offset_right = 1254.72
-offset_bottom = 929.6666
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(0.18, 0.18)
+layout_mode = 0
+offset_left = 3.3333316
+offset_top = 123.33325
+offset_right = 343.33334
+offset_bottom = 226.33325
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 200
-text = "Loaded: 6/6
-Stored: 36/36"
+theme_override_font_sizes/font_size = 50
+text = "LOADED: 6/6
+STORED: 36/36"
 
 [node name="ReloadProgress" type="ProgressBar" parent="UILayer" unique_id=1811981609]
 anchors_preset = 8
@@ -297,10 +345,17 @@ max_value = 1.0
 value = 0.5
 
 [node name="Inventory" parent="UILayer" unique_id=147464575 node_paths=PackedStringArray("inventory_data", "player_stats_panel", "weapon_stats_panel") instance=ExtResource("6_gvm34")]
-offset_left = 323.3333
-offset_top = 3.333332
-offset_right = 323.3333
-offset_bottom = 3.333332
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 448.0
+offset_top = 248.66666
+offset_right = 448.0
+offset_bottom = 248.66666
+grow_horizontal = 2
+grow_vertical = 2
 inventory_data = NodePath("../../InventoryComponent")
 player_stats_panel = NodePath("PlayerStatsPanel")
 weapon_stats_panel = NodePath("WeaponStatsPanel")
@@ -308,20 +363,27 @@ weapon_stats_panel = NodePath("WeaponStatsPanel")
 [node name="WeaponStatsPanel" type="Panel" parent="UILayer/Inventory" unique_id=1994406909 node_paths=PackedStringArray("weapon", "stats_label")]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 0
-offset_left = 528.0
-offset_top = 48.0
-offset_right = 658.0
-offset_bottom = 555.0
+offset_left = 236.6666
+offset_top = -260.0
+offset_right = 386.6666
+offset_bottom = 255.33331
 script = ExtResource("13_f1ej7")
 weapon = NodePath("../../../Weapon")
 stats_label = NodePath("WeaponStatsLabel")
 
 [node name="WeaponStatsLabel" type="RichTextLabel" parent="UILayer/Inventory/WeaponStatsPanel" unique_id=1653530910]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 26.0
-offset_right = 135.0
-offset_bottom = 476.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.5
+offset_top = -224.99998
+offset_right = 60.5
+offset_bottom = 224.99998
+grow_horizontal = 2
+grow_vertical = 2
 bbcode_enabled = true
 text = "TEST"
 
@@ -331,23 +393,56 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -83.0
-offset_top = 48.0
-offset_right = 67.0
-offset_bottom = 555.0
+offset_left = -396.6667
+offset_top = -260.0
+offset_right = -246.66669
+offset_bottom = 256.66663
 grow_horizontal = 0
 script = ExtResource("14_oprun")
 player = NodePath("../../..")
 stats_label = NodePath("PlayerStatsLabel")
 
 [node name="PlayerStatsLabel" type="RichTextLabel" parent="UILayer/Inventory/PlayerStatsPanel" unique_id=1816609088]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 26.0
-offset_right = 135.0
-offset_bottom = 476.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.5
+offset_top = -225.0
+offset_right = 60.5
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
 bbcode_enabled = true
 text = "TEST"
+
+[node name="ScrapPanel" type="Panel" parent="UILayer/Inventory" unique_id=183747685 node_paths=PackedStringArray("scrap", "label")]
+layout_mode = 0
+offset_left = -210.00003
+offset_top = 266.6667
+offset_right = 209.99997
+offset_bottom = 326.66663
+script = ExtResource("24_ujl30")
+scrap = NodePath("../../../ScrapComponent")
+label = NodePath("ScrapLabel")
+
+[node name="ScrapLabel" type="RichTextLabel" parent="UILayer/Inventory/ScrapPanel" unique_id=2061546301]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -19.999996
+offset_right = 40.0
+offset_bottom = 19.999996
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "SCRAP: TEST"
 
 [node name="PauseMenu" parent="UILayer" unique_id=1438876665 instance=ExtResource("17_qfm1y")]
 process_mode = 3

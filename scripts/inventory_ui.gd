@@ -52,9 +52,6 @@ func _on_item_updated(data: ItemData, anchor: Vector2i, rotation: int):
 func _on_inventory_updated():
 	refresh_all_slots()
 	
-# -----------------------------------------------------------------------------
-# Slot creation and helpers
-# -----------------------------------------------------------------------------
 func create_slot() -> void:
 	var new_slot = SLOT.instantiate()
 	new_slot.cell_index = slot_nodes.size()
@@ -145,10 +142,10 @@ func set_inventory_state(state: bool) -> void:
 	inventory_open = state
 	inventory_state_changed.emit(state)
 	visible = state
+	
+	if state == false:
+		description_box.visible = false
 
-# -----------------------------------------------------------------------------
-# Preview highlighting
-# -----------------------------------------------------------------------------
 func update_preview():
 	clear_preview()
 	if not current_slot or not item_held:

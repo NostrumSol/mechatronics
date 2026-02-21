@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://brok64u50lpeu"]
+
+[ext_resource type="Script" uid="uid://cqlwxgtb5bvo7" path="res://scripts/components/gib_component.gd" id="1_r5dc7"]
+
+[node name="GibComponent" type="Node" unique_id=475626603 node_paths=PackedStringArray("health_component")]
+script = ExtResource("1_r5dc7")
+health_component = NodePath("")

@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://c76tvj583imy2"]
+
+[ext_resource type="Script" uid="uid://bvm1xm7rjmyle" path="res://scripts/scrap.gd" id="1_sqtyu"]
+[ext_resource type="Texture2D" uid="uid://bbyvtd1jrj5my" path="res://assets/textures/character_atlas.png" id="1_wgfcx"]
+[ext_resource type="Script" uid="uid://bn5e1arymekk0" path="res://scripts/move_to_radius.gd" id="2_w44v5"]
+[ext_resource type="Script" uid="uid://dv6vbqrxprg38" path="res://scripts/pick_up_radius.gd" id="3_64tav"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w44v5"]
+atlas = ExtResource("1_wgfcx")
+region = Rect2(0, 72, 8, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wgfcx"]
+radius = 31.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w44v5"]
+radius = 5.3851647
+
+[node name="Scrap" type="Node2D" unique_id=1426661864]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_sqtyu")
+
+[node name="ScrapSprite" type="Sprite2D" parent="." unique_id=1240498221]
+texture = SubResource("AtlasTexture_w44v5")
+
+[node name="MoveToRadius" type="Area2D" parent="." unique_id=412742034]
+collision_layer = 512
+collision_mask = 2
+script = ExtResource("2_w44v5")
+
+[node name="MoveToCollider" type="CollisionShape2D" parent="MoveToRadius" unique_id=922232651]
+shape = SubResource("CircleShape2D_wgfcx")
+
+[node name="PickUpRadius" type="Area2D" parent="." unique_id=1062479979 node_paths=PackedStringArray("scrap")]
+collision_layer = 512
+collision_mask = 2
+script = ExtResource("3_64tav")
+scrap = NodePath("..")
+
+[node name="PickUpCollider" type="CollisionShape2D" parent="PickUpRadius" unique_id=1753631672]
+shape = SubResource("CircleShape2D_w44v5")
+debug_color = Color(0, 0.6482945, 0.1950992, 0.41960785)
+
+[connection signal="body_entered" from="MoveToRadius" to="MoveToRadius" method="_on_body_entered"]
+[connection signal="body_entered" from="PickUpRadius" to="PickUpRadius" method="_on_body_entered"]

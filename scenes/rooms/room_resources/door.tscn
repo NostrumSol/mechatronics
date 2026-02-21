@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://bbm4ndoo46aj4"]
+
+[ext_resource type="Script" uid="uid://o72jw2boxslg" path="res://scripts/door.gd" id="1_hh1oy"]
+[ext_resource type="Texture2D" uid="uid://f3kub5bluqss" path="res://assets/textures/structure_tileset.png" id="3_pu7ll"]
+[ext_resource type="AudioStream" uid="uid://c3kydusumy735" path="res://assets/sounds/hiss.mp3" id="3_usxea"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uvdjg"]
+radius = 11.180342
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gquvm"]
+atlas = ExtResource("3_pu7ll")
+region = Rect2(152, 0, 24, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6rful"]
+atlas = ExtResource("3_pu7ll")
+region = Rect2(152, 0, 24, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8oli0"]
+atlas = ExtResource("3_pu7ll")
+region = Rect2(176, 0, 24, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kn3wh"]
+atlas = ExtResource("3_pu7ll")
+region = Rect2(200, 0, 24, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usxea"]
+atlas = ExtResource("3_pu7ll")
+region = Rect2(224, 0, 24, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o1l4q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gquvm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6rful")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8oli0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kn3wh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usxea")
+}],
+"loop": false,
+"name": &"opening",
+"speed": 3.0
+}]
+
+[node name="Door" type="Area2D" unique_id=1345941613 node_paths=PackedStringArray("sprite", "hiss")]
+process_mode = 3
+collision_mask = 2
+script = ExtResource("1_hh1oy")
+sprite = NodePath("Sprite")
+hiss = NodePath("HissPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=43784032]
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("CircleShape2D_uvdjg")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=2099959552]
+sprite_frames = SubResource("SpriteFrames_o1l4q")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="HissPlayer" type="AudioStreamPlayer2D" parent="." unique_id=629591937]
+stream = ExtResource("3_usxea")
+volume_db = -15.0
+bus = &"SFX"

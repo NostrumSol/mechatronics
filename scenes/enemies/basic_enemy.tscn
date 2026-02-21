@@ -5,11 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://bxorbk6sd0idm" path="res://assets/textures/light_beam.png" id="1_xwavj"]
 [ext_resource type="PackedScene" uid="uid://b6vpe4plhp6sk" path="res://scenes/components/move_towards_target_component.tscn" id="2_5uy6h"]
 [ext_resource type="PackedScene" uid="uid://bsdg404s4ldgo" path="res://scenes/components/animation_handler.tscn" id="2_c4w8v"]
+[ext_resource type="PackedScene" uid="uid://b1lqd2y5ih0v0" path="res://scenes/components/status_effects_component.tscn" id="2_h8g6m"]
 [ext_resource type="PackedScene" uid="uid://ctl8dcigj5ml3" path="res://scenes/components/health_component.tscn" id="2_xgoky"]
-[ext_resource type="Script" uid="uid://cbavpv5bremg3" path="res://scripts/stats_effect_component.gd" id="2_yo4tp"]
 [ext_resource type="PackedScene" uid="uid://dphgipyden67a" path="res://scenes/components/hurtbox_component.tscn" id="3_h0dn5"]
-[ext_resource type="Script" uid="uid://cqlwxgtb5bvo7" path="res://scripts/components/gib_component.gd" id="7_mgm4g"]
 [ext_resource type="PackedScene" uid="uid://c5jbc33nrmivi" path="res://scenes/components/damage_resistance_component.tscn" id="7_ox54m"]
+[ext_resource type="PackedScene" uid="uid://brok64u50lpeu" path="res://scenes/components/gib_component.tscn" id="8_h8g6m"]
+[ext_resource type="PackedScene" uid="uid://cuekowwf7vgi5" path="res://scenes/components/drops_scrap_component.tscn" id="9_ojalv"]
 [ext_resource type="PackedScene" uid="uid://cytdcde2jyumq" path="res://scenes/components/hitbox_component.tscn" id="9_pksqs"]
 [ext_resource type="Script" uid="uid://bpb8ow777yhr0" path="res://scripts/classes/damage_instance.gd" id="11_qoibk"]
 
@@ -76,8 +77,7 @@ occluder = SubResource("OccluderPolygon2D_yo4tp")
 body = NodePath("..")
 dash_cooldown = 6.0
 
-[node name="StatusEffectsComponent" type="Node" parent="." unique_id=835874695]
-script = ExtResource("2_yo4tp")
+[node name="StatusEffectsComponent" parent="." unique_id=1115737458 instance=ExtResource("2_h8g6m")]
 
 [node name="Flashlight" type="PointLight2D" parent="." unique_id=1416864385]
 color = Color(0.98039216, 0, 0, 1)
@@ -97,12 +97,14 @@ body = NodePath("..")
 sprite = NodePath("../Sprite")
 
 [node name="HealthComponent" parent="." unique_id=1898653669 node_paths=PackedStringArray("resist") instance=ExtResource("2_xgoky")]
-resist = NodePath("")
+resist = NodePath("../DamageResistanceComponent")
 
 [node name="DamageResistanceComponent" parent="." unique_id=1281566228 instance=ExtResource("7_ox54m")]
 
-[node name="GibComponent" type="Node" parent="." unique_id=458663426 node_paths=PackedStringArray("health_component")]
-script = ExtResource("7_mgm4g")
+[node name="GibComponent" parent="." unique_id=475626603 node_paths=PackedStringArray("health_component") instance=ExtResource("8_h8g6m")]
+health_component = NodePath("../HealthComponent")
+
+[node name="DropsScrapComponent" parent="." unique_id=778746377 node_paths=PackedStringArray("health_component") instance=ExtResource("9_ojalv")]
 health_component = NodePath("../HealthComponent")
 
 [node name="MoveTowardsTargetComponent" parent="." unique_id=496255558 node_paths=PackedStringArray("body", "dash") instance=ExtResource("2_5uy6h")]

@@ -1,0 +1,2 @@
+extends ResourceComponent
+class_name ScrapComponent

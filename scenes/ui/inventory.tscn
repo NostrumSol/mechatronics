@@ -5,10 +5,8 @@
 [node name="Inventory" type="Control" unique_id=1823367833 node_paths=PackedStringArray("grid_container", "scroll_container", "item_id_box", "visual_items", "description_box", "description_text", "description_title", "stats_text")]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 602.0
-offset_top = 182.0
-offset_right = 602.0
-offset_bottom = 182.0
+offset_top = -5.0
+offset_bottom = -5.0
 size_flags_horizontal = 4
 script = ExtResource("1_k3q8r")
 grid_container = NodePath("ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer")
@@ -21,11 +19,18 @@ description_title = NodePath("DescriptionBoxTitle/DescriptionTitle")
 stats_text = NodePath("DescriptionBoxTitle/StatsBox/StatsText")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1960270946]
-layout_mode = 0
-offset_left = 91.0
-offset_top = 43.0
-offset_right = 511.0
-offset_bottom = 563.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -260.0
+offset_right = 210.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.11, 0.10571, 0.0242, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect" unique_id=1116809388]
@@ -76,6 +81,7 @@ columns = 8
 [node name="VisualItemStorage" type="Node2D" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=635233647]
 
 [node name="DescriptionBoxTitle" type="ColorRect" parent="." unique_id=432855899]
+visible = false
 layout_mode = 0
 offset_left = 237.0
 offset_top = 250.0

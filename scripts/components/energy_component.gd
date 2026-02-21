@@ -1,10 +1,6 @@
 extends ResourceComponent
 class_name EnergyComponent
 
-@export var max_energy: float:
-	get: return max_resource
-	set(value): set_max_resource(value)
-
 var energy: float:
 	get: return resource
 	set(value): resource = value

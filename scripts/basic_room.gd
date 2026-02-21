@@ -15,7 +15,7 @@ func _ready():
 		if child is Door:
 			child.door_entered.connect(_on_door_entered)
 
-func _on_door_entered(direction):
+func _on_door_entered(direction: Vector2i, door: Door):
 	# we only really need this when the player touches a door, so...
 	if not player:
 		player = PlayerManager.player
@@ -24,7 +24,7 @@ func _on_door_entered(direction):
 	if player_input.current_state == PlayerInputHandler.PlayerState.TRAVERSING:
 		return
 	
-	RoomManager.change_room(direction)
+	RoomManager.change_room(direction, door)
 
 func get_door_spawn_position(direction: Vector2i) -> Vector2:
 	var door = get_door(direction)
