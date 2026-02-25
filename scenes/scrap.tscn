@@ -5,6 +5,9 @@
 [ext_resource type="Script" uid="uid://bn5e1arymekk0" path="res://scripts/move_to_radius.gd" id="2_w44v5"]
 [ext_resource type="Script" uid="uid://dv6vbqrxprg38" path="res://scripts/pick_up_radius.gd" id="3_64tav"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_sqtyu"]
+radius = 4.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_w44v5"]
 atlas = ExtResource("1_wgfcx")
 region = Rect2(0, 72, 8, 8)
@@ -15,11 +18,21 @@ radius = 31.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_w44v5"]
 radius = 5.3851647
 
-[node name="Scrap" type="Node2D" unique_id=1426661864]
-scale = Vector2(0.5, 0.5)
+[node name="Scrap" type="RigidBody2D" unique_id=1542719330]
+collision_layer = 512
+collision_mask = 257
+gravity_scale = 0.0
+linear_damp = 3.0
+angular_damp = 2.0
 script = ExtResource("1_sqtyu")
 
+[node name="ScrapCollider" type="CollisionShape2D" parent="." unique_id=1435306767]
+shape = SubResource("CircleShape2D_sqtyu")
+debug_color = Color(0.97223514, 0, 0.4457519, 0.41960785)
+
 [node name="ScrapSprite" type="Sprite2D" parent="." unique_id=1240498221]
+position = Vector2(-1.1920929e-07, -1.1920929e-07)
+scale = Vector2(0.625, 0.625)
 texture = SubResource("AtlasTexture_w44v5")
 
 [node name="MoveToRadius" type="Area2D" parent="." unique_id=412742034]

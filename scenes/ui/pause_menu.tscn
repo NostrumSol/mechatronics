@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhn8uyky8rsxe" path="res://scripts/pause_menu.gd" id="1_8huf0"]
 
-[node name="PauseMenu" type="Control" unique_id=904092675 node_paths=PackedStringArray("vbox", "continue_button", "main_menu_button", "quit_button")]
+[node name="PauseMenu" type="Control" unique_id=904092675 node_paths=PackedStringArray("continue_button", "main_menu_button", "quit_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,7 +10,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8huf0")
-vbox = NodePath("MainButtons")
 continue_button = NodePath("MainButtons/Continue")
 main_menu_button = NodePath("MainButtons/Main Menu")
 quit_button = NodePath("MainButtons/Quit")

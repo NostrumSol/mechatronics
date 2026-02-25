@@ -3,6 +3,20 @@ extends Node
 signal started_traversing
 signal finished_traversing
 
+signal player_created
+
+enum GenerationState {
+	NOT_STARTED,
+	GENERATING_LAYOUT,
+	MAPPING_DOORS,
+	ASSIGNING_TYPES,
+	INSTANTIATING_ROOMS,
+	FINISHED,
+}
+
+var current_state := GenerationState.NOT_STARTED
+signal generation_state_updated(state: GenerationState)
+
 var grid := {}
 var start_pos := Vector2i(4, 4)
 var room_count := 350
@@ -92,13 +106,16 @@ func end_game():
 		game_world = null
 
 func generate_floor() -> void:
+	_update_generation_state(GenerationState.NOT_STARTED)
 	start_game(true)
 	
 	var success = false
 	var attempts = 0
 	while not success and attempts < max_generation_attempts:
 		generate_layout()
+		
 		map_required_doors()
+		
 		if validate_required_doors() and assign_room_types():
 			success = true
 		else:
@@ -110,15 +127,19 @@ func generate_floor() -> void:
 		push_error("Could not generate a supported layout after ", max_generation_attempts, " attempts!")
 		return
 	
-	instantiate_rooms()
+	await instantiate_rooms()
+	
 	current_position = start_pos
 	player = preload("res://scenes/player.tscn").instantiate()
 	game_world.add_child(player)
 	PlayerManager.player = player
+	player_created.emit()
 	traverse_room(current_position)
+	_update_generation_state(GenerationState.FINISHED)
 
 # first pass: figure out where the rooms are
 func generate_layout() -> void:
+	_update_generation_state(GenerationState.GENERATING_LAYOUT)
 	grid.clear()
 	
 	# always have a room in the start
@@ -135,6 +156,7 @@ func generate_layout() -> void:
 			rooms_placed += 1
 	
 	var attempts := 0
+	var yield_counter := 0
 	while rooms_placed < room_count and attempts < max_expansion_attempts:
 		if room_stack.is_empty():
 			break
@@ -163,17 +185,20 @@ func generate_layout() -> void:
 			# No free neighbors - backtrack
 			room_stack.pop_back()
 			attempts += 1
+		
 	
 	cache_positions()
 
 # second pass - figure out which rooms have which connections
 func map_required_doors() -> void:
+	_update_generation_state(GenerationState.MAPPING_DOORS)
 	var positions = cached_positions
 	for pos in positions:
 		required_doors_map[pos] = get_required_doors(pos)
 
 # third pass - assign room types based on shape and rarity
 func assign_room_types() -> bool:
+	_update_generation_state(GenerationState.ASSIGNING_TYPES)
 	room_assignments.clear()
 	var positions = cached_positions.duplicate()
 	
@@ -240,7 +265,10 @@ func assign_room_types() -> bool:
 
 # fourth pass: actually instantiate the rooms and load them in
 func instantiate_rooms() -> void:
+	_update_generation_state(GenerationState.INSTANTIATING_ROOMS)
 	room_instances.clear()
+	
+	var yield_counter := 0
 	for pos in grid:
 		var room : Node2D
 		
@@ -257,13 +285,17 @@ func instantiate_rooms() -> void:
 			(pos.y - start_pos.y) * (GAP_Y))
 			
 		room_instances[pos] = room 
+		
+		yield_counter += 1
+		if yield_counter % 5 == 0:
+			await get_tree().process_frame
 				
 	
 func cache_positions() -> void:
 	cached_positions = grid.keys()
 				
 func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO, door: Door = null) -> void:
-	var room = room_instances.get(pos)
+	var room = room_instances.get(pos) as Room
 	if not room:
 		return
 	
@@ -279,7 +311,7 @@ func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO, 
 	else:
 		started_traversing.emit()
 		var opposite = -entrance_direction
-		var spawn_pos = current_room_instance.get_door_spawn_position(opposite)
+		var spawn_pos = room.get_door_spawn_position(opposite)
 		player.look_at(spawn_pos)
 		
 		if door and door.state == Door.door_state.OPENING:
@@ -304,6 +336,9 @@ func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO, 
 		if tween.finished.is_connected(_on_traversal_tween_finished):
 			tween.finished.disconnect(_on_traversal_tween_finished)
 		tween.finished.connect(_on_traversal_tween_finished)
+		
+		var target_door = room.get_door(opposite)
+		target_door.play_open_animation()
 		
 
 func _on_traversal_tween_finished() -> void:
@@ -361,4 +396,8 @@ func doors_to_mask(doors: Array) -> int:
 
 func is_valid(pos: Vector2i) -> bool:
 	return grid.has(pos)
-	
+
+func _update_generation_state(state: GenerationState) -> void:
+	current_state = state
+	generation_state_updated.emit(state)
+	 

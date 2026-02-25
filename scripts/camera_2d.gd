@@ -4,14 +4,13 @@ extends Camera2D
 @export var max_zoom := 2.4
 @export var zoom_speed := 5.0
 
-@onready var inventory: Control = $"../UILayer/Inventory"
+@export var inventory : InventoryUI
 var inventory_open := false
 
 var target_zoom := 1.0
 
 func _ready() -> void:
-	pass
-	#inventory.inventory_state_changed.connect(_on_inventory_state_changed)
+	inventory.inventory_state_changed.connect(_on_inventory_state_changed)
 
 func _on_inventory_state_changed(state) -> void:
 	inventory_open = state
@@ -19,6 +18,9 @@ func _on_inventory_state_changed(state) -> void:
 func _process(delta):
 	# don't move camera if inventory open
 	if inventory_open:
+		var lerp_speed = zoom_speed * delta
+		offset = lerp(offset, Vector2(0, 0), lerp_speed)
+		zoom = lerp(zoom, Vector2(min_zoom, min_zoom), lerp_speed)
 		return
 	
 	var mouse_pos := get_viewport().get_mouse_position()

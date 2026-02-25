@@ -9,6 +9,8 @@ class_name Player
 @export var player_input: PlayerInputHandler
 @export var flashlight: PointLight2D
 @export var scrap: ScrapComponent
+@export var menus: PlayerMenus
+@export var ui: UILayer
 
 var movement_speed = 600.0
 
@@ -40,7 +42,8 @@ func update_stats() -> void:
 	movement_speed = speed
 
 func _process(_delta: float) -> void:
-	if player_input.current_state != PlayerInputHandler.PlayerState.TRAVERSING:
+	if player_input.current_state != PlayerInputHandler.PlayerState.TRAVERSING \
+		and not camera.inventory_open:
 		look_at(get_global_mouse_position())
 		
 	queue_redraw()

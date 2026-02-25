@@ -2,6 +2,7 @@ extends Node
 
 @export var body : CharacterBody2D
 @export var sprite : AnimatedSprite2D
+@export var input : PlayerInputHandler
 
 func _process(_delta: float) -> void:
 	if body.flashlight.enabled:

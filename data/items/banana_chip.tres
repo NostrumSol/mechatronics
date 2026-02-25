@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ddumvfrewmqe4"]
+
+[ext_resource type="Script" uid="uid://dvoqb7chlb2m8" path="res://scripts/classes/item_component.gd" id="1_s1olb"]
+[ext_resource type="Script" uid="uid://d3dtiku7uq6l5" path="res://scripts/classes/item_data.gd" id="2_4ly70"]
+[ext_resource type="Texture2D" uid="uid://bhxma2urek7xh" path="res://assets/textures/items/red_chip.png" id="3_hr0k1"]
+
+[resource]
+script = ExtResource("2_4ly70")
+item_name = "Banana Chip"
+item_id = "banana_chip"
+item_description = "An oblong, yellow microchip. It allows your gun to fire multiple bullets."
+texture = ExtResource("3_hr0k1")
+rarity = 2
+grid_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2)])
+weapon_stat_modifiers = {
+"SPREAD_ANGLE": {
+"type": "add",
+"value": 10.0
+},
+"SPREAD_COUNT": {
+"type": "add",
+"value": 1.0
+}
+}

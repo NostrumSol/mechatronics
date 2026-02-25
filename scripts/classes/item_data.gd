@@ -8,6 +8,19 @@ enum Rarity {
 	OPTIMAL,
 }
 
+static func rarity_to_color(rarity: ItemData.Rarity) -> Color:
+	match rarity:
+		ItemData.Rarity.SUB_OPTIMAL:
+			return Color.CORAL
+		ItemData.Rarity.WILL_DO:
+			return Color.ANTIQUE_WHITE
+		ItemData.Rarity.SATISFACTORY:
+			return Color.CORNFLOWER_BLUE
+		ItemData.Rarity.OPTIMAL:
+			return Color.PALE_TURQUOISE
+		_:
+			return Color.YELLOW
+
 @export var item_name : String
 @export var item_id : String = ""
 @export var item_description : String

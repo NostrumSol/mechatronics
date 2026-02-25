@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b7q1me43uaxj3"]
+
+[ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemies/basic_enemy.tscn" id="1_8dw3j"]
+[ext_resource type="Script" uid="uid://cw0y0dxixtt80" path="res://scripts/components/shoot_at_target_component.gd" id="2_au8bl"]
+
+[node name="ShooterEnemy" unique_id=489612833 instance=ExtResource("1_8dw3j")]
+
+[node name="ShootAtTargetComponent" type="Node2D" parent="." index="14" unique_id=1268147538]
+script = ExtResource("2_au8bl")

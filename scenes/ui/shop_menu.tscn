@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://bxsqj3w8w5han"]
+
+[ext_resource type="Script" uid="uid://df8f6oghmsaof" path="res://scripts/shop_menu.gd" id="1_rnndp"]
+[ext_resource type="PackedScene" uid="uid://c36pfdih1sxp0" path="res://scenes/ui/shop_item.tscn" id="2_rnndp"]
+
+[node name="ShopMenu" type="Control" unique_id=53402732 node_paths=PackedStringArray("container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rnndp")
+container = NodePath("CenterContainer/ShopBackground/VBoxContainer/HBoxContainer")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=438865860]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopBackground" type="ColorRect" parent="CenterContainer" unique_id=173610528]
+clip_contents = true
+custom_minimum_size = Vector2(380, 230)
+layout_mode = 2
+color = Color(0.23, 0.23, 0.23, 0.39215687)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/ShopBackground" unique_id=2117149145]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleBackground" type="ColorRect" parent="CenterContainer/ShopBackground/VBoxContainer" unique_id=293768458]
+custom_minimum_size = Vector2(350, 30)
+layout_mode = 2
+color = Color(0.15, 0.15, 0.15, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/ShopBackground/VBoxContainer/TitleBackground" unique_id=1827637946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/ShopBackground/VBoxContainer/TitleBackground/MarginContainer" unique_id=1579144324]
+layout_mode = 2
+bbcode_enabled = true
+text = "SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseMenuButton" type="Button" parent="CenterContainer/ShopBackground/VBoxContainer/TitleBackground/MarginContainer" unique_id=1649211444]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.88, 0, 0, 1)
+text = "X"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/ShopBackground/VBoxContainer" unique_id=753482047]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ShopItem" parent="CenterContainer/ShopBackground/VBoxContainer/HBoxContainer" unique_id=743609739 instance=ExtResource("2_rnndp")]
+layout_mode = 2
+
+[node name="ShopItem2" parent="CenterContainer/ShopBackground/VBoxContainer/HBoxContainer" unique_id=1724402032 instance=ExtResource("2_rnndp")]
+layout_mode = 2
+
+[node name="ShopItem3" parent="CenterContainer/ShopBackground/VBoxContainer/HBoxContainer" unique_id=1207423429 instance=ExtResource("2_rnndp")]
+layout_mode = 2
+
+[connection signal="pressed" from="CenterContainer/ShopBackground/VBoxContainer/TitleBackground/MarginContainer/CloseMenuButton" to="." method="_on_button_pressed"]

@@ -6,19 +6,12 @@ signal died
 
 var has_died := false
 
-@export var max_health: float:
-	get: return max_resource
-	set(value): set_max_resource(value)
-
-var health: float:
-	get: return resource
-	set(value): resource = value
-
 func damage(damage_instance : DamageInstance) -> void:
 	if resist:
 		var resistances := resist.resistances
 		if resistances.is_empty():
 			decrease(damage_instance.damage_value)
+			return # No resistances; return early.
 		
 		for resistance in resistances:
 			if resistance.damage_type == damage_instance.damage_type:

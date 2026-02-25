@@ -27,12 +27,16 @@ const BETTER_WHEN_LOWER := [
 	GunStatsComponent.GunStat.SPREAD_ANGLE,
 ]
 
+const DAMAGE_TYPES := {
+	DamageInstance.DamageType.PHYSICAL: "Physical",
+	DamageInstance.DamageType.BURN: "Burn",
+	DamageInstance.DamageType.TRUE: "True",
+}
+
 func _ready() -> void:
-	# Assign the actual stats component before calling super._ready()
 	stats_component = weapon.gun_stats
 	super._ready()
 
-# ----- Overrides -----
 func get_stat_order() -> Array:
 	return STAT_ORDER
 
@@ -42,6 +46,9 @@ func get_stat_name(stat) -> String:
 func format_stat(value, base_value, stat) -> String:
 	if typeof(value) == TYPE_FLOAT:
 		value = snapped(value, 0.01)
+	
+	if stat == GunStatsComponent.GunStat.DAMAGE_TYPE:
+		return DAMAGE_TYPES.get(int(value))
 
 	var is_better: bool
 	var is_worse: bool

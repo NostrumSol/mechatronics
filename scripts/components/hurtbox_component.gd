@@ -12,7 +12,6 @@ signal hurtbox_hit(hit_by : Area2D)
 func _on_area_entered(area: Area2D) -> void:
 	if area is HitboxComponent:
 		colliding_hitboxes.append(area)
-		_damage(area)
 
 func _on_area_exited(area: Area2D) -> void:
 	if area is HitboxComponent:
@@ -24,6 +23,6 @@ func _process(delta: float) -> void:
 
 func _damage(hitbox: HitboxComponent) -> void:
 	if invincibility_timer.time_left <= 0:
-			healthComponent.damage(hitbox.damage)
-			hurtbox_hit.emit(hitbox)
-			invincibility_timer.start(invincibility_period)
+		invincibility_timer.start(invincibility_period)
+		healthComponent.damage(hitbox.damage)
+		hurtbox_hit.emit(hitbox)

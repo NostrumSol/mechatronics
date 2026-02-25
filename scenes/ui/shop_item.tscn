@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://c36pfdih1sxp0"]
+
+[ext_resource type="Script" uid="uid://cb2dwm5vij0mj" path="res://scripts/shop_item.gd" id="1_obnp4"]
+[ext_resource type="Texture2D" uid="uid://c3lkcpxi65tvb" path="res://assets/textures/items/green_chip.png" id="1_strbt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_strbt"]
+bg_color = Color(0.4, 0.3586667, 0.152, 1)
+
+[node name="ShopItem" type="Control" unique_id=743609739 node_paths=PackedStringArray("price_label", "item_texture_rect", "item_name_label", "item_description_label", "purchase_button")]
+custom_minimum_size = Vector2(100, 150)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -108.0
+offset_right = -92.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_obnp4")
+price_label = NodePath("VBoxContainer/ColorRect/CenterContainer/ScrapPriceLabel")
+item_texture_rect = NodePath("VBoxContainer/Background/MarginContainer/VBoxContainer/ItemBackground/ItemIcon")
+item_name_label = NodePath("VBoxContainer/Background/MarginContainer/VBoxContainer/ItemName")
+item_description_label = NodePath("VBoxContainer/Background/MarginContainer/VBoxContainer/ItemDescription")
+purchase_button = NodePath("VBoxContainer/Background/MarginContainer/VBoxContainer/Button")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=694693100]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer" unique_id=888933874]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+color = Color(0.10980392, 0.105882354, 0.023529412, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/ColorRect" unique_id=434355341]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrapPriceLabel" type="RichTextLabel" parent="VBoxContainer/ColorRect/CenterContainer" unique_id=1461931325]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "COST: 10 SCRAP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Background" type="ColorRect" parent="VBoxContainer" unique_id=872044187]
+custom_minimum_size = Vector2(100, 160)
+layout_mode = 2
+color = Color(0.10980392, 0.105882354, 0.023529412, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Background" unique_id=1087832364]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Background/MarginContainer" unique_id=1846970608]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="ItemBackground" type="ColorRect" parent="VBoxContainer/Background/MarginContainer/VBoxContainer" unique_id=512039583]
+custom_minimum_size = Vector2(90, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.24, 0.23771998, 0.1944, 1)
+
+[node name="ItemIcon" type="TextureRect" parent="VBoxContainer/Background/MarginContainer/VBoxContainer/ItemBackground" unique_id=1088300599]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_strbt")
+
+[node name="ItemName" type="RichTextLabel" parent="VBoxContainer/Background/MarginContainer/VBoxContainer" unique_id=54356294]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "ITEM TITLE"
+horizontal_alignment = 1
+
+[node name="ItemDescription" type="RichTextLabel" parent="VBoxContainer/Background/MarginContainer/VBoxContainer" unique_id=1280617686]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "DOES X WHEN Y"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/Background/MarginContainer/VBoxContainer" unique_id=1794717972]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_strbt")
+text = "PURCHASE"

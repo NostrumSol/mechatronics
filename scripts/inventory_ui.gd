@@ -30,8 +30,6 @@ signal inventory_state_changed(new_state: bool)
 var _visual_items: Array[Node] = []
 var _cell_size: int
 
-# someone shoot me and remind me to comment the rest of my code like i did here
-# ughhhh i don't wanna
 func _ready() -> void:
 	var total_grid_size = inventory_data.grid_size.x * inventory_data.grid_size.y
 	for i in range(total_grid_size):
@@ -46,7 +44,7 @@ func _ready() -> void:
 	inventory_data.item_removed.connect(_on_item_updated)
 	inventory_data.inventory_changed.connect(_on_inventory_updated)
 
-func _on_item_updated(data: ItemData, anchor: Vector2i, rotation: int):
+func _on_item_updated(item_data: InventoryComponent.PlacedItem):
 	refresh_all_slots()
 
 func _on_inventory_updated():
@@ -77,9 +75,9 @@ func _get_cell_from_index(index: int) -> Vector2i:
 func _get_cell_from_slot(slot) -> Vector2i:
 	return _get_cell_from_index(slot.cell_index)
 
-func _get_item_info_at_slot(slot) -> Dictionary:
+func _get_item_info_at_slot(slot) -> InventoryComponent.PlacedItem:
 	if not slot:
-		return {}
+		return null
 	var cell = _get_cell_from_slot(slot)
 	return inventory_data.get_item_at(cell)
 
@@ -115,25 +113,11 @@ func refresh_all_slots():
 	for slot in slot_nodes:
 		var cell = Vector2i(slot.cell_index % column_count, slot.cell_index / column_count)
 		var item = inventory_data.get_item_at(cell)
-		var occupied = !item.is_empty()
 		
-		if occupied:
-			slot.update_appearance(occupied, _rarity_to_color(item.item_data.rarity))
+		if item != null:
+			slot.update_appearance(true, ItemData.rarity_to_color(item.item_data.rarity))
 		else:	
-			slot.update_appearance(occupied)
-
-func _rarity_to_color(rarity: ItemData.Rarity) -> Color:
-	match rarity:
-		ItemData.Rarity.SUB_OPTIMAL:
-			return Color.CORAL
-		ItemData.Rarity.WILL_DO:
-			return Color.ANTIQUE_WHITE
-		ItemData.Rarity.SATISFACTORY:
-			return Color.CORNFLOWER_BLUE
-		ItemData.Rarity.OPTIMAL:
-			return Color.PALE_TURQUOISE
-		_:
-			return Color.YELLOW
+			slot.update_appearance(false)
 
 func mouse_in_inventory() -> bool:
 	return scroll_container.get_global_rect().has_point(get_global_mouse_position())
@@ -164,19 +148,16 @@ func clear_preview():
 	for slot in slot_nodes:
 		slot.clear_preview()
 
-# -----------------------------------------------------------------------------
-# Actions
-# -----------------------------------------------------------------------------
 func attempt_pick_item():
 	if not current_slot:
 		return
 	
 	var item_info = _get_item_info_at_slot(current_slot)
-	if item_info.is_empty():
+	if item_info == null:
 		return
 	
 	var removed = inventory_data.remove_item_at(_get_cell_from_slot(current_slot))
-	if removed.is_empty():
+	if removed == null:
 		return
 	
 	item_held = _create_temp_item(removed.item_data, removed.rotation, get_global_mouse_position())
@@ -212,11 +193,11 @@ func attempt_show_description():
 		return
 	
 	var item_info = _get_item_info_at_slot(current_slot)
-	if item_info.is_empty():
+	if item_info == null:
 		description_box.hide()
 		return
 	
-	var item_data = item_info.item_data as ItemData
+	var item_data = item_info.item_data
 	description_title.text = item_data.item_name
 
 	var text = ""
@@ -239,8 +220,12 @@ func player_modifiers_to_text(modifiers: Array) -> String:
 			match mod["type"]:
 				"add":
 					modifier += mod["value"]
+					modifier = "+" + str(modifier)
 				"multiply":
-					modifier = modifier + "*" + mod["value"]
+					if modifier == 0:
+						modifier = 1
+					modifier += mod["value"]
+					modifier = str(modifier) + "*"
 				
 			text += player_stats_panel.get_stat_name(stat_enum) + ": " + str(modifier) + "\n"
 		
@@ -257,25 +242,27 @@ func weapon_modifiers_to_text(modifiers: Array) -> String:
 			match mod["type"]:
 				"add":
 					modifier += mod["value"]
+					modifier = "+" + str(modifier)
 				"multiply":
+					if modifier == 0:
+						modifier = 1
 					modifier += mod["value"]
 					modifier = "*" + str(modifier)
 				
 			text += weapon_stats_panel.get_stat_name(stat_enum) + ": " + str(modifier) + "\n"
 		
 	return text
-# -----------------------------------------------------------------------------
-# Spawn item (for testing)
-# -----------------------------------------------------------------------------
+	
 func _on_button_spawn_pressed():
 	var item_id = item_id_box.text
 	var item_path = "res://data/items/" + item_id + ".tres"
 	if not FileAccess.file_exists(item_path):
 		item_id_box.text = "No such item!"
 		return
-		
-	var item_data = load(item_path) as ItemData
-	if item_held:
-		item_held.queue_free()
 	
-	item_held = _create_temp_item(item_data, 0, get_global_mouse_position())
+	var item_data = load(item_path) as ItemData
+	if inventory_data.find_first_available_slot(item_data) == null:
+		item_id_box.text = "No space!" # TODO: Add floating error text?
+		return
+		
+	inventory_data.place_first_available_slot(item_data)

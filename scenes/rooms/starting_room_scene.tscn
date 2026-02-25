@@ -1,9 +1,26 @@
 [gd_scene format=3 uid="uid://bqi7v0ldmfgnm"]
 
 [ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_uodan"]
-[ext_resource type="PackedScene" uid="uid://bn551l1l0cyuu" path="res://scenes/enemies/basic_enemy.tscn" id="2_oxsh1"]
+[ext_resource type="PackedScene" uid="uid://btgmsean7pfpn" path="res://scenes/rooms/room_resources/shop.tscn" id="2_oxsh1"]
+[ext_resource type="PackedScene" uid="uid://c76tvj583imy2" path="res://scenes/scrap.tscn" id="3_lxiwx"]
 
 [node name="StartingRoomScene" unique_id=1917625330 instance=ExtResource("1_uodan")]
 
-[node name="Enemy" parent="." index="9" unique_id=489612833 instance=ExtResource("2_oxsh1")]
-position = Vector2(81, 172)
+[node name="Shop" parent="." index="9" unique_id=30219718 instance=ExtResource("2_oxsh1")]
+position = Vector2(124, 75)
+
+[node name="Scrap" parent="." index="10" unique_id=1542719330 instance=ExtResource("3_lxiwx")]
+position = Vector2(162, 189)
+scrap_value = 30.0
+
+[node name="Scrap2" parent="." index="11" unique_id=534454592 instance=ExtResource("3_lxiwx")]
+position = Vector2(129, 152)
+
+[node name="Scrap3" parent="." index="12" unique_id=1213964918 instance=ExtResource("3_lxiwx")]
+position = Vector2(96, 181)
+
+[node name="Scrap4" parent="." index="13" unique_id=1424962648 instance=ExtResource("3_lxiwx")]
+position = Vector2(183, 158)
+
+[node name="Scrap5" parent="." index="14" unique_id=1922841975 instance=ExtResource("3_lxiwx")]
+position = Vector2(63, 155)

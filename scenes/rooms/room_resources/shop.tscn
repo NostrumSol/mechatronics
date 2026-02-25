@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://btgmsean7pfpn"]
+
+[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="1_1ul13"]
+[ext_resource type="Script" uid="uid://cb4f7y3w3wsuc" path="res://scripts/shop.gd" id="1_qt71m"]
+[ext_resource type="Script" uid="uid://xpii51chuh8i" path="res://scripts/components/outline_component.gd" id="3_a32sd"]
+[ext_resource type="Resource" uid="uid://dwntavvwwlee1" path="res://data/items/assault_chip.tres" id="3_vtjvf"]
+[ext_resource type="Resource" uid="uid://cqhu0gslaryb3" path="res://data/items/orange_chip.tres" id="4_2ws4l"]
+[ext_resource type="Script" uid="uid://d3dtiku7uq6l5" path="res://scripts/classes/item_data.gd" id="4_4fmnx"]
+[ext_resource type="Resource" uid="uid://ddumvfrewmqe4" path="res://data/items/banana_chip.tres" id="5_2deq7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1ul13"]
+radius = 39.20459
+
+[node name="Shop" type="Node2D" unique_id=30219718 node_paths=PackedStringArray("outline")]
+script = ExtResource("1_qt71m")
+outline = NodePath("OutlineComponent")
+possible_shop_contents = Array[ExtResource("4_4fmnx")]([ExtResource("3_vtjvf"), ExtResource("4_2ws4l"), ExtResource("5_2deq7")])
+min_items = 2
+
+[node name="ShopSprite" type="Sprite2D" parent="." unique_id=977853426]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_1ul13")
+region_rect = Rect2(9, 11, 93, 99)
+
+[node name="ShopArea" type="Area2D" parent="." unique_id=213538231]
+collision_mask = 2
+
+[node name="ShopCollider" type="CollisionShape2D" parent="ShopArea" unique_id=1599855250]
+shape = SubResource("CircleShape2D_1ul13")
+
+[node name="OutlineComponent" type="Node" parent="." unique_id=143016398 node_paths=PackedStringArray("sprite")]
+script = ExtResource("3_a32sd")
+sprite = NodePath("../ShopSprite")
+
+[connection signal="body_entered" from="ShopArea" to="." method="_on_shop_area_body_entered"]
+[connection signal="body_exited" from="ShopArea" to="." method="_on_shop_area_body_exited"]

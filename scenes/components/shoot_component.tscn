@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://yfh4gmxljhif"]
+
+[ext_resource type="Script" uid="uid://ci3ncjedt8odw" path="res://scripts/components/shoot_component.gd" id="1_0qiqc"]
+[ext_resource type="PackedScene" uid="uid://bugn8bht2bobb" path="res://scenes/projectile.tscn" id="2_41vnx"]
+
+[node name="ShootComponent" type="Node2D" unique_id=287648724 node_paths=PackedStringArray("muzzle")]
+script = ExtResource("1_0qiqc")
+projectile_scene = ExtResource("2_41vnx")
+muzzle = NodePath("Muzzle")
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1162105327]

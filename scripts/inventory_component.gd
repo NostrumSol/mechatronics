@@ -1,8 +1,8 @@
 extends Node
 class_name InventoryComponent
 
-signal item_placed(item_data: ItemData, anchor: Vector2i, rotation: int)
-signal item_removed(item_data: ItemData, anchor: Vector2i, rotation: int)
+signal item_placed(placed_item: PlacedItem)
+signal item_removed(placed_item: PlacedItem)
 signal inventory_changed
 
 @export var grid_size: Vector2i = Vector2i(8, 8) # columns, rows
@@ -29,10 +29,8 @@ func initialize_grid():
 	_cells.fill(false)
 	_items.clear()
 
-# -----------------------------------------------------------------------------
-# Helper methods
-# -----------------------------------------------------------------------------
 func _cell_index(cell: Vector2i) -> int:
+	# Convert 2D Array to row major 1D index
 	return cell.y * grid_size.x + cell.x
 
 func _find_item_by_cell(cell: Vector2i) -> PlacedItem:
@@ -43,10 +41,6 @@ func _find_item_by_cell(cell: Vector2i) -> PlacedItem:
 
 func _is_cell_free(cell: Vector2i) -> bool:
 	return is_within_bounds(cell) and not _cells[_cell_index(cell)]
-
-# -----------------------------------------------------------------------------
-# Public utility
-# -----------------------------------------------------------------------------
 
 func is_within_bounds(cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.x < grid_size.x and cell.y >= 0 and cell.y < grid_size.y
@@ -63,6 +57,25 @@ func can_place_item(item_data: ItemData, anchor: Vector2i, rotation: int) -> boo
 			return false
 	return true
 
+func find_first_available_slot(item_data: ItemData) -> PlacedItem:
+	# Is this obtuse? Maybe. Does it work for the tiny inventory size? Yes.
+	for rotation in range(4):
+		for y in range(grid_size.y):
+			for x in range(grid_size.x):
+				var anchor := Vector2i(x, y)
+				if can_place_item(item_data, anchor, rotation):
+					return PlacedItem.new(item_data, anchor, rotation) 
+					# not actually a placed item but 
+					# we already have the class so whatever
+	return null
+
+func place_first_available_slot(item_data: ItemData) -> void:
+	var result = find_first_available_slot(item_data)
+	if result == null:
+		return
+	
+	place_item(item_data, result.anchor, result.rotation)
+
 func place_item(item_data: ItemData, anchor: Vector2i, rotation: int) -> bool:
 	if not can_place_item(item_data, anchor, rotation):
 		return false
@@ -74,79 +87,68 @@ func place_item(item_data: ItemData, anchor: Vector2i, rotation: int) -> bool:
 	var placed = PlacedItem.new(item_data, anchor, rotation)
 	_items.append(placed)
 	
-	item_placed.emit(item_data, anchor, rotation)
+	item_placed.emit(placed)
 	inventory_changed.emit()
 	return true
 
-func remove_item_at(cell: Vector2i) -> Dictionary:
-	var item = _find_item_by_cell(cell)
+func remove_item_at(target_cell: Vector2i) -> PlacedItem:
+	var item = _find_item_by_cell(target_cell)
 	if not item:
-		return {}
+		return null
 	
 	var cells = item.item_data.get_occupied_cells(item.anchor, item.rotation)
-	for c in cells:
-		_cells[_cell_index(c)] = false
+	for cell in cells:
+		_cells[_cell_index(cell)] = false
 	
 	_items.erase(item)
-	item_removed.emit(item.item_data, item.anchor, item.rotation)
 	inventory_changed.emit()
 	
-	return {
-		"item_data": item.item_data,
-		"anchor": item.anchor,
-		"rotation": item.rotation
-	}
+	var placed_item = PlacedItem.new(item.item_data, item.anchor, item.rotation)
+	item_removed.emit(placed_item)
+	return placed_item
 
-func get_item_at(cell: Vector2i) -> Dictionary:
+func get_item_at(cell: Vector2i) -> PlacedItem:
 	var item = _find_item_by_cell(cell)
 	if not item:
-		return {}
-	return {
-		"item_data": item.item_data,
-		"anchor": item.anchor,
-		"rotation": item.rotation
-	}
+		return null
+	
+	return PlacedItem.new(item.item_data, item.anchor, item.rotation)
 
-func get_all_items() -> Array:
-	var result = []
+func get_all_items() -> Array[PlacedItem]:
+	var result : Array[PlacedItem]
 	for item in _items:
-		result.append({
-			"item_data": item.item_data,
-			"anchor": item.anchor,
-			"rotation": item.rotation
-		})
+		var placed_item = PlacedItem.new(item.item_data, item.anchor, item.rotation)
+		result.append(placed_item)
+	
 	return result
 
-func rotate_item_at(cell: Vector2i, new_rotation: int) -> bool:
-	var item = _find_item_by_cell(cell)
+func rotate_item_at(target_cell: Vector2i, new_rotation: int) -> bool:
+	var item = _find_item_by_cell(target_cell)
 	if not item:
 		return false
 	
 	var old_cells = item.item_data.get_occupied_cells(item.anchor, item.rotation)
-	for c in old_cells:
-		_cells[_cell_index(c)] = false
+	for cell in old_cells:
+		_cells[_cell_index(cell)] = false
 	
 	var new_cells = item.item_data.get_occupied_cells(item.anchor, new_rotation)
 	var fits = true
-	for c in new_cells:
-		if not _is_cell_free(c):
+	for cell in new_cells:
+		if not _is_cell_free(cell):
 			fits = false
 			break
 	
 	if fits:
-		for c in new_cells:
-			_cells[_cell_index(c)] = true
+		for cell in new_cells:
+			_cells[_cell_index(cell)] = true
 		item.rotation = new_rotation
 		inventory_changed.emit()
 		return true
 	else:
-		for c in old_cells:
-			_cells[_cell_index(c)] = true
+		for cell in old_cells:
+			_cells[_cell_index(cell)] = true
 		return false
 
-# -----------------------------------------------------------------------------
-# Modifier getters
-# -----------------------------------------------------------------------------
 func get_all_weapon_modifiers() -> Array:
 	var modifiers = []
 	for item_info in get_all_items():

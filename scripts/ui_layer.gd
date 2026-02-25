@@ -1,8 +1,10 @@
 extends CanvasLayer
+class_name UILayer
 
 @export var ammo_label: Label
 @export var reload_progress: ProgressBar
 @export var weapon: Node2D
+@export var popup: ErrorPopupHandler
 
 func _ready() -> void:
 	if weapon != null:

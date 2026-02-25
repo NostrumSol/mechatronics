@@ -19,7 +19,6 @@ func _ready() -> void:
 	stats_component = player.player_stats
 	super._ready()
 
-# ----- Overrides -----
 func get_stat_order() -> Array:
 	return STAT_ORDER
 

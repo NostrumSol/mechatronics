@@ -8,10 +8,13 @@
 [node name="Flashlight" parent="." index="3" unique_id=1416864385]
 color = Color(0.8120566, 0.38498378, 1.92523e-07, 1)
 
+[node name="HealthComponent" parent="." index="6" unique_id=1898653669]
+max_resource = 50.0
+
 [node name="DashAtTargetComponent" type="Node2D" parent="." index="8" unique_id=1888111348 node_paths=PackedStringArray("mover", "dash")]
 script = ExtResource("2_dgi1h")
 mover = NodePath("../MoveTowardsTargetComponent")
 dash = NodePath("../DashComponent")
 
-[node name="MoveTowardsTargetComponent" parent="." index="9" unique_id=496255558]
+[node name="MoveTowardsTargetComponent" parent="." index="11" unique_id=496255558]
 movement_speed = 35.0

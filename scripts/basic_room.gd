@@ -1,7 +1,7 @@
 extends Node2D
 class_name Room
 
-const DOOR_OFFSET := 15
+const DOOR_OFFSET := 12
 
 @export var spawn_point : Marker2D
 
@@ -21,7 +21,8 @@ func _on_door_entered(direction: Vector2i, door: Door):
 		player = PlayerManager.player
 		player_input = player.player_input
 	
-	if player_input.current_state == PlayerInputHandler.PlayerState.TRAVERSING:
+	if player_input.current_state == PlayerInputHandler.PlayerState.TRAVERSING \
+		or not door.can_traverse_door():
 		return
 	
 	RoomManager.change_room(direction, door)

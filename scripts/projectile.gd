@@ -6,14 +6,11 @@ extends Node2D
 
 var direction := Vector2.ZERO
 
-func initialize(dir: Vector2, damage: float, damage_type: DamageInstance.DamageType) -> void:
+func initialize(dir: Vector2, damage: DamageInstance) -> void:
 	direction = dir.normalized()
 	rotation = direction.angle()
 	
-	var projectile_damage = DamageInstance.new()
-	projectile_damage.damage_value = damage
-	projectile_damage.damage_type = damage_type
-	hitbox.damage = projectile_damage
+	hitbox.damage = damage
 	
 	await get_tree().create_timer(lifetime).timeout
 	queue_free()

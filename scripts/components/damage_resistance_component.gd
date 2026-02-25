@@ -1,7 +1,7 @@
 extends Node
 class_name DamageResistanceComponent
 
-@export var resistances : Array[DamageResistanceInstance] = []
+@export var resistances : Array[DamageResistanceInstance]
 
 func set_damage_resistance_value(resistance: DamageResistanceInstance, new_value: float) -> void:
 	if not has_damage_resistance(resistance):

@@ -4,7 +4,7 @@ class_name ShootComponent
 signal shot_fired(position: Vector2, direction: Vector2)
 
 @export var projectile_scene: PackedScene
-@onready var muzzle: Marker2D = $Muzzle
+@export var muzzle : Marker2D
 
 var _gun_stats: GunStatsComponent
 var _ammo: AmmoComponent
@@ -54,7 +54,7 @@ func shoot():
 	
 	for i in count:
 		var proj = projectile_scene.instantiate()
-		get_tree().current_scene.add_child(proj)
+		RoomManager.current_room_instance.add_child(proj)
 		proj.global_position = muzzle.global_position
 		
 		var offset = randf_range(-angle/2.0, angle/2.0)
@@ -62,6 +62,7 @@ func shoot():
 		
 		var damage = _gun_stats.get_current(GunStatsComponent.GunStat.DAMAGE)
 		var damage_type = _gun_stats.get_current(GunStatsComponent.GunStat.DAMAGE_TYPE)
-		proj.initialize(dir, damage, damage_type)
+		var damage_instance = DamageInstance.new(damage, damage_type)
+		proj.initialize(dir, damage_instance)
 	
 	shot_fired.emit(muzzle.global_position, base_dir)
