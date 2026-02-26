@@ -14,7 +14,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Mechatronics"
+config/name="my_indie_slop"
 config/version="1.0.0 ALPHA"
 run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
@@ -28,6 +28,7 @@ SaveManager="*res://scripts/managers/SaveManager.gd"
 PlayerManager="*uid://oprtbtsxirwj"
 MenuManager="*uid://b8emtd0r8u2sg"
 PopupManager="*uid://dbcomdxooafxs"
+GameManager="*uid://bfsvrmd64yxw3"
 
 [display]
 

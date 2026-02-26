@@ -5,15 +5,69 @@
 [ext_resource type="Script" uid="uid://b0rwerf5w5a71" path="res://scripts/components/ammo_component.gd" id="5_o3ib6"]
 [ext_resource type="PackedScene" uid="uid://yfh4gmxljhif" path="res://scenes/components/shoot_component.tscn" id="5_xrduv"]
 [ext_resource type="Script" uid="uid://c0s61kpvjmsgb" path="res://scripts/components/reload_component.gd" id="6_sfxxl"]
+[ext_resource type="Texture2D" uid="uid://co6ei5n5awu2x" path="res://assets/textures/drone_test.png" id="7_naoe1"]
+[ext_resource type="Script" uid="uid://cv7agxwt23go1" path="res://scripts/weapon_sprite.gd" id="8_naoe1"]
 [ext_resource type="Script" uid="uid://bbm8w6o02odwc" path="res://scripts/input_handler.gd" id="8_svrs0"]
 
-[node name="Weapon" type="Node2D" unique_id=2141190969 node_paths=PackedStringArray("gun_stats", "ammo", "reload", "shoot", "input_handler")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5csnh"]
+atlas = ExtResource("7_naoe1")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_naoe1"]
+atlas = ExtResource("7_naoe1")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_234bu"]
+atlas = ExtResource("7_naoe1")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2wdv"]
+atlas = ExtResource("7_naoe1")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ihae7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5csnh")
+}],
+"loop": true,
+"name": &"east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_naoe1")
+}],
+"loop": true,
+"name": &"north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_234bu")
+}],
+"loop": true,
+"name": &"south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2wdv")
+}],
+"loop": true,
+"name": &"west",
+"speed": 5.0
+}]
+
+[node name="Weapon" type="Node2D" unique_id=2141190969 node_paths=PackedStringArray("gun_stats", "ammo", "reload", "shoot", "input_handler", "sprite")]
 script = ExtResource("1_mx7cu")
 gun_stats = NodePath("GunStatsComponent")
 ammo = NodePath("AmmoComponent")
 reload = NodePath("ReloadComponent")
 shoot = NodePath("ShootComponent")
 input_handler = NodePath("WeaponInputHandler")
+sprite = NodePath("")
 
 [node name="GunStatsComponent" type="Node" parent="." unique_id=911641253]
 script = ExtResource("4_3y7x1")
@@ -28,3 +82,10 @@ script = ExtResource("6_sfxxl")
 
 [node name="WeaponInputHandler" type="Node" parent="." unique_id=482280083]
 script = ExtResource("8_svrs0")
+
+[node name="WeaponSprite" type="AnimatedSprite2D" parent="." unique_id=938894720]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_ihae7")
+animation = &"west"
+autoplay = "south"
+script = ExtResource("8_naoe1")

@@ -4,6 +4,8 @@ class_name Room
 const DOOR_OFFSET := 12
 
 @export var spawn_point : Marker2D
+@export var max_spawned := 0
+@export var spawn_weight := 0.6
 
 var room_position : Vector2i
 

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://ypm3w7steqkh"]
+
+[ext_resource type="Texture2D" uid="uid://cxjm6558bis7b" path="res://assets/textures/icon.svg" id="1_68m6c"]
+[ext_resource type="Script" uid="uid://ceh6q70n16vm7" path="res://scripts/exit_door.gd" id="1_dv3ah"]
+[ext_resource type="PackedScene" uid="uid://b1gxbcukxghe2" path="res://scenes/components/outline_component.tscn" id="2_lbys3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_68m6c"]
+radius = 14.0
+
+[node name="ExitDoor" type="Node2D" unique_id=1489831170]
+script = ExtResource("1_dv3ah")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=771325853]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_68m6c")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=156920942]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1783467127]
+shape = SubResource("CircleShape2D_68m6c")
+
+[node name="OutlineComponent" parent="." unique_id=690341539 node_paths=PackedStringArray("sprite") instance=ExtResource("2_lbys3")]
+sprite = NodePath("../Sprite2D")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

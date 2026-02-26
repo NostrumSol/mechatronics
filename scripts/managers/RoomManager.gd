@@ -19,12 +19,13 @@ signal generation_state_updated(state: GenerationState)
 
 var grid := {}
 var start_pos := Vector2i(4, 4)
-var room_count := 350
+var exit_pos : Vector2i
+var room_count := 8
 
 var max_generation_attempts := 100
 var max_expansion_attempts := room_count * 2
 
-var random_branch_chance := 0.2
+@export var random_branch_chance := 0.1
 
 const GAP_X := 300 # How big of a gap is between rooms?
 const GAP_Y := 300
@@ -53,29 +54,35 @@ class RoomType:
 		spawn_chance = p_chance
 		doors = p_doors
 
-# move to own file
-@onready var room_types : Array[RoomType] = [
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NESW.tscn"), 0, 0.6, DIRECTIONS),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NES.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NEW.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.RIGHT, Vector2i.LEFT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_ESW.tscn"), 0, 0.6, [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NSW.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.LEFT, Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NS.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NW.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.LEFT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_NE.tscn"), 0, 0.6, [Vector2i.UP, Vector2i.RIGHT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_EW.tscn"), 0, 0.6, [Vector2i.RIGHT, Vector2i.LEFT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_ES.tscn"), 0, 0.6, [Vector2i.RIGHT, Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_SW.tscn"), 0, 0.6, [Vector2i.DOWN, Vector2i.LEFT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_N.tscn"), 0, 0.6, [Vector2i.UP]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_E.tscn"), 0, 0.6, [Vector2i.RIGHT]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_S.tscn"), 0, 0.6, [Vector2i.DOWN]),
-	RoomType.new(preload("res://scenes/rooms/basic_room_scene_W.tscn"), 0, 0.6, [Vector2i.LEFT]),
-	RoomType.new(preload("res://scenes/rooms/wall_room_scene.tscn"), 0, 1.0, DIRECTIONS),
-	RoomType.new(preload("res://scenes/rooms/evil_room_scene.tscn"), 0, 0.4, DIRECTIONS),
-]
+func get_doors_from_scene(scene: PackedScene) -> Array[Vector2i]:
+	var path := scene.resource_path.get_file()
+	var name := path.get_basename()
+	
+	var parts := name.split("_")
+	var suffix := parts[-1]
+	
+	return parse_door_suffix(suffix)
 
-const STARTING_ROOM_SCENE := preload("res://scenes/rooms/starting_room_scene.tscn")
-const GAME_WORLD_SCENE := preload("res://scenes/game_world.tscn")
+func parse_door_suffix(suffix: String) -> Array[Vector2i]:
+	var doors: Array[Vector2i]
+	
+	var direction_map := {
+		"N": Vector2i.UP,
+		"E": Vector2i.RIGHT,
+		"W": Vector2i.LEFT,
+		"S": Vector2i.DOWN
+	}
+	
+	for char in suffix:
+		if direction_map.has(char):
+			doors.append(direction_map[char])
+	
+	return doors
+	
+
+const STARTING_ROOM_SCENE = preload("uid://bqi7v0ldmfgnm")
+const EXIT_ROOM_SCENE = preload("uid://3jtwrtnk587a")
+const GAME_WORLD_SCENE = preload("uid://blfmthqw01wqh")
 
 var current_position := Vector2i.ZERO
 
@@ -91,6 +98,39 @@ var player: Player
 var tween: Tween
 
 var game_world: Node2D
+
+var room_types : Array[RoomType]
+var room_scenes : Array[PackedScene]
+
+func get_all_scenes_in_directory(path: String) -> Array[String]:  
+	var file_paths: Array[String] = []  
+	var dir = DirAccess.open(path)  
+	dir.list_dir_begin()  
+	var file_name = dir.get_next()  
+	while file_name != "":  
+		var file_path = path + "/" + file_name  
+		if dir.current_is_dir():  
+			file_paths += get_all_scenes_in_directory(file_path)  
+		else:  
+			if file_name.get_extension() == "tscn":
+				file_paths.append(file_path)  
+		file_name = dir.get_next()  
+	return file_paths
+
+func _ready() -> void:
+	var rooms = get_all_scenes_in_directory("res://scenes/rooms/")
+	for room in rooms:
+		var loaded = ResourceLoader.load(room)
+		room_scenes.append(loaded)
+	
+	for scene in room_scenes:
+		var doors := get_doors_from_scene(scene)
+		var temp_scene = scene.instantiate() as Room # wow this is awful
+		room_types.append(
+			RoomType.new(scene, temp_scene.max_spawned, temp_scene.spawn_weight, doors) # grab chances from scene later
+		)
+		temp_scene.queue_free()
+	
 
 func start_game(overwrite: bool = false):
 	if overwrite:
@@ -188,6 +228,7 @@ func generate_layout() -> void:
 		
 	
 	cache_positions()
+	exit_pos = get_farthest_pos_from_start()
 
 # second pass - figure out which rooms have which connections
 func map_required_doors() -> void:
@@ -270,10 +311,16 @@ func instantiate_rooms() -> void:
 	
 	var yield_counter := 0
 	for pos in grid:
-		var room : Node2D
+		var room : Room
 		
 		if pos == start_pos:
 			room = STARTING_ROOM_SCENE.instantiate()
+			var doors = get_required_doors(pos)
+			room.setup_doors(doors)
+		elif pos == exit_pos:
+			room = EXIT_ROOM_SCENE.instantiate()
+			var doors = get_required_doors(pos)
+			room.setup_doors(doors)
 		else:
 			room = room_assignments[pos].scene.instantiate()
 				
@@ -312,7 +359,6 @@ func traverse_room(pos: Vector2i, entrance_direction: Vector2i = Vector2i.ZERO, 
 		started_traversing.emit()
 		var opposite = -entrance_direction
 		var spawn_pos = room.get_door_spawn_position(opposite)
-		player.look_at(spawn_pos)
 		
 		if door and door.state == Door.door_state.OPENING:
 			await door.sprite.animation_finished
@@ -396,6 +442,19 @@ func doors_to_mask(doors: Array) -> int:
 
 func is_valid(pos: Vector2i) -> bool:
 	return grid.has(pos)
+
+func get_farthest_pos_from_start() -> Vector2i:
+	var farthest_pos := Vector2i(0, 0)
+	var max_distance_squared := 0
+	
+	for pos in grid:
+		var diff = start_pos - pos
+		var dist_squared = (diff.x * diff.x) + (diff.y * diff.y)
+		if dist_squared > max_distance_squared:
+			max_distance_squared = dist_squared
+			farthest_pos = pos
+	
+	return farthest_pos
 
 func _update_generation_state(state: GenerationState) -> void:
 	current_state = state

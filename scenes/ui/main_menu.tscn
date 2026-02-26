@@ -50,18 +50,20 @@ grow_vertical = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 34
-text = "MECHATRONICS"
+text = "ECLIPSE: ZERO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Title" unique_id=1080135498]
 layout_mode = 0
-offset_left = -12.0
-offset_top = 15.0
-offset_right = 174.0
-offset_bottom = 59.0
+offset_left = -7.0
+offset_top = 12.0
+offset_right = 179.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.49, 0.49, 0.49, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 9
 text = "by Agnès Lowing"
 horizontal_alignment = 1
 vertical_alignment = 1

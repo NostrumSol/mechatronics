@@ -4,14 +4,25 @@ extends Node
 @export var sprite : AnimatedSprite2D
 @export var input : PlayerInputHandler
 
-func _process(_delta: float) -> void:
-	if body.flashlight.enabled:
-		if body.velocity == Vector2.ZERO:
-			sprite.play("idle_on")
-		else:
-			sprite.play("moving_on")
-	else:
-		if body.velocity == Vector2.ZERO:
-			sprite.play("idle_off")
-		else:
-			sprite.play("moving_off")
+#func _process(_delta: float) -> void:
+	#if body.flashlight.enabled:
+		#if body.velocity == Vector2.ZERO:
+			#sprite.play("idle_on")
+		#else:
+			#sprite.play("moving_on")
+	#else:
+		#if body.velocity == Vector2.ZERO:
+			#sprite.play("idle_off")
+		#else:
+			#sprite.play("moving_off")
+
+func _process(delta: float) -> void:
+	match input.direction:
+		Vector2.UP:
+			sprite.play("north")
+		Vector2.DOWN:
+			sprite.play("south")
+		Vector2.RIGHT:
+			sprite.play("east")
+		Vector2.LEFT:
+			sprite.play("west")

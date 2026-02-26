@@ -6,6 +6,7 @@ class_name BaseWeapon
 @export var reload: ReloadComponent
 @export var shoot: ShootComponent
 @export var input_handler: WeaponInputHandler
+@export var sprite: Sprite2D
 
 @export var inventory: InventoryComponent
 

@@ -4,7 +4,9 @@ var player: Player
 var menus : PlayerMenus
 
 func _ready() -> void:
-	await RoomManager.player_created
+	RoomManager.player_created.connect(_on_player_created)
+	
+func _on_player_created() -> void:
 	player = PlayerManager.player
 	menus = player.menus
 

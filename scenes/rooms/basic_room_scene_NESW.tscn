@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://cokl1i7ese6oh"]
 
 [ext_resource type="Script" uid="uid://biiia1p2rsxxy" path="res://scripts/basic_room.gd" id="1_ax6gf"]
-[ext_resource type="PackedScene" uid="uid://bbm4ndoo46aj4" path="res://scenes/rooms/room_resources/door.tscn" id="3_y5uxw"]
+[ext_resource type="PackedScene" uid="uid://bbm4ndoo46aj4" path="res://scenes/room_resources/door.tscn" id="3_y5uxw"]
 [ext_resource type="TileSet" uid="uid://diggcexa3u7t0" path="res://data/tile_set.tres" id="4_xxtbc"]
 [ext_resource type="Texture2D" uid="uid://hchuiuep7anv" path="res://assets/textures/pointlight.webp" id="4_yh23c"]
 
@@ -13,6 +13,8 @@ spawn_point = NodePath("SpawnPoint")
 position = Vector2(125, 124)
 color = Color(1, 0.53, 0.53, 1)
 energy = 0.71
+range_layer_max = 2
+range_item_cull_mask = 3
 shadow_item_cull_mask = 0
 texture = ExtResource("4_yh23c")
 texture_scale = 1.31
@@ -21,6 +23,7 @@ texture_scale = 1.31
 position = Vector2(124, 125)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1230304508]
+light_mask = 3
 color = Color(0.02745098, 0.07450981, 0.09019608, 1)
 
 [node name="Wall" type="TileMapLayer" parent="." unique_id=517110431]

@@ -42,8 +42,8 @@ func update_stats() -> void:
 	movement_speed = speed
 
 func _process(_delta: float) -> void:
-	if player_input.current_state != PlayerInputHandler.PlayerState.TRAVERSING \
-		and not camera.inventory_open:
-		look_at(get_global_mouse_position())
+	#if player_input.current_state != PlayerInputHandler.PlayerState.TRAVERSING \
+		#and not camera.inventory_open:
+		#look_at(get_global_mouse_position())
 		
 	queue_redraw()

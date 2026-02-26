@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://3jtwrtnk587a"]
+
+[ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_g8dje"]
+[ext_resource type="PackedScene" uid="uid://ypm3w7steqkh" path="res://scenes/room_resources/exit_door.tscn" id="2_1chdt"]
+
+[node name="ExitRoomScene" unique_id=1917625330 instance=ExtResource("1_g8dje")]
+max_spawned = 1
+
+[node name="Label" type="Label" parent="." index="9" unique_id=1027940551]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 46.0
+offset_top = 32.0
+offset_right = 227.0
+offset_bottom = 219.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT EXIT"
+autowrap_mode = 2
+
+[node name="ExitDoor" parent="." index="10" unique_id=1489831170 instance=ExtResource("2_1chdt")]
+position = Vector2(124, 125)

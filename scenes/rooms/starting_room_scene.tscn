@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bqi7v0ldmfgnm"]
 
 [ext_resource type="PackedScene" uid="uid://cokl1i7ese6oh" path="res://scenes/rooms/basic_room_scene_NESW.tscn" id="1_uodan"]
-[ext_resource type="PackedScene" uid="uid://btgmsean7pfpn" path="res://scenes/rooms/room_resources/shop.tscn" id="2_oxsh1"]
+[ext_resource type="PackedScene" uid="uid://btgmsean7pfpn" path="res://scenes/room_resources/shop.tscn" id="2_oxsh1"]
 [ext_resource type="PackedScene" uid="uid://c76tvj583imy2" path="res://scenes/scrap.tscn" id="3_lxiwx"]
 
 [node name="StartingRoomScene" unique_id=1917625330 instance=ExtResource("1_uodan")]

@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 class_name FlashlightHandler
 
 @export var flashlight: PointLight2D
@@ -24,6 +24,7 @@ func _process(_delta: float) -> void:
 	if not flashlight.enabled:
 		return
 	
+	point_flashlight()
 	spend_power()
 	
 	var collisions = flashlight.get_all_collisions() as Array[CharacterBody2D]
@@ -42,6 +43,11 @@ func spend_power() -> void:
 	
 	if not can_use_flashlight():
 		flashlight.enabled = false
+
+func point_flashlight() -> void:
+	var mouse_pos = get_global_mouse_position()
+	var angle = flashlight.global_position.angle_to_point(mouse_pos)
+	flashlight.rotation = angle
 
 func _on_flashlight_state_changed(state: bool) -> void:
 	var target_brightness = flashlight_brightness

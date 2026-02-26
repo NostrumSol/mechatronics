@@ -6,19 +6,20 @@
 [node name="Flashlight" type="PointLight2D" unique_id=920851621 node_paths=PackedStringArray("collider")]
 shadow_enabled = true
 texture = ExtResource("1_lkaa1")
-offset = Vector2(95, 1)
+offset = Vector2(93, 2)
 script = ExtResource("2_0ywi5")
 collider = NodePath("Area2D")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=347260061]
 visible = false
-offset_left = -31.0
-offset_top = -62.0
-offset_right = 171.0
-offset_bottom = 58.0
+offset_left = -111.0
+offset_top = -63.0
+offset_right = 91.0
+offset_bottom = 57.0
 color = Color(0, 0.22658296, 0.25766784, 1)
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1232138902]
+position = Vector2(1, 0)
 collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=560836559]
